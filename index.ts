@@ -214,7 +214,8 @@ export function getMap(
       const img: any = image.getImage();
       img.src = src;
       img.onload = () => {
-        loadHighRes(mapLoadedCallback);
+        loadHighRes();
+        mapLoadedCallback();
       };
     }
   });
@@ -333,7 +334,7 @@ export function setResidencesVisible(visible: boolean) {
 }
 
 /** Load the high resolution map */
-function loadHighRes(callback: () => void): void {
+function loadHighRes(): void {
   /* High res source */
   const highResSource = new OlSourceImageStatic({
     url: _config.mapPath,
@@ -347,7 +348,6 @@ function loadHighRes(callback: () => void): void {
   highRes.src = _config.mapPath;
   highRes.onload = () => {
     imlayer.setSource(highResSource);
-    callback();
   };
 }
 

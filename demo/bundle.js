@@ -224,7 +224,8 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
       img.src = src;
 
       img.onload = function () {
-        loadHighRes(mapLoadedCallback);
+        loadHighRes();
+        mapLoadedCallback();
       };
     }
   });
@@ -357,7 +358,7 @@ function setResidencesVisible(visible) {
 exports.setResidencesVisible = setResidencesVisible;
 /** Load the high resolution map */
 
-function loadHighRes(callback) {
+function loadHighRes() {
   /* High res source */
   var highResSource = new ImageStatic_1.default({
     url: _config.mapPath,
@@ -372,7 +373,6 @@ function loadHighRes(callback) {
 
   highRes.onload = function () {
     imlayer.setSource(highResSource);
-    callback();
   };
 }
 /** Determine if we support geolocation */

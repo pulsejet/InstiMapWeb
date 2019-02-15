@@ -1,20 +1,20 @@
 import OlMap from 'ol/Map';
 import OlLayerImage from 'ol/layer/Image';
-import OlView from 'ol/View';
+import OlView from 'ol/view';
 import OlExtent from 'ol/extent';
 import OlOverlay from 'ol/Overlay';
 import OlLayerVector from 'ol/layer/Vector';
 import OlSourceImageStatic from 'ol/source/ImageStatic';
 import OlSourceVector from 'ol/source/Vector';
-import OlProjProjection from 'ol/proj/Projection';
+import OlProjProjection from 'ol/proj/projection';
 import OlFeature from 'ol/Feature';
-import OlGeomPoint from 'ol/geom/Point';
-import OlGeomPolygon from 'ol/geom/Polygon';
-import OlStyleStyle from 'ol/style/Style';
+import OlGeomPoint from 'ol/geom/point';
+import OlGeomPolygon from 'ol/geom/polygon';
+import OlStyleStyle from 'ol/style/style';
 import OlStyleIcon from 'ol/style/Icon';
 import OlStyleText from 'ol/style/Text';
-import OlStyleStroke from 'ol/style/Stroke';
-import OlStyleFill from 'ol/style/Fill';
+import OlStyleStroke from 'ol/style/stroke';
+import OlStyleFill from 'ol/style/fill';
 import OlInteraction from 'ol/interaction';
 
 /** Model for location */
@@ -417,4 +417,14 @@ export function getMapXY(position: Position): { pixel_x: number, pixel_y: number
     A[7] * x * y * y + A[8] * x * y);
 
  return {pixel_x : px, pixel_y: py};
+}
+
+/** True if the user is being followed around the map */
+export function isFollowingUser(): boolean {
+  return followingUser;
+}
+
+/** Last known geolocation */
+export function getGeolocationLast(): any {
+  return geoLocationLast;
 }

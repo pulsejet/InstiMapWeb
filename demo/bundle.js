@@ -1,7 +1,7 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
-var InstiMap = require('../index.js');
+var InstiMap = require('../dist/index.js');
 
 fetch('locations.json').then(function (response) {
   return response.json();
@@ -19,7 +19,7 @@ fetch('locations.json').then(function (response) {
   });
 });
 
-},{"../index.js":2}],2:[function(require,module,exports){
+},{"../dist/index.js":2}],2:[function(require,module,exports){
 "use strict";
 
 var __importDefault = void 0 && (void 0).__importDefault || function (mod) {
@@ -36,7 +36,7 @@ var Map_1 = __importDefault(require("ol/Map"));
 
 var Image_1 = __importDefault(require("ol/layer/Image"));
 
-var View_1 = __importDefault(require("ol/View"));
+var view_1 = __importDefault(require("ol/view"));
 
 var extent_1 = __importDefault(require("ol/extent"));
 
@@ -48,27 +48,25 @@ var ImageStatic_1 = __importDefault(require("ol/source/ImageStatic"));
 
 var Vector_2 = __importDefault(require("ol/source/Vector"));
 
-var Projection_1 = __importDefault(require("ol/proj/Projection"));
+var projection_1 = __importDefault(require("ol/proj/projection"));
 
 var Feature_1 = __importDefault(require("ol/Feature"));
 
-var Point_1 = __importDefault(require("ol/geom/Point"));
+var point_1 = __importDefault(require("ol/geom/point"));
 
-var Polygon_1 = __importDefault(require("ol/geom/Polygon"));
+var polygon_1 = __importDefault(require("ol/geom/polygon"));
 
-var Style_1 = __importDefault(require("ol/style/Style"));
+var style_1 = __importDefault(require("ol/style/style"));
 
 var Icon_1 = __importDefault(require("ol/style/Icon"));
 
 var Text_1 = __importDefault(require("ol/style/Text"));
 
-var Stroke_1 = __importDefault(require("ol/style/Stroke"));
+var stroke_1 = __importDefault(require("ol/style/stroke"));
 
-var Fill_1 = __importDefault(require("ol/style/Fill"));
+var fill_1 = __importDefault(require("ol/style/fill"));
 
 var interaction_1 = __importDefault(require("ol/interaction"));
-
-var FullScreen_1 = __importDefault(require("ol/control/FullScreen"));
 
 var _config;
 /** Internal map obects */
@@ -121,7 +119,7 @@ function getMap(config, locations, locationSelectCallback) {
     if (loc.parent === null) {
       /* Make the Feature */
       var iconFeature = new Feature_1.default({
-        geometry: new Point_1.default(pos),
+        geometry: new point_1.default(pos),
         loc: loc
       });
       /* Push into array */
@@ -178,10 +176,10 @@ function getMap(config, locations, locationSelectCallback) {
       padding: [20, 20, 20, 20],
       font: font_size + "px Roboto",
       text: loc_name,
-      fill: new Fill_1.default({
+      fill: new fill_1.default({
         color: '#ffffff'
       }),
-      stroke: new Stroke_1.default({
+      stroke: new stroke_1.default({
         color: '#444',
         width: 3
       })
@@ -194,7 +192,7 @@ function getMap(config, locations, locationSelectCallback) {
     });
     /* Make style */
 
-    var style = new Style_1.default({
+    var style = new style_1.default({
       image: zoom >= 3 ? icon : undefined,
       text: zoom >= 4 ? text : undefined
     });
@@ -208,7 +206,7 @@ function getMap(config, locations, locationSelectCallback) {
   /* Configure map */
 
   imExtent = [0, 0, 5430, 3575];
-  imProjection = new Projection_1.default({
+  imProjection = new projection_1.default({
     code: 'instiMAP',
     units: 'pixels',
     extent: imExtent
@@ -241,7 +239,7 @@ function getMap(config, locations, locationSelectCallback) {
   });
   /* Make view */
 
-  view = new View_1.default({
+  view = new view_1.default({
     projection: imProjection,
     center: extent_1.default.getCenter(imExtent),
     zoom: 3.4,
@@ -258,10 +256,6 @@ function getMap(config, locations, locationSelectCallback) {
     view: view,
     controls: []
   });
-  /* Add controls */
-
-  var fullscreen = new FullScreen_1.default();
-  map.addControl(fullscreen);
   /* Handle click */
 
   map.on('click', function (evt) {
@@ -273,7 +267,7 @@ function getMap(config, locations, locationSelectCallback) {
     var XYMin = map.getCoordinateFromPixel(pixelWithOffsetMin);
     var XYMax = map.getCoordinateFromPixel(pixelWithOffsetMax);
     var ext = XYMax.concat(XYMin);
-    var extentFeat = new Feature_1.default(new Polygon_1.default([[[ext[0], ext[1]], [ext[0], ext[3]], [ext[2], ext[3]], [ext[2], ext[1]], [ext[0], ext[1]]]]));
+    var extentFeat = new Feature_1.default(new polygon_1.default([[[ext[0], ext[1]], [ext[0], ext[3]], [ext[2], ext[3]], [ext[2], ext[1]], [ext[0], ext[1]]]]));
     /* Get first nearby feature */
 
     var feature = vectorLayer.getSource().forEachFeatureIntersectingExtent(extentFeat.getGeometry().getExtent(), function (f) {
@@ -449,8 +443,22 @@ function getMapXY(position) {
 }
 
 exports.getMapXY = getMapXY;
+/** True if the user is being followed around the map */
 
-},{"ol/Feature":3,"ol/Map":4,"ol/Overlay":5,"ol/View":6,"ol/control/FullScreen":17,"ol/extent":33,"ol/geom/Point":39,"ol/geom/Polygon":40,"ol/interaction":70,"ol/layer/Image":85,"ol/layer/Vector":86,"ol/proj/Projection":120,"ol/source/ImageStatic":188,"ol/source/Vector":189,"ol/style/Fill":201,"ol/style/Icon":202,"ol/style/Stroke":203,"ol/style/Style":204,"ol/style/Text":205}],3:[function(require,module,exports){
+function isFollowingUser() {
+  return followingUser;
+}
+
+exports.isFollowingUser = isFollowingUser;
+/** Last known geolocation */
+
+function getGeolocationLast() {
+  return geoLocationLast;
+}
+
+exports.getGeolocationLast = getGeolocationLast;
+
+},{"ol/Feature":3,"ol/Map":4,"ol/Overlay":5,"ol/extent":31,"ol/geom/point":57,"ol/geom/polygon":58,"ol/interaction":66,"ol/layer/Image":81,"ol/layer/Vector":82,"ol/proj/projection":119,"ol/source/ImageStatic":183,"ol/source/Vector":184,"ol/style/Icon":196,"ol/style/Text":197,"ol/style/fill":201,"ol/style/stroke":208,"ol/style/style":209,"ol/view":219}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -814,7 +822,7 @@ _ol_Feature_.createStyleFunction = function (obj) {
 
 exports.default = _ol_Feature_;
 
-},{"./asserts.js":9,"./events.js":27,"./events/eventtype.js":31,"./geom/geometry.js":57,"./index.js":69,"./object.js":104,"./style/style.js":217}],4:[function(require,module,exports){
+},{"./asserts.js":8,"./events.js":25,"./events/eventtype.js":29,"./geom/geometry.js":53,"./index.js":65,"./object.js":100,"./style/style.js":209}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -970,7 +978,7 @@ _index2.default.inherits(_ol_Map_, _pluggablemap2.default);
 
 exports.default = _ol_Map_;
 
-},{"./control.js":16,"./index.js":69,"./interaction.js":70,"./obj.js":103,"./pluggablemap.js":108,"./plugins.js":109,"./plugintype.js":110,"./renderer/canvas/imagelayer.js":162,"./renderer/canvas/map.js":165,"./renderer/canvas/tilelayer.js":166,"./renderer/canvas/vectorlayer.js":167,"./renderer/canvas/vectortilelayer.js":168,"./renderer/webgl/imagelayer.js":175,"./renderer/webgl/map.js":177,"./renderer/webgl/tilelayer.js":178,"./renderer/webgl/vectorlayer.js":181}],5:[function(require,module,exports){
+},{"./control.js":15,"./index.js":65,"./interaction.js":66,"./obj.js":99,"./pluggablemap.js":104,"./plugins.js":105,"./plugintype.js":106,"./renderer/canvas/imagelayer.js":157,"./renderer/canvas/map.js":160,"./renderer/canvas/tilelayer.js":161,"./renderer/canvas/vectorlayer.js":162,"./renderer/canvas/vectortilelayer.js":163,"./renderer/webgl/imagelayer.js":170,"./renderer/webgl/map.js":172,"./renderer/webgl/tilelayer.js":173,"./renderer/webgl/vectorlayer.js":176}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1556,1370 +1564,7 @@ _ol_Overlay_.Property = {
 };
 exports.default = _ol_Overlay_;
 
-},{"./css.js":23,"./dom.js":25,"./events.js":27,"./extent.js":33,"./index.js":69,"./mapeventtype.js":100,"./object.js":104,"./overlaypositioning.js":107}],6:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("./index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _centerconstraint = require("./centerconstraint.js");
-
-var _centerconstraint2 = _interopRequireDefault(_centerconstraint);
-
-var _object = require("./object.js");
-
-var _object2 = _interopRequireDefault(_object);
-
-var _resolutionconstraint = require("./resolutionconstraint.js");
-
-var _resolutionconstraint2 = _interopRequireDefault(_resolutionconstraint);
-
-var _rotationconstraint = require("./rotationconstraint.js");
-
-var _rotationconstraint2 = _interopRequireDefault(_rotationconstraint);
-
-var _viewhint = require("./viewhint.js");
-
-var _viewhint2 = _interopRequireDefault(_viewhint);
-
-var _viewproperty = require("./viewproperty.js");
-
-var _viewproperty2 = _interopRequireDefault(_viewproperty);
-
-var _array = require("./array.js");
-
-var _array2 = _interopRequireDefault(_array);
-
-var _asserts = require("./asserts.js");
-
-var _asserts2 = _interopRequireDefault(_asserts);
-
-var _coordinate = require("./coordinate.js");
-
-var _coordinate2 = _interopRequireDefault(_coordinate);
-
-var _easing = require("./easing.js");
-
-var _easing2 = _interopRequireDefault(_easing);
-
-var _extent = require("./extent.js");
-
-var _extent2 = _interopRequireDefault(_extent);
-
-var _geometrytype = require("./geom/geometrytype.js");
-
-var _geometrytype2 = _interopRequireDefault(_geometrytype);
-
-var _polygon = require("./geom/polygon.js");
-
-var _polygon2 = _interopRequireDefault(_polygon);
-
-var _simplegeometry = require("./geom/simplegeometry.js");
-
-var _simplegeometry2 = _interopRequireDefault(_simplegeometry);
-
-var _math = require("./math.js");
-
-var _math2 = _interopRequireDefault(_math);
-
-var _obj = require("./obj.js");
-
-var _obj2 = _interopRequireDefault(_obj);
-
-var _proj = require("./proj.js");
-
-var _proj2 = _interopRequireDefault(_proj);
-
-var _units = require("./proj/units.js");
-
-var _units2 = _interopRequireDefault(_units);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * An ol.View object represents a simple 2D view of the map.
- *
- * This is the object to act upon to change the center, resolution,
- * and rotation of the map.
- *
- * ### The view states
- *
- * An `ol.View` is determined by three states: `center`, `resolution`,
- * and `rotation`. Each state has a corresponding getter and setter, e.g.
- * `getCenter` and `setCenter` for the `center` state.
- *
- * An `ol.View` has a `projection`. The projection determines the
- * coordinate system of the center, and its units determine the units of the
- * resolution (projection units per pixel). The default projection is
- * Spherical Mercator (EPSG:3857).
- *
- * ### The constraints
- *
- * `setCenter`, `setResolution` and `setRotation` can be used to change the
- * states of the view. Any value can be passed to the setters. And the value
- * that is passed to a setter will effectively be the value set in the view,
- * and returned by the corresponding getter.
- *
- * But an `ol.View` object also has a *resolution constraint*, a
- * *rotation constraint* and a *center constraint*.
- *
- * As said above, no constraints are applied when the setters are used to set
- * new states for the view. Applying constraints is done explicitly through
- * the use of the `constrain*` functions (`constrainResolution` and
- * `constrainRotation` and `constrainCenter`).
- *
- * The main users of the constraints are the interactions and the
- * controls. For example, double-clicking on the map changes the view to
- * the "next" resolution. And releasing the fingers after pinch-zooming
- * snaps to the closest resolution (with an animation).
- *
- * The *resolution constraint* snaps to specific resolutions. It is
- * determined by the following options: `resolutions`, `maxResolution`,
- * `maxZoom`, and `zoomFactor`. If `resolutions` is set, the other three
- * options are ignored. See documentation for each option for more
- * information.
- *
- * The *rotation constraint* snaps to specific angles. It is determined
- * by the following options: `enableRotation` and `constrainRotation`.
- * By default the rotation value is snapped to zero when approaching the
- * horizontal.
- *
- * The *center constraint* is determined by the `extent` option. By
- * default the center is not constrained at all.
- *
- * @constructor
- * @extends {ol.Object}
- * @param {olx.ViewOptions=} opt_options View options.
- * @api
- */
-
-
-var _ol_View_ = function _ol_View_(opt_options) {
-  _object2.default.call(this);
-
-  var options = _obj2.default.assign({}, opt_options);
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-
-
-  this.hints_ = [0, 0];
-  /**
-   * @private
-   * @type {Array.<Array.<ol.ViewAnimation>>}
-   */
-
-  this.animations_ = [];
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.updateAnimationKey_;
-  this.updateAnimations_ = this.updateAnimations_.bind(this);
-  /**
-   * @private
-   * @const
-   * @type {ol.proj.Projection}
-   */
-
-  this.projection_ = _proj2.default.createProjection(options.projection, 'EPSG:3857');
-  this.applyOptions_(options);
-};
-
-_index2.default.inherits(_ol_View_, _object2.default);
-/**
- * Set up the view with the given options.
- * @param {olx.ViewOptions} options View options.
- */
-
-
-_ol_View_.prototype.applyOptions_ = function (options) {
-  /**
-   * @type {Object.<string, *>}
-   */
-  var properties = {};
-  properties[_viewproperty2.default.CENTER] = options.center !== undefined ? options.center : null;
-
-  var resolutionConstraintInfo = _ol_View_.createResolutionConstraint_(options);
-  /**
-   * @private
-   * @type {number}
-   */
-
-
-  this.maxResolution_ = resolutionConstraintInfo.maxResolution;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.minResolution_ = resolutionConstraintInfo.minResolution;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.zoomFactor_ = resolutionConstraintInfo.zoomFactor;
-  /**
-   * @private
-   * @type {Array.<number>|undefined}
-   */
-
-  this.resolutions_ = options.resolutions;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.minZoom_ = resolutionConstraintInfo.minZoom;
-
-  var centerConstraint = _ol_View_.createCenterConstraint_(options);
-
-  var resolutionConstraint = resolutionConstraintInfo.constraint;
-
-  var rotationConstraint = _ol_View_.createRotationConstraint_(options);
-  /**
-   * @private
-   * @type {ol.Constraints}
-   */
-
-
-  this.constraints_ = {
-    center: centerConstraint,
-    resolution: resolutionConstraint,
-    rotation: rotationConstraint
-  };
-
-  if (options.resolution !== undefined) {
-    properties[_viewproperty2.default.RESOLUTION] = options.resolution;
-  } else if (options.zoom !== undefined) {
-    properties[_viewproperty2.default.RESOLUTION] = this.constrainResolution(this.maxResolution_, options.zoom - this.minZoom_);
-
-    if (this.resolutions_) {
-      // in case map zoom is out of min/max zoom range
-      properties[_viewproperty2.default.RESOLUTION] = _math2.default.clamp(Number(this.getResolution() || properties[_viewproperty2.default.RESOLUTION]), this.minResolution_, this.maxResolution_);
-    }
-  }
-
-  properties[_viewproperty2.default.ROTATION] = options.rotation !== undefined ? options.rotation : 0;
-  this.setProperties(properties);
-  /**
-   * @private
-   * @type {olx.ViewOptions}
-   */
-
-  this.options_ = options;
-};
-/**
- * Get an updated version of the view options used to construct the view.  The
- * current resolution (or zoom), center, and rotation are applied to any stored
- * options.  The provided options can be uesd to apply new min/max zoom or
- * resolution limits.
- * @param {olx.ViewOptions} newOptions New options to be applied.
- * @return {olx.ViewOptions} New options updated with the current view state.
- */
-
-
-_ol_View_.prototype.getUpdatedOptions_ = function (newOptions) {
-  var options = _obj2.default.assign({}, this.options_); // preserve resolution (or zoom)
-
-
-  if (options.resolution !== undefined) {
-    options.resolution = this.getResolution();
-  } else {
-    options.zoom = this.getZoom();
-  } // preserve center
-
-
-  options.center = this.getCenter(); // preserve rotation
-
-  options.rotation = this.getRotation();
-  return _obj2.default.assign({}, options, newOptions);
-};
-/**
- * Animate the view.  The view's center, zoom (or resolution), and rotation
- * can be animated for smooth transitions between view states.  For example,
- * to animate the view to a new zoom level:
- *
- *     view.animate({zoom: view.getZoom() + 1});
- *
- * By default, the animation lasts one second and uses in-and-out easing.  You
- * can customize this behavior by including `duration` (in milliseconds) and
- * `easing` options (see {@link ol.easing}).
- *
- * To chain together multiple animations, call the method with multiple
- * animation objects.  For example, to first zoom and then pan:
- *
- *     view.animate({zoom: 10}, {center: [0, 0]});
- *
- * If you provide a function as the last argument to the animate method, it
- * will get called at the end of an animation series.  The callback will be
- * called with `true` if the animation series completed on its own or `false`
- * if it was cancelled.
- *
- * Animations are cancelled by user interactions (e.g. dragging the map) or by
- * calling `view.setCenter()`, `view.setResolution()`, or `view.setRotation()`
- * (or another method that calls one of these).
- *
- * @param {...(olx.AnimationOptions|function(boolean))} var_args Animation
- *     options.  Multiple animations can be run in series by passing multiple
- *     options objects.  To run multiple animations in parallel, call the method
- *     multiple times.  An optional callback can be provided as a final
- *     argument.  The callback will be called with a boolean indicating whether
- *     the animation completed without being cancelled.
- * @api
- */
-
-
-_ol_View_.prototype.animate = function (var_args) {
-  var animationCount = arguments.length;
-  var callback;
-
-  if (animationCount > 1 && typeof arguments[animationCount - 1] === 'function') {
-    callback = arguments[animationCount - 1];
-    --animationCount;
-  }
-
-  if (!this.isDef()) {
-    // if view properties are not yet set, shortcut to the final state
-    var state = arguments[animationCount - 1];
-
-    if (state.center) {
-      this.setCenter(state.center);
-    }
-
-    if (state.zoom !== undefined) {
-      this.setZoom(state.zoom);
-    }
-
-    if (state.rotation !== undefined) {
-      this.setRotation(state.rotation);
-    }
-
-    if (callback) {
-      callback(true);
-    }
-
-    return;
-  }
-
-  var start = Date.now();
-  var center = this.getCenter().slice();
-  var resolution = this.getResolution();
-  var rotation = this.getRotation();
-  var series = [];
-
-  for (var i = 0; i < animationCount; ++i) {
-    var options =
-    /** @type {olx.AnimationOptions} */
-    arguments[i];
-    var animation =
-    /** @type {ol.ViewAnimation} */
-    {
-      start: start,
-      complete: false,
-      anchor: options.anchor,
-      duration: options.duration !== undefined ? options.duration : 1000,
-      easing: options.easing || _easing2.default.inAndOut
-    };
-
-    if (options.center) {
-      animation.sourceCenter = center;
-      animation.targetCenter = options.center;
-      center = animation.targetCenter;
-    }
-
-    if (options.zoom !== undefined) {
-      animation.sourceResolution = resolution;
-      animation.targetResolution = this.constrainResolution(this.maxResolution_, options.zoom - this.minZoom_, 0);
-      resolution = animation.targetResolution;
-    } else if (options.resolution) {
-      animation.sourceResolution = resolution;
-      animation.targetResolution = options.resolution;
-      resolution = animation.targetResolution;
-    }
-
-    if (options.rotation !== undefined) {
-      animation.sourceRotation = rotation;
-      var delta = _math2.default.modulo(options.rotation - rotation + Math.PI, 2 * Math.PI) - Math.PI;
-      animation.targetRotation = rotation + delta;
-      rotation = animation.targetRotation;
-    }
-
-    animation.callback = callback; // check if animation is a no-op
-
-    if (_ol_View_.isNoopAnimation(animation)) {
-      animation.complete = true; // we still push it onto the series for callback handling
-    } else {
-      start += animation.duration;
-    }
-
-    series.push(animation);
-  }
-
-  this.animations_.push(series);
-  this.setHint(_viewhint2.default.ANIMATING, 1);
-  this.updateAnimations_();
-};
-/**
- * Determine if the view is being animated.
- * @return {boolean} The view is being animated.
- * @api
- */
-
-
-_ol_View_.prototype.getAnimating = function () {
-  return this.hints_[_viewhint2.default.ANIMATING] > 0;
-};
-/**
- * Determine if the user is interacting with the view, such as panning or zooming.
- * @return {boolean} The view is being interacted with.
- * @api
- */
-
-
-_ol_View_.prototype.getInteracting = function () {
-  return this.hints_[_viewhint2.default.INTERACTING] > 0;
-};
-/**
- * Cancel any ongoing animations.
- * @api
- */
-
-
-_ol_View_.prototype.cancelAnimations = function () {
-  this.setHint(_viewhint2.default.ANIMATING, -this.hints_[_viewhint2.default.ANIMATING]);
-
-  for (var i = 0, ii = this.animations_.length; i < ii; ++i) {
-    var series = this.animations_[i];
-
-    if (series[0].callback) {
-      series[0].callback(false);
-    }
-  }
-
-  this.animations_.length = 0;
-};
-/**
- * Update all animations.
- */
-
-
-_ol_View_.prototype.updateAnimations_ = function () {
-  if (this.updateAnimationKey_ !== undefined) {
-    cancelAnimationFrame(this.updateAnimationKey_);
-    this.updateAnimationKey_ = undefined;
-  }
-
-  if (!this.getAnimating()) {
-    return;
-  }
-
-  var now = Date.now();
-  var more = false;
-
-  for (var i = this.animations_.length - 1; i >= 0; --i) {
-    var series = this.animations_[i];
-    var seriesComplete = true;
-
-    for (var j = 0, jj = series.length; j < jj; ++j) {
-      var animation = series[j];
-
-      if (animation.complete) {
-        continue;
-      }
-
-      var elapsed = now - animation.start;
-      var fraction = animation.duration > 0 ? elapsed / animation.duration : 1;
-
-      if (fraction >= 1) {
-        animation.complete = true;
-        fraction = 1;
-      } else {
-        seriesComplete = false;
-      }
-
-      var progress = animation.easing(fraction);
-
-      if (animation.sourceCenter) {
-        var x0 = animation.sourceCenter[0];
-        var y0 = animation.sourceCenter[1];
-        var x1 = animation.targetCenter[0];
-        var y1 = animation.targetCenter[1];
-        var x = x0 + progress * (x1 - x0);
-        var y = y0 + progress * (y1 - y0);
-        this.set(_viewproperty2.default.CENTER, [x, y]);
-      }
-
-      if (animation.sourceResolution && animation.targetResolution) {
-        var resolution = progress === 1 ? animation.targetResolution : animation.sourceResolution + progress * (animation.targetResolution - animation.sourceResolution);
-
-        if (animation.anchor) {
-          this.set(_viewproperty2.default.CENTER, this.calculateCenterZoom(resolution, animation.anchor));
-        }
-
-        this.set(_viewproperty2.default.RESOLUTION, resolution);
-      }
-
-      if (animation.sourceRotation !== undefined && animation.targetRotation !== undefined) {
-        var rotation = progress === 1 ? _math2.default.modulo(animation.targetRotation + Math.PI, 2 * Math.PI) - Math.PI : animation.sourceRotation + progress * (animation.targetRotation - animation.sourceRotation);
-
-        if (animation.anchor) {
-          this.set(_viewproperty2.default.CENTER, this.calculateCenterRotate(rotation, animation.anchor));
-        }
-
-        this.set(_viewproperty2.default.ROTATION, rotation);
-      }
-
-      more = true;
-
-      if (!animation.complete) {
-        break;
-      }
-    }
-
-    if (seriesComplete) {
-      this.animations_[i] = null;
-      this.setHint(_viewhint2.default.ANIMATING, -1);
-      var callback = series[0].callback;
-
-      if (callback) {
-        callback(true);
-      }
-    }
-  } // prune completed series
-
-
-  this.animations_ = this.animations_.filter(Boolean);
-
-  if (more && this.updateAnimationKey_ === undefined) {
-    this.updateAnimationKey_ = requestAnimationFrame(this.updateAnimations_);
-  }
-};
-/**
- * @param {number} rotation Target rotation.
- * @param {ol.Coordinate} anchor Rotation anchor.
- * @return {ol.Coordinate|undefined} Center for rotation and anchor.
- */
-
-
-_ol_View_.prototype.calculateCenterRotate = function (rotation, anchor) {
-  var center;
-  var currentCenter = this.getCenter();
-
-  if (currentCenter !== undefined) {
-    center = [currentCenter[0] - anchor[0], currentCenter[1] - anchor[1]];
-
-    _coordinate2.default.rotate(center, rotation - this.getRotation());
-
-    _coordinate2.default.add(center, anchor);
-  }
-
-  return center;
-};
-/**
- * @param {number} resolution Target resolution.
- * @param {ol.Coordinate} anchor Zoom anchor.
- * @return {ol.Coordinate|undefined} Center for resolution and anchor.
- */
-
-
-_ol_View_.prototype.calculateCenterZoom = function (resolution, anchor) {
-  var center;
-  var currentCenter = this.getCenter();
-  var currentResolution = this.getResolution();
-
-  if (currentCenter !== undefined && currentResolution !== undefined) {
-    var x = anchor[0] - resolution * (anchor[0] - currentCenter[0]) / currentResolution;
-    var y = anchor[1] - resolution * (anchor[1] - currentCenter[1]) / currentResolution;
-    center = [x, y];
-  }
-
-  return center;
-};
-/**
- * @private
- * @return {ol.Size} Viewport size or `[100, 100]` when no viewport is found.
- */
-
-
-_ol_View_.prototype.getSizeFromViewport_ = function () {
-  var size = [100, 100];
-  var selector = '.ol-viewport[data-view="' + _index2.default.getUid(this) + '"]';
-  var element = document.querySelector(selector);
-
-  if (element) {
-    var metrics = getComputedStyle(element);
-    size[0] = parseInt(metrics.width, 10);
-    size[1] = parseInt(metrics.height, 10);
-  }
-
-  return size;
-};
-/**
- * Get the constrained center of this view.
- * @param {ol.Coordinate|undefined} center Center.
- * @return {ol.Coordinate|undefined} Constrained center.
- * @api
- */
-
-
-_ol_View_.prototype.constrainCenter = function (center) {
-  return this.constraints_.center(center);
-};
-/**
- * Get the constrained resolution of this view.
- * @param {number|undefined} resolution Resolution.
- * @param {number=} opt_delta Delta. Default is `0`.
- * @param {number=} opt_direction Direction. Default is `0`.
- * @return {number|undefined} Constrained resolution.
- * @api
- */
-
-
-_ol_View_.prototype.constrainResolution = function (resolution, opt_delta, opt_direction) {
-  var delta = opt_delta || 0;
-  var direction = opt_direction || 0;
-  return this.constraints_.resolution(resolution, delta, direction);
-};
-/**
- * Get the constrained rotation of this view.
- * @param {number|undefined} rotation Rotation.
- * @param {number=} opt_delta Delta. Default is `0`.
- * @return {number|undefined} Constrained rotation.
- * @api
- */
-
-
-_ol_View_.prototype.constrainRotation = function (rotation, opt_delta) {
-  var delta = opt_delta || 0;
-  return this.constraints_.rotation(rotation, delta);
-};
-/**
- * Get the view center.
- * @return {ol.Coordinate|undefined} The center of the view.
- * @observable
- * @api
- */
-
-
-_ol_View_.prototype.getCenter = function () {
-  return (
-    /** @type {ol.Coordinate|undefined} */
-    this.get(_viewproperty2.default.CENTER)
-  );
-};
-/**
- * @return {ol.Constraints} Constraints.
- */
-
-
-_ol_View_.prototype.getConstraints = function () {
-  return this.constraints_;
-};
-/**
- * @param {Array.<number>=} opt_hints Destination array.
- * @return {Array.<number>} Hint.
- */
-
-
-_ol_View_.prototype.getHints = function (opt_hints) {
-  if (opt_hints !== undefined) {
-    opt_hints[0] = this.hints_[0];
-    opt_hints[1] = this.hints_[1];
-    return opt_hints;
-  } else {
-    return this.hints_.slice();
-  }
-};
-/**
- * Calculate the extent for the current view state and the passed size.
- * The size is the pixel dimensions of the box into which the calculated extent
- * should fit. In most cases you want to get the extent of the entire map,
- * that is `map.getSize()`.
- * @param {ol.Size=} opt_size Box pixel size. If not provided, the size of the
- * first map that uses this view will be used.
- * @return {ol.Extent} Extent.
- * @api
- */
-
-
-_ol_View_.prototype.calculateExtent = function (opt_size) {
-  var size = opt_size || this.getSizeFromViewport_();
-  var center =
-  /** @type {!ol.Coordinate} */
-  this.getCenter();
-
-  _asserts2.default.assert(center, 1); // The view center is not defined
-
-
-  var resolution =
-  /** @type {!number} */
-  this.getResolution();
-
-  _asserts2.default.assert(resolution !== undefined, 2); // The view resolution is not defined
-
-
-  var rotation =
-  /** @type {!number} */
-  this.getRotation();
-
-  _asserts2.default.assert(rotation !== undefined, 3); // The view rotation is not defined
-
-
-  return _extent2.default.getForViewAndSize(center, resolution, rotation, size);
-};
-/**
- * Get the maximum resolution of the view.
- * @return {number} The maximum resolution of the view.
- * @api
- */
-
-
-_ol_View_.prototype.getMaxResolution = function () {
-  return this.maxResolution_;
-};
-/**
- * Get the minimum resolution of the view.
- * @return {number} The minimum resolution of the view.
- * @api
- */
-
-
-_ol_View_.prototype.getMinResolution = function () {
-  return this.minResolution_;
-};
-/**
- * Get the maximum zoom level for the view.
- * @return {number} The maximum zoom level.
- * @api
- */
-
-
-_ol_View_.prototype.getMaxZoom = function () {
-  return (
-    /** @type {number} */
-    this.getZoomForResolution(this.minResolution_)
-  );
-};
-/**
- * Set a new maximum zoom level for the view.
- * @param {number} zoom The maximum zoom level.
- * @api
- */
-
-
-_ol_View_.prototype.setMaxZoom = function (zoom) {
-  this.applyOptions_(this.getUpdatedOptions_({
-    maxZoom: zoom
-  }));
-};
-/**
- * Get the minimum zoom level for the view.
- * @return {number} The minimum zoom level.
- * @api
- */
-
-
-_ol_View_.prototype.getMinZoom = function () {
-  return (
-    /** @type {number} */
-    this.getZoomForResolution(this.maxResolution_)
-  );
-};
-/**
- * Set a new minimum zoom level for the view.
- * @param {number} zoom The minimum zoom level.
- * @api
- */
-
-
-_ol_View_.prototype.setMinZoom = function (zoom) {
-  this.applyOptions_(this.getUpdatedOptions_({
-    minZoom: zoom
-  }));
-};
-/**
- * Get the view projection.
- * @return {ol.proj.Projection} The projection of the view.
- * @api
- */
-
-
-_ol_View_.prototype.getProjection = function () {
-  return this.projection_;
-};
-/**
- * Get the view resolution.
- * @return {number|undefined} The resolution of the view.
- * @observable
- * @api
- */
-
-
-_ol_View_.prototype.getResolution = function () {
-  return (
-    /** @type {number|undefined} */
-    this.get(_viewproperty2.default.RESOLUTION)
-  );
-};
-/**
- * Get the resolutions for the view. This returns the array of resolutions
- * passed to the constructor of the {ol.View}, or undefined if none were given.
- * @return {Array.<number>|undefined} The resolutions of the view.
- * @api
- */
-
-
-_ol_View_.prototype.getResolutions = function () {
-  return this.resolutions_;
-};
-/**
- * Get the resolution for a provided extent (in map units) and size (in pixels).
- * @param {ol.Extent} extent Extent.
- * @param {ol.Size=} opt_size Box pixel size.
- * @return {number} The resolution at which the provided extent will render at
- *     the given size.
- * @api
- */
-
-
-_ol_View_.prototype.getResolutionForExtent = function (extent, opt_size) {
-  var size = opt_size || this.getSizeFromViewport_();
-  var xResolution = _extent2.default.getWidth(extent) / size[0];
-  var yResolution = _extent2.default.getHeight(extent) / size[1];
-  return Math.max(xResolution, yResolution);
-};
-/**
- * Return a function that returns a value between 0 and 1 for a
- * resolution. Exponential scaling is assumed.
- * @param {number=} opt_power Power.
- * @return {function(number): number} Resolution for value function.
- */
-
-
-_ol_View_.prototype.getResolutionForValueFunction = function (opt_power) {
-  var power = opt_power || 2;
-  var maxResolution = this.maxResolution_;
-  var minResolution = this.minResolution_;
-  var max = Math.log(maxResolution / minResolution) / Math.log(power);
-  return (
-    /**
-     * @param {number} value Value.
-     * @return {number} Resolution.
-     */
-    function (value) {
-      var resolution = maxResolution / Math.pow(power, value * max);
-      return resolution;
-    }
-  );
-};
-/**
- * Get the view rotation.
- * @return {number} The rotation of the view in radians.
- * @observable
- * @api
- */
-
-
-_ol_View_.prototype.getRotation = function () {
-  return (
-    /** @type {number} */
-    this.get(_viewproperty2.default.ROTATION)
-  );
-};
-/**
- * Return a function that returns a resolution for a value between
- * 0 and 1. Exponential scaling is assumed.
- * @param {number=} opt_power Power.
- * @return {function(number): number} Value for resolution function.
- */
-
-
-_ol_View_.prototype.getValueForResolutionFunction = function (opt_power) {
-  var power = opt_power || 2;
-  var maxResolution = this.maxResolution_;
-  var minResolution = this.minResolution_;
-  var max = Math.log(maxResolution / minResolution) / Math.log(power);
-  return (
-    /**
-     * @param {number} resolution Resolution.
-     * @return {number} Value.
-     */
-    function (resolution) {
-      var value = Math.log(maxResolution / resolution) / Math.log(power) / max;
-      return value;
-    }
-  );
-};
-/**
- * @return {olx.ViewState} View state.
- */
-
-
-_ol_View_.prototype.getState = function () {
-  var center =
-  /** @type {ol.Coordinate} */
-  this.getCenter();
-  var projection = this.getProjection();
-  var resolution =
-  /** @type {number} */
-  this.getResolution();
-  var rotation = this.getRotation();
-  return (
-    /** @type {olx.ViewState} */
-    {
-      center: center.slice(),
-      projection: projection !== undefined ? projection : null,
-      resolution: resolution,
-      rotation: rotation,
-      zoom: this.getZoom()
-    }
-  );
-};
-/**
- * Get the current zoom level.  If you configured your view with a resolutions
- * array (this is rare), this method may return non-integer zoom levels (so
- * the zoom level is not safe to use as an index into a resolutions array).
- * @return {number|undefined} Zoom.
- * @api
- */
-
-
-_ol_View_.prototype.getZoom = function () {
-  var zoom;
-  var resolution = this.getResolution();
-
-  if (resolution !== undefined) {
-    zoom = this.getZoomForResolution(resolution);
-  }
-
-  return zoom;
-};
-/**
- * Get the zoom level for a resolution.
- * @param {number} resolution The resolution.
- * @return {number|undefined} The zoom level for the provided resolution.
- * @api
- */
-
-
-_ol_View_.prototype.getZoomForResolution = function (resolution) {
-  var offset = this.minZoom_ || 0;
-  var max, zoomFactor;
-
-  if (this.resolutions_) {
-    var nearest = _array2.default.linearFindNearest(this.resolutions_, resolution, 1);
-
-    offset = nearest;
-    max = this.resolutions_[nearest];
-
-    if (nearest == this.resolutions_.length - 1) {
-      zoomFactor = 2;
-    } else {
-      zoomFactor = max / this.resolutions_[nearest + 1];
-    }
-  } else {
-    max = this.maxResolution_;
-    zoomFactor = this.zoomFactor_;
-  }
-
-  return offset + Math.log(max / resolution) / Math.log(zoomFactor);
-};
-/**
- * Get the resolution for a zoom level.
- * @param {number} zoom Zoom level.
- * @return {number} The view resolution for the provided zoom level.
- * @api
- */
-
-
-_ol_View_.prototype.getResolutionForZoom = function (zoom) {
-  return (
-    /** @type {number} */
-    this.constrainResolution(this.maxResolution_, zoom - this.minZoom_, 0)
-  );
-};
-/**
- * Fit the given geometry or extent based on the given map size and border.
- * The size is pixel dimensions of the box to fit the extent into.
- * In most cases you will want to use the map size, that is `map.getSize()`.
- * Takes care of the map angle.
- * @param {ol.geom.SimpleGeometry|ol.Extent} geometryOrExtent The geometry or
- *     extent to fit the view to.
- * @param {olx.view.FitOptions=} opt_options Options.
- * @api
- */
-
-
-_ol_View_.prototype.fit = function (geometryOrExtent, opt_options) {
-  var options = opt_options || {};
-  var size = options.size;
-
-  if (!size) {
-    size = this.getSizeFromViewport_();
-  }
-  /** @type {ol.geom.SimpleGeometry} */
-
-
-  var geometry;
-
-  if (!(geometryOrExtent instanceof _simplegeometry2.default)) {
-    _asserts2.default.assert(Array.isArray(geometryOrExtent), 24); // Invalid extent or geometry provided as `geometry`
-
-
-    _asserts2.default.assert(!_extent2.default.isEmpty(geometryOrExtent), 25); // Cannot fit empty extent provided as `geometry`
-
-
-    geometry = _polygon2.default.fromExtent(geometryOrExtent);
-  } else if (geometryOrExtent.getType() === _geometrytype2.default.CIRCLE) {
-    geometryOrExtent = geometryOrExtent.getExtent();
-    geometry = _polygon2.default.fromExtent(geometryOrExtent);
-    geometry.rotate(this.getRotation(), _extent2.default.getCenter(geometryOrExtent));
-  } else {
-    geometry = geometryOrExtent;
-  }
-
-  var padding = options.padding !== undefined ? options.padding : [0, 0, 0, 0];
-  var constrainResolution = options.constrainResolution !== undefined ? options.constrainResolution : true;
-  var nearest = options.nearest !== undefined ? options.nearest : false;
-  var minResolution;
-
-  if (options.minResolution !== undefined) {
-    minResolution = options.minResolution;
-  } else if (options.maxZoom !== undefined) {
-    minResolution = this.constrainResolution(this.maxResolution_, options.maxZoom - this.minZoom_, 0);
-  } else {
-    minResolution = 0;
-  }
-
-  var coords = geometry.getFlatCoordinates(); // calculate rotated extent
-
-  var rotation = this.getRotation();
-  var cosAngle = Math.cos(-rotation);
-  var sinAngle = Math.sin(-rotation);
-  var minRotX = +Infinity;
-  var minRotY = +Infinity;
-  var maxRotX = -Infinity;
-  var maxRotY = -Infinity;
-  var stride = geometry.getStride();
-
-  for (var i = 0, ii = coords.length; i < ii; i += stride) {
-    var rotX = coords[i] * cosAngle - coords[i + 1] * sinAngle;
-    var rotY = coords[i] * sinAngle + coords[i + 1] * cosAngle;
-    minRotX = Math.min(minRotX, rotX);
-    minRotY = Math.min(minRotY, rotY);
-    maxRotX = Math.max(maxRotX, rotX);
-    maxRotY = Math.max(maxRotY, rotY);
-  } // calculate resolution
-
-
-  var resolution = this.getResolutionForExtent([minRotX, minRotY, maxRotX, maxRotY], [size[0] - padding[1] - padding[3], size[1] - padding[0] - padding[2]]);
-  resolution = isNaN(resolution) ? minResolution : Math.max(resolution, minResolution);
-
-  if (constrainResolution) {
-    var constrainedResolution = this.constrainResolution(resolution, 0, 0);
-
-    if (!nearest && constrainedResolution < resolution) {
-      constrainedResolution = this.constrainResolution(constrainedResolution, -1, 0);
-    }
-
-    resolution = constrainedResolution;
-  } // calculate center
-
-
-  sinAngle = -sinAngle; // go back to original rotation
-
-  var centerRotX = (minRotX + maxRotX) / 2;
-  var centerRotY = (minRotY + maxRotY) / 2;
-  centerRotX += (padding[1] - padding[3]) / 2 * resolution;
-  centerRotY += (padding[0] - padding[2]) / 2 * resolution;
-  var centerX = centerRotX * cosAngle - centerRotY * sinAngle;
-  var centerY = centerRotY * cosAngle + centerRotX * sinAngle;
-  var center = [centerX, centerY];
-  var callback = options.callback ? options.callback : _index2.default.nullFunction;
-
-  if (options.duration !== undefined) {
-    this.animate({
-      resolution: resolution,
-      center: center,
-      duration: options.duration,
-      easing: options.easing
-    }, callback);
-  } else {
-    this.setResolution(resolution);
-    this.setCenter(center);
-    setTimeout(callback.bind(undefined, true), 0);
-  }
-};
-/**
- * Center on coordinate and view position.
- * @param {ol.Coordinate} coordinate Coordinate.
- * @param {ol.Size} size Box pixel size.
- * @param {ol.Pixel} position Position on the view to center on.
- * @api
- */
-
-
-_ol_View_.prototype.centerOn = function (coordinate, size, position) {
-  // calculate rotated position
-  var rotation = this.getRotation();
-  var cosAngle = Math.cos(-rotation);
-  var sinAngle = Math.sin(-rotation);
-  var rotX = coordinate[0] * cosAngle - coordinate[1] * sinAngle;
-  var rotY = coordinate[1] * cosAngle + coordinate[0] * sinAngle;
-  var resolution = this.getResolution();
-  rotX += (size[0] / 2 - position[0]) * resolution;
-  rotY += (position[1] - size[1] / 2) * resolution; // go back to original angle
-
-  sinAngle = -sinAngle; // go back to original rotation
-
-  var centerX = rotX * cosAngle - rotY * sinAngle;
-  var centerY = rotY * cosAngle + rotX * sinAngle;
-  this.setCenter([centerX, centerY]);
-};
-/**
- * @return {boolean} Is defined.
- */
-
-
-_ol_View_.prototype.isDef = function () {
-  return !!this.getCenter() && this.getResolution() !== undefined;
-};
-/**
- * Rotate the view around a given coordinate.
- * @param {number} rotation New rotation value for the view.
- * @param {ol.Coordinate=} opt_anchor The rotation center.
- * @api
- */
-
-
-_ol_View_.prototype.rotate = function (rotation, opt_anchor) {
-  if (opt_anchor !== undefined) {
-    var center = this.calculateCenterRotate(rotation, opt_anchor);
-    this.setCenter(center);
-  }
-
-  this.setRotation(rotation);
-};
-/**
- * Set the center of the current view.
- * @param {ol.Coordinate|undefined} center The center of the view.
- * @observable
- * @api
- */
-
-
-_ol_View_.prototype.setCenter = function (center) {
-  this.set(_viewproperty2.default.CENTER, center);
-
-  if (this.getAnimating()) {
-    this.cancelAnimations();
-  }
-};
-/**
- * @param {ol.ViewHint} hint Hint.
- * @param {number} delta Delta.
- * @return {number} New value.
- */
-
-
-_ol_View_.prototype.setHint = function (hint, delta) {
-  this.hints_[hint] += delta;
-  this.changed();
-  return this.hints_[hint];
-};
-/**
- * Set the resolution for this view.
- * @param {number|undefined} resolution The resolution of the view.
- * @observable
- * @api
- */
-
-
-_ol_View_.prototype.setResolution = function (resolution) {
-  this.set(_viewproperty2.default.RESOLUTION, resolution);
-
-  if (this.getAnimating()) {
-    this.cancelAnimations();
-  }
-};
-/**
- * Set the rotation for this view.
- * @param {number} rotation The rotation of the view in radians.
- * @observable
- * @api
- */
-
-
-_ol_View_.prototype.setRotation = function (rotation) {
-  this.set(_viewproperty2.default.ROTATION, rotation);
-
-  if (this.getAnimating()) {
-    this.cancelAnimations();
-  }
-};
-/**
- * Zoom to a specific zoom level.
- * @param {number} zoom Zoom level.
- * @api
- */
-
-
-_ol_View_.prototype.setZoom = function (zoom) {
-  this.setResolution(this.getResolutionForZoom(zoom));
-};
-/**
- * @param {olx.ViewOptions} options View options.
- * @private
- * @return {ol.CenterConstraintType} The constraint.
- */
-
-
-_ol_View_.createCenterConstraint_ = function (options) {
-  if (options.extent !== undefined) {
-    return _centerconstraint2.default.createExtent(options.extent);
-  } else {
-    return _centerconstraint2.default.none;
-  }
-};
-/**
- * @private
- * @param {olx.ViewOptions} options View options.
- * @return {{constraint: ol.ResolutionConstraintType, maxResolution: number,
- *     minResolution: number, zoomFactor: number}} The constraint.
- */
-
-
-_ol_View_.createResolutionConstraint_ = function (options) {
-  var resolutionConstraint;
-  var maxResolution;
-  var minResolution; // TODO: move these to be ol constants
-  // see https://github.com/openlayers/openlayers/issues/2076
-
-  var defaultMaxZoom = 28;
-  var defaultZoomFactor = 2;
-  var minZoom = options.minZoom !== undefined ? options.minZoom : _index2.default.DEFAULT_MIN_ZOOM;
-  var maxZoom = options.maxZoom !== undefined ? options.maxZoom : defaultMaxZoom;
-  var zoomFactor = options.zoomFactor !== undefined ? options.zoomFactor : defaultZoomFactor;
-
-  if (options.resolutions !== undefined) {
-    var resolutions = options.resolutions;
-    maxResolution = resolutions[minZoom];
-    minResolution = resolutions[maxZoom] !== undefined ? resolutions[maxZoom] : resolutions[resolutions.length - 1];
-    resolutionConstraint = _resolutionconstraint2.default.createSnapToResolutions(resolutions);
-  } else {
-    // calculate the default min and max resolution
-    var projection = _proj2.default.createProjection(options.projection, 'EPSG:3857');
-
-    var extent = projection.getExtent();
-    var size = !extent ? // use an extent that can fit the whole world if need be
-    360 * _proj2.default.METERS_PER_UNIT[_units2.default.DEGREES] / projection.getMetersPerUnit() : Math.max(_extent2.default.getWidth(extent), _extent2.default.getHeight(extent));
-    var defaultMaxResolution = size / _index2.default.DEFAULT_TILE_SIZE / Math.pow(defaultZoomFactor, _index2.default.DEFAULT_MIN_ZOOM);
-    var defaultMinResolution = defaultMaxResolution / Math.pow(defaultZoomFactor, defaultMaxZoom - _index2.default.DEFAULT_MIN_ZOOM); // user provided maxResolution takes precedence
-
-    maxResolution = options.maxResolution;
-
-    if (maxResolution !== undefined) {
-      minZoom = 0;
-    } else {
-      maxResolution = defaultMaxResolution / Math.pow(zoomFactor, minZoom);
-    } // user provided minResolution takes precedence
-
-
-    minResolution = options.minResolution;
-
-    if (minResolution === undefined) {
-      if (options.maxZoom !== undefined) {
-        if (options.maxResolution !== undefined) {
-          minResolution = maxResolution / Math.pow(zoomFactor, maxZoom);
-        } else {
-          minResolution = defaultMaxResolution / Math.pow(zoomFactor, maxZoom);
-        }
-      } else {
-        minResolution = defaultMinResolution;
-      }
-    } // given discrete zoom levels, minResolution may be different than provided
-
-
-    maxZoom = minZoom + Math.floor(Math.log(maxResolution / minResolution) / Math.log(zoomFactor));
-    minResolution = maxResolution / Math.pow(zoomFactor, maxZoom - minZoom);
-    resolutionConstraint = _resolutionconstraint2.default.createSnapToPower(zoomFactor, maxResolution, maxZoom - minZoom);
-  }
-
-  return {
-    constraint: resolutionConstraint,
-    maxResolution: maxResolution,
-    minResolution: minResolution,
-    minZoom: minZoom,
-    zoomFactor: zoomFactor
-  };
-};
-/**
- * @private
- * @param {olx.ViewOptions} options View options.
- * @return {ol.RotationConstraintType} Rotation constraint.
- */
-
-
-_ol_View_.createRotationConstraint_ = function (options) {
-  var enableRotation = options.enableRotation !== undefined ? options.enableRotation : true;
-
-  if (enableRotation) {
-    var constrainRotation = options.constrainRotation;
-
-    if (constrainRotation === undefined || constrainRotation === true) {
-      return _rotationconstraint2.default.createSnapToZero();
-    } else if (constrainRotation === false) {
-      return _rotationconstraint2.default.none;
-    } else if (typeof constrainRotation === 'number') {
-      return _rotationconstraint2.default.createSnapToN(constrainRotation);
-    } else {
-      return _rotationconstraint2.default.none;
-    }
-  } else {
-    return _rotationconstraint2.default.disable;
-  }
-};
-/**
- * Determine if an animation involves no view change.
- * @param {ol.ViewAnimation} animation The animation.
- * @return {boolean} The animation involves no view change.
- */
-
-
-_ol_View_.isNoopAnimation = function (animation) {
-  if (animation.sourceCenter && animation.targetCenter) {
-    if (!_coordinate2.default.equals(animation.sourceCenter, animation.targetCenter)) {
-      return false;
-    }
-  }
-
-  if (animation.sourceResolution !== animation.targetResolution) {
-    return false;
-  }
-
-  if (animation.sourceRotation !== animation.targetRotation) {
-    return false;
-  }
-
-  return true;
-};
-
-exports.default = _ol_View_;
-
-},{"./array.js":7,"./asserts.js":9,"./centerconstraint.js":11,"./coordinate.js":22,"./easing.js":26,"./extent.js":33,"./geom/geometrytype.js":59,"./geom/polygon.js":62,"./geom/simplegeometry.js":63,"./index.js":69,"./math.js":102,"./obj.js":103,"./object.js":104,"./proj.js":119,"./proj/units.js":127,"./resolutionconstraint.js":185,"./rotationconstraint.js":186,"./viewhint.js":228,"./viewproperty.js":229}],7:[function(require,module,exports){
+},{"./css.js":21,"./dom.js":23,"./events.js":25,"./extent.js":31,"./index.js":65,"./mapeventtype.js":96,"./object.js":100,"./overlaypositioning.js":103}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3193,7 +1838,7 @@ _ol_array_.isSorted = function (arr, opt_func, opt_strict) {
 
 exports.default = _ol_array_;
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3244,7 +1889,7 @@ _index2.default.inherits(_ol_AssertionError_, Error);
 
 exports.default = _ol_AssertionError_;
 
-},{"./index.js":69}],9:[function(require,module,exports){
+},{"./index.js":65}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3275,7 +1920,7 @@ _ol_asserts_.assert = function (assertion, errorCode) {
 
 exports.default = _ol_asserts_;
 
-},{"./assertionerror.js":8}],10:[function(require,module,exports){
+},{"./assertionerror.js":7}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3396,7 +2041,7 @@ _ol_Attribution_.prototype.intersectsAnyTileRange = function (tileRanges, tileGr
 
 exports.default = _ol_Attribution_;
 
-},{"./math.js":102,"./tilegrid.js":220,"./tilerange.js":223}],11:[function(require,module,exports){
+},{"./math.js":98,"./tilegrid.js":212,"./tilerange.js":215}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3446,7 +2091,7 @@ _ol_CenterConstraint_.none = function (center) {
 
 exports.default = _ol_CenterConstraint_;
 
-},{"./math.js":102}],12:[function(require,module,exports){
+},{"./math.js":98}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3784,7 +2429,7 @@ _index2.default.inherits(_ol_Collection_.Event, _event2.default);
 
 exports.default = _ol_Collection_;
 
-},{"./assertionerror.js":8,"./collectioneventtype.js":13,"./events/event.js":29,"./index.js":69,"./object.js":104}],13:[function(require,module,exports){
+},{"./assertionerror.js":7,"./collectioneventtype.js":12,"./events/event.js":27,"./index.js":65,"./object.js":100}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3811,7 +2456,7 @@ var _ol_CollectionEventType_ = {
 };
 exports.default = _ol_CollectionEventType_;
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4067,7 +2712,7 @@ _ol_color_.toString = function (color) {
 
 exports.default = _ol_color_;
 
-},{"./asserts.js":9,"./math.js":102}],15:[function(require,module,exports){
+},{"./asserts.js":8,"./math.js":98}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4115,7 +2760,7 @@ _ol_colorlike_.isColorLike = function (color) {
 
 exports.default = _ol_colorlike_;
 
-},{"./color.js":14}],16:[function(require,module,exports){
+},{"./color.js":13}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4184,292 +2829,7 @@ _ol_control_.defaults = function (opt_options) {
 
 exports.default = _ol_control_;
 
-},{"./collection.js":12,"./control/attribution.js":18,"./control/rotate.js":20,"./control/zoom.js":21}],17:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _control = require("../control/control.js");
-
-var _control2 = _interopRequireDefault(_control);
-
-var _css = require("../css.js");
-
-var _css2 = _interopRequireDefault(_css);
-
-var _dom = require("../dom.js");
-
-var _dom2 = _interopRequireDefault(_dom);
-
-var _events = require("../events.js");
-
-var _events2 = _interopRequireDefault(_events);
-
-var _eventtype = require("../events/eventtype.js");
-
-var _eventtype2 = _interopRequireDefault(_eventtype);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Provides a button that when clicked fills up the full screen with the map.
- * The full screen source element is by default the element containing the map viewport unless
- * overridden by providing the `source` option. In which case, the dom
- * element introduced using this parameter will be displayed in full screen.
- *
- * When in full screen mode, a close button is shown to exit full screen mode.
- * The [Fullscreen API](http://www.w3.org/TR/fullscreen/) is used to
- * toggle the map in full screen mode.
- *
- *
- * @constructor
- * @extends {ol.control.Control}
- * @param {olx.control.FullScreenOptions=} opt_options Options.
- * @api
- */
-
-
-var _ol_control_FullScreen_ = function _ol_control_FullScreen_(opt_options) {
-  var options = opt_options ? opt_options : {};
-  /**
-   * @private
-   * @type {string}
-   */
-
-  this.cssClassName_ = options.className !== undefined ? options.className : 'ol-full-screen';
-  var label = options.label !== undefined ? options.label : "\u2922";
-  /**
-   * @private
-   * @type {Node}
-   */
-
-  this.labelNode_ = typeof label === 'string' ? document.createTextNode(label) : label;
-  var labelActive = options.labelActive !== undefined ? options.labelActive : "\xD7";
-  /**
-   * @private
-   * @type {Node}
-   */
-
-  this.labelActiveNode_ = typeof labelActive === 'string' ? document.createTextNode(labelActive) : labelActive;
-  var tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';
-  var button = document.createElement('button');
-  button.className = this.cssClassName_ + '-' + _ol_control_FullScreen_.isFullScreen();
-  button.setAttribute('type', 'button');
-  button.title = tipLabel;
-  button.appendChild(this.labelNode_);
-
-  _events2.default.listen(button, _eventtype2.default.CLICK, this.handleClick_, this);
-
-  var cssClasses = this.cssClassName_ + ' ' + _css2.default.CLASS_UNSELECTABLE + ' ' + _css2.default.CLASS_CONTROL + ' ' + (!_ol_control_FullScreen_.isFullScreenSupported() ? _css2.default.CLASS_UNSUPPORTED : '');
-  var element = document.createElement('div');
-  element.className = cssClasses;
-  element.appendChild(button);
-
-  _control2.default.call(this, {
-    element: element,
-    target: options.target
-  });
-  /**
-   * @private
-   * @type {boolean}
-   */
-
-
-  this.keys_ = options.keys !== undefined ? options.keys : false;
-  /**
-   * @private
-   * @type {Element|string|undefined}
-   */
-
-  this.source_ = options.source;
-};
-
-_index2.default.inherits(_ol_control_FullScreen_, _control2.default);
-/**
- * @param {Event} event The event to handle
- * @private
- */
-
-
-_ol_control_FullScreen_.prototype.handleClick_ = function (event) {
-  event.preventDefault();
-  this.handleFullScreen_();
-};
-/**
- * @private
- */
-
-
-_ol_control_FullScreen_.prototype.handleFullScreen_ = function () {
-  if (!_ol_control_FullScreen_.isFullScreenSupported()) {
-    return;
-  }
-
-  var map = this.getMap();
-
-  if (!map) {
-    return;
-  }
-
-  if (_ol_control_FullScreen_.isFullScreen()) {
-    _ol_control_FullScreen_.exitFullScreen();
-  } else {
-    var element;
-
-    if (this.source_) {
-      element = typeof this.source_ === 'string' ? document.getElementById(this.source_) : this.source_;
-    } else {
-      element = map.getTargetElement();
-    }
-
-    if (this.keys_) {
-      _ol_control_FullScreen_.requestFullScreenWithKeys(element);
-    } else {
-      _ol_control_FullScreen_.requestFullScreen(element);
-    }
-  }
-};
-/**
- * @private
- */
-
-
-_ol_control_FullScreen_.prototype.handleFullScreenChange_ = function () {
-  var button = this.element.firstElementChild;
-  var map = this.getMap();
-
-  if (_ol_control_FullScreen_.isFullScreen()) {
-    button.className = this.cssClassName_ + '-true';
-
-    _dom2.default.replaceNode(this.labelActiveNode_, this.labelNode_);
-  } else {
-    button.className = this.cssClassName_ + '-false';
-
-    _dom2.default.replaceNode(this.labelNode_, this.labelActiveNode_);
-  }
-
-  if (map) {
-    map.updateSize();
-  }
-};
-/**
- * @inheritDoc
- * @api
- */
-
-
-_ol_control_FullScreen_.prototype.setMap = function (map) {
-  _control2.default.prototype.setMap.call(this, map);
-
-  if (map) {
-    this.listenerKeys.push(_events2.default.listen(document, _ol_control_FullScreen_.getChangeType_(), this.handleFullScreenChange_, this));
-  }
-};
-/**
- * @return {boolean} Fullscreen is supported by the current platform.
- */
-
-
-_ol_control_FullScreen_.isFullScreenSupported = function () {
-  var body = document.body;
-  return !!(body.webkitRequestFullscreen || body.mozRequestFullScreen && document.mozFullScreenEnabled || body.msRequestFullscreen && document.msFullscreenEnabled || body.requestFullscreen && document.fullscreenEnabled);
-};
-/**
- * @return {boolean} Element is currently in fullscreen.
- */
-
-
-_ol_control_FullScreen_.isFullScreen = function () {
-  return !!(document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement || document.fullscreenElement);
-};
-/**
- * Request to fullscreen an element.
- * @param {Node} element Element to request fullscreen
- */
-
-
-_ol_control_FullScreen_.requestFullScreen = function (element) {
-  if (element.requestFullscreen) {
-    element.requestFullscreen();
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen();
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen();
-  }
-};
-/**
- * Request to fullscreen an element with keyboard input.
- * @param {Node} element Element to request fullscreen
- */
-
-
-_ol_control_FullScreen_.requestFullScreenWithKeys = function (element) {
-  if (element.mozRequestFullScreenWithKeys) {
-    element.mozRequestFullScreenWithKeys();
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-  } else {
-    _ol_control_FullScreen_.requestFullScreen(element);
-  }
-};
-/**
- * Exit fullscreen.
- */
-
-
-_ol_control_FullScreen_.exitFullScreen = function () {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  }
-};
-/**
- * @return {string} Change type.
- * @private
- */
-
-
-_ol_control_FullScreen_.getChangeType_ = function () {
-  var changeType;
-  return function () {
-    if (!changeType) {
-      var body = document.body;
-
-      if (body.webkitRequestFullscreen) {
-        changeType = 'webkitfullscreenchange';
-      } else if (body.mozRequestFullScreen) {
-        changeType = 'mozfullscreenchange';
-      } else if (body.msRequestFullscreen) {
-        changeType = 'MSFullscreenChange';
-      } else if (body.requestFullscreen) {
-        changeType = 'fullscreenchange';
-      }
-    }
-
-    return changeType;
-  };
-}();
-
-exports.default = _ol_control_FullScreen_;
-
-},{"../control/control.js":19,"../css.js":23,"../dom.js":25,"../events.js":27,"../events/eventtype.js":31,"../index.js":69}],18:[function(require,module,exports){
+},{"./collection.js":11,"./control/attribution.js":16,"./control/rotate.js":18,"./control/zoom.js":19}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4895,7 +3255,7 @@ _ol_control_Attribution_.prototype.getCollapsed = function () {
 
 exports.default = _ol_control_Attribution_;
 
-},{"../array.js":7,"../control/control.js":19,"../css.js":23,"../dom.js":25,"../events.js":27,"../events/eventtype.js":31,"../index.js":69,"../layer/layer.js":89,"../obj.js":103}],19:[function(require,module,exports){
+},{"../array.js":6,"../control/control.js":17,"../css.js":21,"../dom.js":23,"../events.js":25,"../events/eventtype.js":29,"../index.js":65,"../layer/layer.js":85,"../obj.js":99}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5067,7 +3427,7 @@ _ol_control_Control_.prototype.setTarget = function (target) {
 
 exports.default = _ol_control_Control_;
 
-},{"../dom.js":25,"../events.js":27,"../index.js":69,"../mapeventtype.js":100,"../object.js":104}],20:[function(require,module,exports){
+},{"../dom.js":23,"../events.js":25,"../index.js":65,"../mapeventtype.js":96,"../object.js":100}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5265,7 +3625,7 @@ _ol_control_Rotate_.render = function (mapEvent) {
 
 exports.default = _ol_control_Rotate_;
 
-},{"../control/control.js":19,"../css.js":23,"../easing.js":26,"../events.js":27,"../events/eventtype.js":31,"../index.js":69}],21:[function(require,module,exports){
+},{"../control/control.js":17,"../css.js":21,"../easing.js":24,"../events.js":25,"../events/eventtype.js":29,"../index.js":65}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5408,7 +3768,7 @@ _ol_control_Zoom_.prototype.zoomByDelta_ = function (delta) {
 
 exports.default = _ol_control_Zoom_;
 
-},{"../control/control.js":19,"../css.js":23,"../easing.js":26,"../events.js":27,"../events/eventtype.js":31,"../index.js":69}],22:[function(require,module,exports){
+},{"../control/control.js":17,"../css.js":21,"../easing.js":24,"../events.js":25,"../events/eventtype.js":29,"../index.js":65}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5800,7 +4160,7 @@ _ol_coordinate_.toStringXY = function (coordinate, opt_fractionDigits) {
 
 exports.default = _ol_coordinate_;
 
-},{"./math.js":102,"./string.js":195}],23:[function(require,module,exports){
+},{"./math.js":98,"./string.js":190}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5880,7 +4240,7 @@ _ol_css_.getFontFamilies = function () {
 
 exports.default = _ol_css_;
 
-},{}],24:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5930,7 +4290,7 @@ _ol_Disposable_.prototype.dispose = function () {
 _ol_Disposable_.prototype.disposeInternal = _index2.default.nullFunction;
 exports.default = _ol_Disposable_;
 
-},{"./index.js":69}],25:[function(require,module,exports){
+},{"./index.js":65}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6022,7 +4382,7 @@ _ol_dom_.removeChildren = function (node) {
 
 exports.default = _ol_dom_;
 
-},{}],26:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6092,7 +4452,7 @@ _ol_easing_.upAndDown = function (t) {
 
 exports.default = _ol_easing_;
 
-},{}],27:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6373,7 +4733,7 @@ _ol_events_.unlistenAll = function (target) {
 
 exports.default = _ol_events_;
 
-},{"./obj.js":103}],28:[function(require,module,exports){
+},{"./obj.js":99}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6609,7 +4969,7 @@ _ol_events_condition_.primaryAction = function (mapBrowserEvent) {
 
 exports.default = _ol_events_condition_;
 
-},{"../asserts.js":9,"../functions.js":38,"../has.js":64,"../mapbrowsereventtype.js":97}],29:[function(require,module,exports){
+},{"../asserts.js":8,"../functions.js":36,"../has.js":60,"../mapbrowsereventtype.js":93}],27:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6687,7 +5047,7 @@ _ol_events_Event_.preventDefault = function (evt) {
 
 exports.default = _ol_events_Event_;
 
-},{}],30:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6881,7 +5241,7 @@ _ol_events_EventTarget_.prototype.removeEventListener = function (type, listener
 
 exports.default = _ol_events_EventTarget_;
 
-},{"../disposable.js":24,"../events.js":27,"../events/event.js":29,"../index.js":69}],31:[function(require,module,exports){
+},{"../disposable.js":22,"../events.js":25,"../events/event.js":27,"../index.js":65}],29:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6923,7 +5283,7 @@ var _ol_events_EventType_ = {
 };
 exports.default = _ol_events_EventType_;
 
-},{}],32:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6942,7 +5302,7 @@ var _ol_events_KeyCode_ = {
 };
 exports.default = _ol_events_KeyCode_;
 
-},{}],33:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7784,7 +6144,7 @@ _ol_extent_.applyTransform = function (extent, transformFn, opt_extent) {
 
 exports.default = _ol_extent_;
 
-},{"./asserts.js":9,"./extent/corner.js":34,"./extent/relationship.js":35}],34:[function(require,module,exports){
+},{"./asserts.js":8,"./extent/corner.js":32,"./extent/relationship.js":33}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7803,7 +6163,7 @@ var _ol_extent_Corner_ = {
 };
 exports.default = _ol_extent_Corner_;
 
-},{}],35:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7824,7 +6184,7 @@ var _ol_extent_Relationship_ = {
 };
 exports.default = _ol_extent_Relationship_;
 
-},{}],36:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7956,7 +6316,7 @@ _ol_featureloader_.xhr = function (url, format) {
 
 exports.default = _ol_featureloader_;
 
-},{"./format/formattype.js":37,"./index.js":69,"./xml.js":237}],37:[function(require,module,exports){
+},{"./format/formattype.js":35,"./index.js":65,"./xml.js":229}],35:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7974,7 +6334,7 @@ var _ol_format_FormatType_ = {
 };
 exports.default = _ol_format_FormatType_;
 
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8001,706 +6361,7 @@ _ol_functions_.FALSE = function () {
 
 exports.default = _ol_functions_;
 
-},{}],39:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _extent = require("../extent.js");
-
-var _extent2 = _interopRequireDefault(_extent);
-
-var _geometrylayout = require("../geom/geometrylayout.js");
-
-var _geometrylayout2 = _interopRequireDefault(_geometrylayout);
-
-var _geometrytype = require("../geom/geometrytype.js");
-
-var _geometrytype2 = _interopRequireDefault(_geometrytype);
-
-var _simplegeometry = require("../geom/simplegeometry.js");
-
-var _simplegeometry2 = _interopRequireDefault(_simplegeometry);
-
-var _deflate = require("../geom/flat/deflate.js");
-
-var _deflate2 = _interopRequireDefault(_deflate);
-
-var _math = require("../math.js");
-
-var _math2 = _interopRequireDefault(_math);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Point geometry.
- *
- * @constructor
- * @extends {ol.geom.SimpleGeometry}
- * @param {ol.Coordinate} coordinates Coordinates.
- * @param {ol.geom.GeometryLayout=} opt_layout Layout.
- * @api
- */
-
-
-var _ol_geom_Point_ = function _ol_geom_Point_(coordinates, opt_layout) {
-  _simplegeometry2.default.call(this);
-
-  this.setCoordinates(coordinates, opt_layout);
-};
-
-_index2.default.inherits(_ol_geom_Point_, _simplegeometry2.default);
-/**
- * Make a complete copy of the geometry.
- * @return {!ol.geom.Point} Clone.
- * @override
- * @api
- */
-
-
-_ol_geom_Point_.prototype.clone = function () {
-  var point = new _ol_geom_Point_(null);
-  point.setFlatCoordinates(this.layout, this.flatCoordinates.slice());
-  return point;
-};
-/**
- * @inheritDoc
- */
-
-
-_ol_geom_Point_.prototype.closestPointXY = function (x, y, closestPoint, minSquaredDistance) {
-  var flatCoordinates = this.flatCoordinates;
-
-  var squaredDistance = _math2.default.squaredDistance(x, y, flatCoordinates[0], flatCoordinates[1]);
-
-  if (squaredDistance < minSquaredDistance) {
-    var stride = this.stride;
-    var i;
-
-    for (i = 0; i < stride; ++i) {
-      closestPoint[i] = flatCoordinates[i];
-    }
-
-    closestPoint.length = stride;
-    return squaredDistance;
-  } else {
-    return minSquaredDistance;
-  }
-};
-/**
- * Return the coordinate of the point.
- * @return {ol.Coordinate} Coordinates.
- * @override
- * @api
- */
-
-
-_ol_geom_Point_.prototype.getCoordinates = function () {
-  return !this.flatCoordinates ? [] : this.flatCoordinates.slice();
-};
-/**
- * @inheritDoc
- */
-
-
-_ol_geom_Point_.prototype.computeExtent = function (extent) {
-  return _extent2.default.createOrUpdateFromCoordinate(this.flatCoordinates, extent);
-};
-/**
- * @inheritDoc
- * @api
- */
-
-
-_ol_geom_Point_.prototype.getType = function () {
-  return _geometrytype2.default.POINT;
-};
-/**
- * @inheritDoc
- * @api
- */
-
-
-_ol_geom_Point_.prototype.intersectsExtent = function (extent) {
-  return _extent2.default.containsXY(extent, this.flatCoordinates[0], this.flatCoordinates[1]);
-};
-/**
- * @inheritDoc
- * @api
- */
-
-
-_ol_geom_Point_.prototype.setCoordinates = function (coordinates, opt_layout) {
-  if (!coordinates) {
-    this.setFlatCoordinates(_geometrylayout2.default.XY, null);
-  } else {
-    this.setLayout(opt_layout, coordinates, 0);
-
-    if (!this.flatCoordinates) {
-      this.flatCoordinates = [];
-    }
-
-    this.flatCoordinates.length = _deflate2.default.coordinate(this.flatCoordinates, 0, coordinates, this.stride);
-    this.changed();
-  }
-};
-/**
- * @param {ol.geom.GeometryLayout} layout Layout.
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- */
-
-
-_ol_geom_Point_.prototype.setFlatCoordinates = function (layout, flatCoordinates) {
-  this.setFlatCoordinatesInternal(layout, flatCoordinates);
-  this.changed();
-};
-
-exports.default = _ol_geom_Point_;
-
-},{"../extent.js":33,"../geom/flat/deflate.js":44,"../geom/geometrylayout.js":58,"../geom/geometrytype.js":59,"../geom/simplegeometry.js":63,"../index.js":69,"../math.js":102}],40:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _array = require("../array.js");
-
-var _array2 = _interopRequireDefault(_array);
-
-var _extent = require("../extent.js");
-
-var _extent2 = _interopRequireDefault(_extent);
-
-var _geometrylayout = require("../geom/geometrylayout.js");
-
-var _geometrylayout2 = _interopRequireDefault(_geometrylayout);
-
-var _geometrytype = require("../geom/geometrytype.js");
-
-var _geometrytype2 = _interopRequireDefault(_geometrytype);
-
-var _linearring = require("../geom/linearring.js");
-
-var _linearring2 = _interopRequireDefault(_linearring);
-
-var _point = require("../geom/point.js");
-
-var _point2 = _interopRequireDefault(_point);
-
-var _simplegeometry = require("../geom/simplegeometry.js");
-
-var _simplegeometry2 = _interopRequireDefault(_simplegeometry);
-
-var _area = require("../geom/flat/area.js");
-
-var _area2 = _interopRequireDefault(_area);
-
-var _closest = require("../geom/flat/closest.js");
-
-var _closest2 = _interopRequireDefault(_closest);
-
-var _contains = require("../geom/flat/contains.js");
-
-var _contains2 = _interopRequireDefault(_contains);
-
-var _deflate = require("../geom/flat/deflate.js");
-
-var _deflate2 = _interopRequireDefault(_deflate);
-
-var _inflate = require("../geom/flat/inflate.js");
-
-var _inflate2 = _interopRequireDefault(_inflate);
-
-var _interiorpoint = require("../geom/flat/interiorpoint.js");
-
-var _interiorpoint2 = _interopRequireDefault(_interiorpoint);
-
-var _intersectsextent = require("../geom/flat/intersectsextent.js");
-
-var _intersectsextent2 = _interopRequireDefault(_intersectsextent);
-
-var _orient = require("../geom/flat/orient.js");
-
-var _orient2 = _interopRequireDefault(_orient);
-
-var _simplify = require("../geom/flat/simplify.js");
-
-var _simplify2 = _interopRequireDefault(_simplify);
-
-var _math = require("../math.js");
-
-var _math2 = _interopRequireDefault(_math);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Polygon geometry.
- *
- * @constructor
- * @extends {ol.geom.SimpleGeometry}
- * @param {Array.<Array.<ol.Coordinate>>} coordinates Array of linear
- *     rings that define the polygon. The first linear ring of the array
- *     defines the outer-boundary or surface of the polygon. Each subsequent
- *     linear ring defines a hole in the surface of the polygon. A linear ring
- *     is an array of vertices' coordinates where the first coordinate and the
- *     last are equivalent.
- * @param {ol.geom.GeometryLayout=} opt_layout Layout.
- * @api
- */
-
-
-var _ol_geom_Polygon_ = function _ol_geom_Polygon_(coordinates, opt_layout) {
-  _simplegeometry2.default.call(this);
-  /**
-   * @type {Array.<number>}
-   * @private
-   */
-
-
-  this.ends_ = [];
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.flatInteriorPointRevision_ = -1;
-  /**
-   * @private
-   * @type {ol.Coordinate}
-   */
-
-  this.flatInteriorPoint_ = null;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.maxDelta_ = -1;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.maxDeltaRevision_ = -1;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.orientedRevision_ = -1;
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-
-  this.orientedFlatCoordinates_ = null;
-  this.setCoordinates(coordinates, opt_layout);
-};
-
-_index2.default.inherits(_ol_geom_Polygon_, _simplegeometry2.default);
-/**
- * Append the passed linear ring to this polygon.
- * @param {ol.geom.LinearRing} linearRing Linear ring.
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.appendLinearRing = function (linearRing) {
-  if (!this.flatCoordinates) {
-    this.flatCoordinates = linearRing.getFlatCoordinates().slice();
-  } else {
-    _array2.default.extend(this.flatCoordinates, linearRing.getFlatCoordinates());
-  }
-
-  this.ends_.push(this.flatCoordinates.length);
-  this.changed();
-};
-/**
- * Make a complete copy of the geometry.
- * @return {!ol.geom.Polygon} Clone.
- * @override
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.clone = function () {
-  var polygon = new _ol_geom_Polygon_(null);
-  polygon.setFlatCoordinates(this.layout, this.flatCoordinates.slice(), this.ends_.slice());
-  return polygon;
-};
-/**
- * @inheritDoc
- */
-
-
-_ol_geom_Polygon_.prototype.closestPointXY = function (x, y, closestPoint, minSquaredDistance) {
-  if (minSquaredDistance < _extent2.default.closestSquaredDistanceXY(this.getExtent(), x, y)) {
-    return minSquaredDistance;
-  }
-
-  if (this.maxDeltaRevision_ != this.getRevision()) {
-    this.maxDelta_ = Math.sqrt(_closest2.default.getsMaxSquaredDelta(this.flatCoordinates, 0, this.ends_, this.stride, 0));
-    this.maxDeltaRevision_ = this.getRevision();
-  }
-
-  return _closest2.default.getsClosestPoint(this.flatCoordinates, 0, this.ends_, this.stride, this.maxDelta_, true, x, y, closestPoint, minSquaredDistance);
-};
-/**
- * @inheritDoc
- */
-
-
-_ol_geom_Polygon_.prototype.containsXY = function (x, y) {
-  return _contains2.default.linearRingsContainsXY(this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride, x, y);
-};
-/**
- * Return the area of the polygon on projected plane.
- * @return {number} Area (on projected plane).
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.getArea = function () {
-  return _area2.default.linearRings(this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride);
-};
-/**
- * Get the coordinate array for this geometry.  This array has the structure
- * of a GeoJSON coordinate array for polygons.
- *
- * @param {boolean=} opt_right Orient coordinates according to the right-hand
- *     rule (counter-clockwise for exterior and clockwise for interior rings).
- *     If `false`, coordinates will be oriented according to the left-hand rule
- *     (clockwise for exterior and counter-clockwise for interior rings).
- *     By default, coordinate orientation will depend on how the geometry was
- *     constructed.
- * @return {Array.<Array.<ol.Coordinate>>} Coordinates.
- * @override
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.getCoordinates = function (opt_right) {
-  var flatCoordinates;
-
-  if (opt_right !== undefined) {
-    flatCoordinates = this.getOrientedFlatCoordinates().slice();
-
-    _orient2.default.orientLinearRings(flatCoordinates, 0, this.ends_, this.stride, opt_right);
-  } else {
-    flatCoordinates = this.flatCoordinates;
-  }
-
-  return _inflate2.default.coordinatess(flatCoordinates, 0, this.ends_, this.stride);
-};
-/**
- * @return {Array.<number>} Ends.
- */
-
-
-_ol_geom_Polygon_.prototype.getEnds = function () {
-  return this.ends_;
-};
-/**
- * @return {Array.<number>} Interior point.
- */
-
-
-_ol_geom_Polygon_.prototype.getFlatInteriorPoint = function () {
-  if (this.flatInteriorPointRevision_ != this.getRevision()) {
-    var flatCenter = _extent2.default.getCenter(this.getExtent());
-
-    this.flatInteriorPoint_ = _interiorpoint2.default.linearRings(this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride, flatCenter, 0);
-    this.flatInteriorPointRevision_ = this.getRevision();
-  }
-
-  return this.flatInteriorPoint_;
-};
-/**
- * Return an interior point of the polygon.
- * @return {ol.geom.Point} Interior point as XYM coordinate, where M is the
- * length of the horizontal intersection that the point belongs to.
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.getInteriorPoint = function () {
-  return new _point2.default(this.getFlatInteriorPoint(), _geometrylayout2.default.XYM);
-};
-/**
- * Return the number of rings of the polygon,  this includes the exterior
- * ring and any interior rings.
- *
- * @return {number} Number of rings.
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.getLinearRingCount = function () {
-  return this.ends_.length;
-};
-/**
- * Return the Nth linear ring of the polygon geometry. Return `null` if the
- * given index is out of range.
- * The exterior linear ring is available at index `0` and the interior rings
- * at index `1` and beyond.
- *
- * @param {number} index Index.
- * @return {ol.geom.LinearRing} Linear ring.
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.getLinearRing = function (index) {
-  if (index < 0 || this.ends_.length <= index) {
-    return null;
-  }
-
-  var linearRing = new _linearring2.default(null);
-  linearRing.setFlatCoordinates(this.layout, this.flatCoordinates.slice(index === 0 ? 0 : this.ends_[index - 1], this.ends_[index]));
-  return linearRing;
-};
-/**
- * Return the linear rings of the polygon.
- * @return {Array.<ol.geom.LinearRing>} Linear rings.
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.getLinearRings = function () {
-  var layout = this.layout;
-  var flatCoordinates = this.flatCoordinates;
-  var ends = this.ends_;
-  var linearRings = [];
-  var offset = 0;
-  var i, ii;
-
-  for (i = 0, ii = ends.length; i < ii; ++i) {
-    var end = ends[i];
-    var linearRing = new _linearring2.default(null);
-    linearRing.setFlatCoordinates(layout, flatCoordinates.slice(offset, end));
-    linearRings.push(linearRing);
-    offset = end;
-  }
-
-  return linearRings;
-};
-/**
- * @return {Array.<number>} Oriented flat coordinates.
- */
-
-
-_ol_geom_Polygon_.prototype.getOrientedFlatCoordinates = function () {
-  if (this.orientedRevision_ != this.getRevision()) {
-    var flatCoordinates = this.flatCoordinates;
-
-    if (_orient2.default.linearRingsAreOriented(flatCoordinates, 0, this.ends_, this.stride)) {
-      this.orientedFlatCoordinates_ = flatCoordinates;
-    } else {
-      this.orientedFlatCoordinates_ = flatCoordinates.slice();
-      this.orientedFlatCoordinates_.length = _orient2.default.orientLinearRings(this.orientedFlatCoordinates_, 0, this.ends_, this.stride);
-    }
-
-    this.orientedRevision_ = this.getRevision();
-  }
-
-  return this.orientedFlatCoordinates_;
-};
-/**
- * @inheritDoc
- */
-
-
-_ol_geom_Polygon_.prototype.getSimplifiedGeometryInternal = function (squaredTolerance) {
-  var simplifiedFlatCoordinates = [];
-  var simplifiedEnds = [];
-  simplifiedFlatCoordinates.length = _simplify2.default.quantizes(this.flatCoordinates, 0, this.ends_, this.stride, Math.sqrt(squaredTolerance), simplifiedFlatCoordinates, 0, simplifiedEnds);
-  var simplifiedPolygon = new _ol_geom_Polygon_(null);
-  simplifiedPolygon.setFlatCoordinates(_geometrylayout2.default.XY, simplifiedFlatCoordinates, simplifiedEnds);
-  return simplifiedPolygon;
-};
-/**
- * @inheritDoc
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.getType = function () {
-  return _geometrytype2.default.POLYGON;
-};
-/**
- * @inheritDoc
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.intersectsExtent = function (extent) {
-  return _intersectsextent2.default.linearRings(this.getOrientedFlatCoordinates(), 0, this.ends_, this.stride, extent);
-};
-/**
- * Set the coordinates of the polygon.
- * @param {Array.<Array.<ol.Coordinate>>} coordinates Coordinates.
- * @param {ol.geom.GeometryLayout=} opt_layout Layout.
- * @override
- * @api
- */
-
-
-_ol_geom_Polygon_.prototype.setCoordinates = function (coordinates, opt_layout) {
-  if (!coordinates) {
-    this.setFlatCoordinates(_geometrylayout2.default.XY, null, this.ends_);
-  } else {
-    this.setLayout(opt_layout, coordinates, 2);
-
-    if (!this.flatCoordinates) {
-      this.flatCoordinates = [];
-    }
-
-    var ends = _deflate2.default.coordinatess(this.flatCoordinates, 0, coordinates, this.stride, this.ends_);
-
-    this.flatCoordinates.length = ends.length === 0 ? 0 : ends[ends.length - 1];
-    this.changed();
-  }
-};
-/**
- * @param {ol.geom.GeometryLayout} layout Layout.
- * @param {Array.<number>} flatCoordinates Flat coordinates.
- * @param {Array.<number>} ends Ends.
- */
-
-
-_ol_geom_Polygon_.prototype.setFlatCoordinates = function (layout, flatCoordinates, ends) {
-  this.setFlatCoordinatesInternal(layout, flatCoordinates);
-  this.ends_ = ends;
-  this.changed();
-};
-/**
- * Create an approximation of a circle on the surface of a sphere.
- * @param {ol.Sphere} sphere The sphere.
- * @param {ol.Coordinate} center Center (`[lon, lat]` in degrees).
- * @param {number} radius The great-circle distance from the center to
- *     the polygon vertices.
- * @param {number=} opt_n Optional number of vertices for the resulting
- *     polygon. Default is `32`.
- * @return {ol.geom.Polygon} The "circular" polygon.
- * @api
- */
-
-
-_ol_geom_Polygon_.circular = function (sphere, center, radius, opt_n) {
-  var n = opt_n ? opt_n : 32;
-  /** @type {Array.<number>} */
-
-  var flatCoordinates = [];
-  var i;
-
-  for (i = 0; i < n; ++i) {
-    _array2.default.extend(flatCoordinates, sphere.offset(center, radius, 2 * Math.PI * i / n));
-  }
-
-  flatCoordinates.push(flatCoordinates[0], flatCoordinates[1]);
-  var polygon = new _ol_geom_Polygon_(null);
-  polygon.setFlatCoordinates(_geometrylayout2.default.XY, flatCoordinates, [flatCoordinates.length]);
-  return polygon;
-};
-/**
- * Create a polygon from an extent. The layout used is `XY`.
- * @param {ol.Extent} extent The extent.
- * @return {ol.geom.Polygon} The polygon.
- * @api
- */
-
-
-_ol_geom_Polygon_.fromExtent = function (extent) {
-  var minX = extent[0];
-  var minY = extent[1];
-  var maxX = extent[2];
-  var maxY = extent[3];
-  var flatCoordinates = [minX, minY, minX, maxY, maxX, maxY, maxX, minY, minX, minY];
-  var polygon = new _ol_geom_Polygon_(null);
-  polygon.setFlatCoordinates(_geometrylayout2.default.XY, flatCoordinates, [flatCoordinates.length]);
-  return polygon;
-};
-/**
- * Create a regular polygon from a circle.
- * @param {ol.geom.Circle} circle Circle geometry.
- * @param {number=} opt_sides Number of sides of the polygon. Default is 32.
- * @param {number=} opt_angle Start angle for the first vertex of the polygon in
- *     radians. Default is 0.
- * @return {ol.geom.Polygon} Polygon geometry.
- * @api
- */
-
-
-_ol_geom_Polygon_.fromCircle = function (circle, opt_sides, opt_angle) {
-  var sides = opt_sides ? opt_sides : 32;
-  var stride = circle.getStride();
-  var layout = circle.getLayout();
-  var polygon = new _ol_geom_Polygon_(null, layout);
-  var arrayLength = stride * (sides + 1);
-  var flatCoordinates = new Array(arrayLength);
-
-  for (var i = 0; i < arrayLength; i++) {
-    flatCoordinates[i] = 0;
-  }
-
-  var ends = [flatCoordinates.length];
-  polygon.setFlatCoordinates(layout, flatCoordinates, ends);
-
-  _ol_geom_Polygon_.makeRegular(polygon, circle.getCenter(), circle.getRadius(), opt_angle);
-
-  return polygon;
-};
-/**
- * Modify the coordinates of a polygon to make it a regular polygon.
- * @param {ol.geom.Polygon} polygon Polygon geometry.
- * @param {ol.Coordinate} center Center of the regular polygon.
- * @param {number} radius Radius of the regular polygon.
- * @param {number=} opt_angle Start angle for the first vertex of the polygon in
- *     radians. Default is 0.
- */
-
-
-_ol_geom_Polygon_.makeRegular = function (polygon, center, radius, opt_angle) {
-  var flatCoordinates = polygon.getFlatCoordinates();
-  var layout = polygon.getLayout();
-  var stride = polygon.getStride();
-  var ends = polygon.getEnds();
-  var sides = flatCoordinates.length / stride - 1;
-  var startAngle = opt_angle ? opt_angle : 0;
-  var angle, offset;
-
-  for (var i = 0; i <= sides; ++i) {
-    offset = i * stride;
-    angle = startAngle + _math2.default.modulo(i, sides) * 2 * Math.PI / sides;
-    flatCoordinates[offset] = center[0] + radius * Math.cos(angle);
-    flatCoordinates[offset + 1] = center[1] + radius * Math.sin(angle);
-  }
-
-  polygon.setFlatCoordinates(layout, flatCoordinates, ends);
-};
-
-exports.default = _ol_geom_Polygon_;
-
-},{"../array.js":7,"../extent.js":33,"../geom/flat/area.js":41,"../geom/flat/closest.js":42,"../geom/flat/contains.js":43,"../geom/flat/deflate.js":44,"../geom/flat/inflate.js":45,"../geom/flat/interiorpoint.js":46,"../geom/flat/intersectsextent.js":47,"../geom/flat/orient.js":49,"../geom/flat/simplify.js":52,"../geom/geometrylayout.js":58,"../geom/geometrytype.js":59,"../geom/linearring.js":60,"../geom/point.js":61,"../geom/simplegeometry.js":63,"../index.js":69,"../math.js":102}],41:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8775,7 +6436,7 @@ _ol_geom_flat_area_.linearRingss = function (flatCoordinates, offset, endss, str
 
 exports.default = _ol_geom_flat_area_;
 
-},{}],42:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9061,7 +6722,7 @@ _ol_geom_flat_closest_.getssClosestPoint = function (flatCoordinates, offset, en
 
 exports.default = _ol_geom_flat_closest_;
 
-},{"../../math.js":102}],43:[function(require,module,exports){
+},{"../../math.js":98}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9204,7 +6865,7 @@ _ol_geom_flat_contains_.linearRingssContainsXY = function (flatCoordinates, offs
 
 exports.default = _ol_geom_flat_contains_;
 
-},{"../../extent.js":33}],44:[function(require,module,exports){
+},{"../../extent.js":31}],40:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9304,7 +6965,7 @@ _ol_geom_flat_deflate_.coordinatesss = function (flatCoordinates, offset, coordi
 
 exports.default = _ol_geom_flat_deflate_;
 
-},{}],45:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9384,7 +7045,7 @@ _ol_geom_flat_inflate_.coordinatesss = function (flatCoordinates, offset, endss,
 
 exports.default = _ol_geom_flat_inflate_;
 
-},{}],46:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9508,7 +7169,7 @@ _ol_geom_flat_interiorpoint_.linearRingss = function (flatCoordinates, offset, e
 
 exports.default = _ol_geom_flat_interiorpoint_;
 
-},{"../../array.js":7,"../flat/contains.js":43}],47:[function(require,module,exports){
+},{"../../array.js":6,"../flat/contains.js":39}],43:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9686,7 +7347,7 @@ _ol_geom_flat_intersectsextent_.linearRingss = function (flatCoordinates, offset
 
 exports.default = _ol_geom_flat_intersectsextent_;
 
-},{"../../extent.js":33,"../flat/contains.js":43,"../flat/segments.js":51}],48:[function(require,module,exports){
+},{"../../extent.js":31,"../flat/contains.js":39,"../flat/segments.js":47}],44:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9737,7 +7398,7 @@ _ol_geom_flat_length_.linearRing = function (flatCoordinates, offset, end, strid
 
 exports.default = _ol_geom_flat_length_;
 
-},{}],49:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9907,7 +7568,7 @@ _ol_geom_flat_orient_.orientLinearRingss = function (flatCoordinates, offset, en
 
 exports.default = _ol_geom_flat_orient_;
 
-},{"../flat/reverse.js":50}],50:[function(require,module,exports){
+},{"../flat/reverse.js":46}],46:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9938,7 +7599,7 @@ _ol_geom_flat_reverse_.coordinates = function (flatCoordinates, offset, end, str
 
 exports.default = _ol_geom_flat_reverse_;
 
-},{}],51:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9984,7 +7645,7 @@ _ol_geom_flat_segments_.forEach = function (flatCoordinates, offset, end, stride
 
 exports.default = _ol_geom_flat_segments_;
 
-},{}],52:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10402,7 +8063,7 @@ _ol_geom_flat_simplify_.quantizess = function (flatCoordinates, offset, endss, s
 
 exports.default = _ol_geom_flat_simplify_;
 
-},{"../../math.js":102}],53:[function(require,module,exports){
+},{"../../math.js":98}],49:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10467,7 +8128,7 @@ _ol_geom_flat_straightchunk_.lineString = function (maxAngle, flatCoordinates, o
 
 exports.default = _ol_geom_flat_straightchunk_;
 
-},{}],54:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10585,7 +8246,7 @@ _ol_geom_flat_textpath_.lineString = function (flatCoordinates, offset, end, str
 
 exports.default = _ol_geom_flat_textpath_;
 
-},{"../../math.js":102}],55:[function(require,module,exports){
+},{"../../math.js":98}],51:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10624,7 +8285,7 @@ _ol_geom_flat_topology_.lineStringIsClosed = function (flatCoordinates, offset, 
 
 exports.default = _ol_geom_flat_topology_;
 
-},{"../flat/area.js":41}],56:[function(require,module,exports){
+},{"../flat/area.js":37}],52:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10768,7 +8429,7 @@ _ol_geom_flat_transform_.translate = function (flatCoordinates, offset, end, str
 
 exports.default = _ol_geom_flat_transform_;
 
-},{}],57:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11077,7 +8738,7 @@ _ol_geom_Geometry_.prototype.transform = function (source, destination) {
 
 exports.default = _ol_geom_Geometry_;
 
-},{"../extent.js":33,"../functions.js":38,"../geom/flat/transform.js":56,"../index.js":69,"../object.js":104,"../proj.js":119,"../proj/units.js":127,"../transform.js":225}],58:[function(require,module,exports){
+},{"../extent.js":31,"../functions.js":36,"../geom/flat/transform.js":52,"../index.js":65,"../object.js":100,"../proj.js":115,"../proj/units.js":122,"../transform.js":217}],54:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11098,7 +8759,7 @@ var _ol_geom_GeometryLayout_ = {
 };
 exports.default = _ol_geom_GeometryLayout_;
 
-},{}],59:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11124,7 +8785,7 @@ var _ol_geom_GeometryType_ = {
 };
 exports.default = _ol_geom_GeometryType_;
 
-},{}],60:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11322,7 +8983,7 @@ _ol_geom_LinearRing_.prototype.setFlatCoordinates = function (layout, flatCoordi
 
 exports.default = _ol_geom_LinearRing_;
 
-},{"../extent.js":33,"../geom/flat/area.js":41,"../geom/flat/closest.js":42,"../geom/flat/deflate.js":44,"../geom/flat/inflate.js":45,"../geom/flat/simplify.js":52,"../geom/geometrylayout.js":58,"../geom/geometrytype.js":59,"../geom/simplegeometry.js":63,"../index.js":69}],61:[function(require,module,exports){
+},{"../extent.js":31,"../geom/flat/area.js":37,"../geom/flat/closest.js":38,"../geom/flat/deflate.js":40,"../geom/flat/inflate.js":41,"../geom/flat/simplify.js":48,"../geom/geometrylayout.js":54,"../geom/geometrytype.js":55,"../geom/simplegeometry.js":59,"../index.js":65}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11488,7 +9149,7 @@ _ol_geom_Point_.prototype.setFlatCoordinates = function (layout, flatCoordinates
 
 exports.default = _ol_geom_Point_;
 
-},{"../extent.js":33,"../geom/flat/deflate.js":44,"../geom/geometrylayout.js":58,"../geom/geometrytype.js":59,"../geom/simplegeometry.js":63,"../index.js":69,"../math.js":102}],62:[function(require,module,exports){
+},{"../extent.js":31,"../geom/flat/deflate.js":40,"../geom/geometrylayout.js":54,"../geom/geometrytype.js":55,"../geom/simplegeometry.js":59,"../index.js":65,"../math.js":98}],58:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12021,7 +9682,7 @@ _ol_geom_Polygon_.makeRegular = function (polygon, center, radius, opt_angle) {
 
 exports.default = _ol_geom_Polygon_;
 
-},{"../array.js":7,"../extent.js":33,"../geom/flat/area.js":41,"../geom/flat/closest.js":42,"../geom/flat/contains.js":43,"../geom/flat/deflate.js":44,"../geom/flat/inflate.js":45,"../geom/flat/interiorpoint.js":46,"../geom/flat/intersectsextent.js":47,"../geom/flat/orient.js":49,"../geom/flat/simplify.js":52,"../geom/geometrylayout.js":58,"../geom/geometrytype.js":59,"../geom/linearring.js":60,"../geom/point.js":61,"../geom/simplegeometry.js":63,"../index.js":69,"../math.js":102}],63:[function(require,module,exports){
+},{"../array.js":6,"../extent.js":31,"../geom/flat/area.js":37,"../geom/flat/closest.js":38,"../geom/flat/contains.js":39,"../geom/flat/deflate.js":40,"../geom/flat/inflate.js":41,"../geom/flat/interiorpoint.js":42,"../geom/flat/intersectsextent.js":43,"../geom/flat/orient.js":45,"../geom/flat/simplify.js":48,"../geom/geometrylayout.js":54,"../geom/geometrytype.js":55,"../geom/linearring.js":56,"../geom/point.js":57,"../geom/simplegeometry.js":59,"../index.js":65,"../math.js":98}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12412,7 +10073,7 @@ _ol_geom_SimpleGeometry_.transform2D = function (simpleGeometry, transform, opt_
 
 exports.default = _ol_geom_SimpleGeometry_;
 
-},{"../extent.js":33,"../functions.js":38,"../geom/flat/transform.js":56,"../geom/geometry.js":57,"../geom/geometrylayout.js":58,"../index.js":69,"../obj.js":103}],64:[function(require,module,exports){
+},{"../extent.js":31,"../functions.js":36,"../geom/flat/transform.js":52,"../geom/geometry.js":53,"../geom/geometrylayout.js":54,"../index.js":65,"../obj.js":99}],60:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12593,7 +10254,7 @@ _ol_has_.WEBGL;
 
 exports.default = _ol_has_;
 
-},{"./index.js":69,"./webgl.js":230}],65:[function(require,module,exports){
+},{"./index.js":65,"./webgl.js":222}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12758,7 +10419,7 @@ _ol_Image_.prototype.unlistenImage_ = function () {
 
 exports.default = _ol_Image_;
 
-},{"./events.js":27,"./events/eventtype.js":31,"./extent.js":33,"./imagebase.js":66,"./imagestate.js":68,"./index.js":69}],66:[function(require,module,exports){
+},{"./events.js":25,"./events/eventtype.js":29,"./extent.js":31,"./imagebase.js":62,"./imagestate.js":64,"./index.js":65}],62:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12883,7 +10544,7 @@ _ol_ImageBase_.prototype.load = function () {};
 
 exports.default = _ol_ImageBase_;
 
-},{"./events/eventtarget.js":30,"./events/eventtype.js":31,"./index.js":69}],67:[function(require,module,exports){
+},{"./events/eventtarget.js":28,"./events/eventtype.js":29,"./index.js":65}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12994,7 +10655,7 @@ _ol_ImageCanvas_.prototype.getImage = function () {
 
 exports.default = _ol_ImageCanvas_;
 
-},{"./imagebase.js":66,"./imagestate.js":68,"./index.js":69}],68:[function(require,module,exports){
+},{"./imagebase.js":62,"./imagestate.js":64,"./index.js":65}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13012,7 +10673,7 @@ var _ol_ImageState_ = {
 };
 exports.default = _ol_ImageState_;
 
-},{}],69:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13243,7 +10904,7 @@ _ol_.getUid = function (obj) {
 _ol_.uidCounter_ = 0;
 exports.default = _ol_;
 
-},{}],70:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13399,7 +11060,7 @@ _ol_interaction_.defaults = function (opt_options) {
 
 exports.default = _ol_interaction_;
 
-},{"./collection.js":12,"./interaction/doubleclickzoom.js":71,"./interaction/dragpan.js":73,"./interaction/dragrotate.js":74,"./interaction/dragzoom.js":75,"./interaction/keyboardpan.js":77,"./interaction/keyboardzoom.js":78,"./interaction/mousewheelzoom.js":79,"./interaction/pinchrotate.js":80,"./interaction/pinchzoom.js":81,"./kinetic.js":84}],71:[function(require,module,exports){
+},{"./collection.js":11,"./interaction/doubleclickzoom.js":67,"./interaction/dragpan.js":69,"./interaction/dragrotate.js":70,"./interaction/dragzoom.js":71,"./interaction/keyboardpan.js":73,"./interaction/keyboardzoom.js":74,"./interaction/mousewheelzoom.js":75,"./interaction/pinchrotate.js":76,"./interaction/pinchzoom.js":77,"./kinetic.js":80}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13487,7 +11148,7 @@ _ol_interaction_DoubleClickZoom_.handleEvent = function (mapBrowserEvent) {
 
 exports.default = _ol_interaction_DoubleClickZoom_;
 
-},{"../index.js":69,"../interaction/interaction.js":76,"../mapbrowsereventtype.js":97}],72:[function(require,module,exports){
+},{"../index.js":65,"../interaction/interaction.js":72,"../mapbrowsereventtype.js":93}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13740,7 +11401,7 @@ _index2.default.inherits(_ol_interaction_DragBox_.Event, _event2.default);
 
 exports.default = _ol_interaction_DragBox_;
 
-},{"../events/condition.js":28,"../events/event.js":29,"../index.js":69,"../interaction/pointer.js":82,"../render/box.js":128}],73:[function(require,module,exports){
+},{"../events/condition.js":26,"../events/event.js":27,"../index.js":65,"../interaction/pointer.js":78,"../render/box.js":123}],69:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13957,7 +11618,7 @@ _ol_interaction_DragPan_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_DragPan_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_DragPan_;
 
-},{"../coordinate.js":22,"../easing.js":26,"../events/condition.js":28,"../functions.js":38,"../index.js":69,"../interaction/pointer.js":82,"../viewhint.js":228}],74:[function(require,module,exports){
+},{"../coordinate.js":20,"../easing.js":24,"../events/condition.js":26,"../functions.js":36,"../index.js":65,"../interaction/pointer.js":78,"../viewhint.js":220}],70:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14126,7 +11787,7 @@ _ol_interaction_DragRotate_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_DragRotate_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_DragRotate_;
 
-},{"../events/condition.js":28,"../functions.js":38,"../index.js":69,"../interaction/interaction.js":76,"../interaction/pointer.js":82,"../rotationconstraint.js":186,"../viewhint.js":228}],75:[function(require,module,exports){
+},{"../events/condition.js":26,"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../interaction/pointer.js":78,"../rotationconstraint.js":181,"../viewhint.js":220}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14239,7 +11900,7 @@ _ol_interaction_DragZoom_.prototype.onBoxEnd = function () {
 
 exports.default = _ol_interaction_DragZoom_;
 
-},{"../easing.js":26,"../events/condition.js":28,"../extent.js":33,"../index.js":69,"../interaction/dragbox.js":72}],76:[function(require,module,exports){
+},{"../easing.js":24,"../events/condition.js":26,"../extent.js":31,"../index.js":65,"../interaction/dragbox.js":68}],72:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14500,7 +12161,7 @@ _ol_interaction_Interaction_.zoomWithoutConstraints = function (view, resolution
 
 exports.default = _ol_interaction_Interaction_;
 
-},{"../easing.js":26,"../index.js":69,"../interaction/property.js":83,"../math.js":102,"../object.js":104}],77:[function(require,module,exports){
+},{"../easing.js":24,"../index.js":65,"../interaction/property.js":79,"../math.js":98,"../object.js":100}],73:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14643,7 +12304,7 @@ _ol_interaction_KeyboardPan_.handleEvent = function (mapBrowserEvent) {
 
 exports.default = _ol_interaction_KeyboardPan_;
 
-},{"../coordinate.js":22,"../events/condition.js":28,"../events/eventtype.js":31,"../events/keycode.js":32,"../index.js":69,"../interaction/interaction.js":76}],78:[function(require,module,exports){
+},{"../coordinate.js":20,"../events/condition.js":26,"../events/eventtype.js":29,"../events/keycode.js":30,"../index.js":65,"../interaction/interaction.js":72}],74:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14752,7 +12413,7 @@ _ol_interaction_KeyboardZoom_.handleEvent = function (mapBrowserEvent) {
 
 exports.default = _ol_interaction_KeyboardZoom_;
 
-},{"../events/condition.js":28,"../events/eventtype.js":31,"../index.js":69,"../interaction/interaction.js":76}],79:[function(require,module,exports){
+},{"../events/condition.js":26,"../events/eventtype.js":29,"../index.js":65,"../interaction/interaction.js":72}],75:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15082,7 +12743,7 @@ _ol_interaction_MouseWheelZoom_.Mode_ = {
 };
 exports.default = _ol_interaction_MouseWheelZoom_;
 
-},{"../easing.js":26,"../events/eventtype.js":31,"../has.js":64,"../index.js":69,"../interaction/interaction.js":76,"../math.js":102,"../viewhint.js":228}],80:[function(require,module,exports){
+},{"../easing.js":24,"../events/eventtype.js":29,"../has.js":60,"../index.js":65,"../interaction/interaction.js":72,"../math.js":98,"../viewhint.js":220}],76:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15286,7 +12947,7 @@ _ol_interaction_PinchRotate_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_PinchRotate_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_PinchRotate_;
 
-},{"../functions.js":38,"../index.js":69,"../interaction/interaction.js":76,"../interaction/pointer.js":82,"../rotationconstraint.js":186,"../viewhint.js":228}],81:[function(require,module,exports){
+},{"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../interaction/pointer.js":78,"../rotationconstraint.js":181,"../viewhint.js":220}],77:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15485,7 +13146,7 @@ _ol_interaction_PinchZoom_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_PinchZoom_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_PinchZoom_;
 
-},{"../functions.js":38,"../index.js":69,"../interaction/interaction.js":76,"../interaction/pointer.js":82,"../viewhint.js":228}],82:[function(require,module,exports){
+},{"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../interaction/pointer.js":78,"../viewhint.js":220}],78:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15729,7 +13390,7 @@ _ol_interaction_Pointer_.prototype.shouldStopEvent = function (handled) {
 
 exports.default = _ol_interaction_Pointer_;
 
-},{"../functions.js":38,"../index.js":69,"../interaction/interaction.js":76,"../mapbrowsereventtype.js":97,"../mapbrowserpointerevent.js":98,"../obj.js":103}],83:[function(require,module,exports){
+},{"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../mapbrowsereventtype.js":93,"../mapbrowserpointerevent.js":94,"../obj.js":99}],79:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15744,7 +13405,7 @@ var _ol_interaction_Property_ = {
 };
 exports.default = _ol_interaction_Property_;
 
-},{}],84:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15880,7 +13541,7 @@ _ol_Kinetic_.prototype.getAngle = function () {
 
 exports.default = _ol_Kinetic_;
 
-},{}],85:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15948,7 +13609,7 @@ _index2.default.inherits(_ol_layer_Image_, _layer2.default);
 _ol_layer_Image_.prototype.getSource;
 exports.default = _ol_layer_Image_;
 
-},{"../index.js":69,"../layer/layer.js":89,"../layertype.js":93}],86:[function(require,module,exports){
+},{"../index.js":65,"../layer/layer.js":85,"../layertype.js":89}],82:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16200,7 +13861,7 @@ _ol_layer_Vector_.Property_ = {
 };
 exports.default = _ol_layer_Vector_;
 
-},{"../index.js":69,"../layer/layer.js":89,"../layer/vectorrendertype.js":91,"../layertype.js":93,"../obj.js":103,"../style/style.js":217}],87:[function(require,module,exports){
+},{"../index.js":65,"../layer/layer.js":85,"../layer/vectorrendertype.js":87,"../layertype.js":89,"../obj.js":99,"../style/style.js":209}],83:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16492,7 +14153,7 @@ _ol_layer_Base_.prototype.setZIndex = function (zindex) {
 
 exports.default = _ol_layer_Base_;
 
-},{"../index.js":69,"../layer/property.js":90,"../math.js":102,"../obj.js":103,"../object.js":104}],88:[function(require,module,exports){
+},{"../index.js":65,"../layer/property.js":86,"../math.js":98,"../obj.js":99,"../object.js":100}],84:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16774,7 +14435,7 @@ _ol_layer_Group_.Property_ = {
 };
 exports.default = _ol_layer_Group_;
 
-},{"../asserts.js":9,"../collection.js":12,"../collectioneventtype.js":13,"../events.js":27,"../events/eventtype.js":31,"../extent.js":33,"../index.js":69,"../layer/base.js":87,"../obj.js":103,"../object.js":104,"../objecteventtype.js":105,"../source/state.js":192}],89:[function(require,module,exports){
+},{"../asserts.js":8,"../collection.js":11,"../collectioneventtype.js":12,"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../index.js":65,"../layer/base.js":83,"../obj.js":99,"../object.js":100,"../objecteventtype.js":101,"../source/state.js":187}],85:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17027,7 +14688,7 @@ _ol_layer_Layer_.prototype.setSource = function (source) {
 
 exports.default = _ol_layer_Layer_;
 
-},{"../events.js":27,"../events/eventtype.js":31,"../index.js":69,"../layer/base.js":87,"../layer/property.js":90,"../obj.js":103,"../object.js":104,"../render/eventtype.js":139,"../source/state.js":192}],90:[function(require,module,exports){
+},{"../events.js":25,"../events/eventtype.js":29,"../index.js":65,"../layer/base.js":83,"../layer/property.js":86,"../obj.js":99,"../object.js":100,"../render/eventtype.js":134,"../source/state.js":187}],86:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17048,7 +14709,7 @@ var _ol_layer_Property_ = {
 };
 exports.default = _ol_layer_Property_;
 
-},{}],91:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17071,7 +14732,7 @@ var _ol_layer_VectorRenderType_ = {
 };
 exports.default = _ol_layer_VectorRenderType_;
 
-},{}],92:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17098,7 +14759,7 @@ var _ol_layer_VectorTileRenderType_ = {
 };
 exports.default = _ol_layer_VectorTileRenderType_;
 
-},{}],93:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17117,7 +14778,7 @@ var _ol_LayerType_ = {
 };
 exports.default = _ol_LayerType_;
 
-},{}],94:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17186,7 +14847,7 @@ _ol_loadingstrategy_.tile = function (tileGrid) {
 
 exports.default = _ol_loadingstrategy_;
 
-},{}],95:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17288,7 +14949,7 @@ _ol_MapBrowserEvent_.prototype.stopPropagation = function () {
 
 exports.default = _ol_MapBrowserEvent_;
 
-},{"./index.js":69,"./mapevent.js":99}],96:[function(require,module,exports){
+},{"./index.js":65,"./mapevent.js":95}],92:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17626,7 +15287,7 @@ _ol_MapBrowserEventHandler_.prototype.disposeInternal = function () {
 
 exports.default = _ol_MapBrowserEventHandler_;
 
-},{"./events.js":27,"./events/eventtarget.js":30,"./has.js":64,"./index.js":69,"./mapbrowsereventtype.js":97,"./mapbrowserpointerevent.js":98,"./pointer/eventtype.js":112,"./pointer/pointereventhandler.js":117}],97:[function(require,module,exports){
+},{"./events.js":25,"./events/eventtarget.js":28,"./has.js":60,"./index.js":65,"./mapbrowsereventtype.js":93,"./mapbrowserpointerevent.js":94,"./pointer/eventtype.js":108,"./pointer/pointereventhandler.js":113}],93:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17695,7 +15356,7 @@ var _ol_MapBrowserEventType_ = {
 };
 exports.default = _ol_MapBrowserEventType_;
 
-},{"./events/eventtype.js":31}],98:[function(require,module,exports){
+},{"./events/eventtype.js":29}],94:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17741,7 +15402,7 @@ _index2.default.inherits(_ol_MapBrowserPointerEvent_, _mapbrowserevent2.default)
 
 exports.default = _ol_MapBrowserPointerEvent_;
 
-},{"./index.js":69,"./mapbrowserevent.js":95}],99:[function(require,module,exports){
+},{"./index.js":65,"./mapbrowserevent.js":91}],95:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17798,7 +15459,7 @@ _index2.default.inherits(_ol_MapEvent_, _event2.default);
 
 exports.default = _ol_MapEvent_;
 
-},{"./events/event.js":29,"./index.js":69}],100:[function(require,module,exports){
+},{"./events/event.js":27,"./index.js":65}],96:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17832,7 +15493,7 @@ var _ol_MapEventType_ = {
 };
 exports.default = _ol_MapEventType_;
 
-},{}],101:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17850,7 +15511,7 @@ var _ol_MapProperty_ = {
 };
 exports.default = _ol_MapProperty_;
 
-},{}],102:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18079,7 +15740,7 @@ _ol_math_.lerp = function (a, b, x) {
 
 exports.default = _ol_math_;
 
-},{"./asserts.js":9}],103:[function(require,module,exports){
+},{"./asserts.js":8}],99:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18163,7 +15824,7 @@ _ol_obj_.isEmpty = function (object) {
 
 exports.default = _ol_obj_;
 
-},{}],104:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18421,7 +16082,7 @@ _index2.default.inherits(_ol_Object_.Event, _event2.default);
 
 exports.default = _ol_Object_;
 
-},{"./events/event.js":29,"./index.js":69,"./obj.js":103,"./objecteventtype.js":105,"./observable.js":106}],105:[function(require,module,exports){
+},{"./events/event.js":27,"./index.js":65,"./obj.js":99,"./objecteventtype.js":101,"./observable.js":102}],101:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18441,7 +16102,7 @@ var _ol_ObjectEventType_ = {
 };
 exports.default = _ol_ObjectEventType_;
 
-},{}],106:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18632,7 +16293,7 @@ _ol_Observable_.prototype.un = function (type, listener, opt_this) {
 
 exports.default = _ol_Observable_;
 
-},{"./events.js":27,"./events/eventtarget.js":30,"./events/eventtype.js":31,"./index.js":69}],107:[function(require,module,exports){
+},{"./events.js":25,"./events/eventtarget.js":28,"./events/eventtype.js":29,"./index.js":65}],103:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18658,7 +16319,7 @@ var _ol_OverlayPositioning_ = {
 };
 exports.default = _ol_OverlayPositioning_;
 
-},{}],108:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20217,7 +17878,7 @@ _ol_PluggableMap_.createOptionsInternal = function (options) {
 
 exports.default = _ol_PluggableMap_;
 
-},{"./asserts.js":9,"./collection.js":12,"./collectioneventtype.js":13,"./dom.js":25,"./events.js":27,"./events/event.js":29,"./events/eventtype.js":31,"./extent.js":33,"./functions.js":38,"./has.js":64,"./index.js":69,"./layer/group.js":88,"./mapbrowserevent.js":95,"./mapbrowsereventhandler.js":96,"./mapbrowsereventtype.js":97,"./mapevent.js":99,"./mapeventtype.js":100,"./mapproperty.js":101,"./obj.js":103,"./object.js":104,"./objecteventtype.js":105,"./plugins.js":109,"./renderer/type.js":171,"./size.js":187,"./structs/priorityqueue.js":198,"./tilequeue.js":222,"./transform.js":225,"./view.js":227,"./viewhint.js":228}],109:[function(require,module,exports){
+},{"./asserts.js":8,"./collection.js":11,"./collectioneventtype.js":12,"./dom.js":23,"./events.js":25,"./events/event.js":27,"./events/eventtype.js":29,"./extent.js":31,"./functions.js":36,"./has.js":60,"./index.js":65,"./layer/group.js":84,"./mapbrowserevent.js":91,"./mapbrowsereventhandler.js":92,"./mapbrowsereventtype.js":93,"./mapevent.js":95,"./mapeventtype.js":96,"./mapproperty.js":97,"./obj.js":99,"./object.js":100,"./objecteventtype.js":101,"./plugins.js":105,"./renderer/type.js":166,"./size.js":182,"./structs/priorityqueue.js":193,"./tilequeue.js":214,"./transform.js":217,"./view.js":219,"./viewhint.js":220}],105:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20316,7 +17977,7 @@ _ol_plugins_.registerMultiple = function (type, plugins) {
 
 exports.default = _ol_plugins_;
 
-},{"./plugintype.js":110}],110:[function(require,module,exports){
+},{"./plugintype.js":106}],106:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20334,7 +17995,7 @@ var _ol_PluginType_ = {
 };
 exports.default = _ol_PluginType_;
 
-},{}],111:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20382,7 +18043,7 @@ _ol_pointer_EventSource_.prototype.getHandlerForEvent = function (eventType) {
 
 exports.default = _ol_pointer_EventSource_;
 
-},{}],112:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20405,7 +18066,7 @@ var _ol_pointer_EventType_ = {
 };
 exports.default = _ol_pointer_EventType_;
 
-},{}],113:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20680,7 +18341,7 @@ _ol_pointer_MouseSource_.prototype.cleanupMouse = function () {
 
 exports.default = _ol_pointer_MouseSource_;
 
-},{"../index.js":69,"../pointer/eventsource.js":111}],114:[function(require,module,exports){
+},{"../index.js":65,"../pointer/eventsource.js":107}],110:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20887,7 +18548,7 @@ _ol_pointer_MsSource_.prototype.msGotPointerCapture = function (inEvent) {
 
 exports.default = _ol_pointer_MsSource_;
 
-},{"../index.js":69,"../pointer/eventsource.js":111}],115:[function(require,module,exports){
+},{"../index.js":65,"../pointer/eventsource.js":107}],111:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21041,7 +18702,7 @@ _ol_pointer_NativeSource_.prototype.gotPointerCapture = function (inEvent) {
 
 exports.default = _ol_pointer_NativeSource_;
 
-},{"../index.js":69,"../pointer/eventsource.js":111}],116:[function(require,module,exports){
+},{"../index.js":65,"../pointer/eventsource.js":107}],112:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21344,7 +19005,7 @@ _ol_pointer_PointerEvent_.HAS_BUTTONS = false;
 
 exports.default = _ol_pointer_PointerEvent_;
 
-},{"../events/event.js":29,"../index.js":69}],117:[function(require,module,exports){
+},{"../events/event.js":27,"../index.js":65}],113:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21803,7 +19464,7 @@ _ol_pointer_PointerEventHandler_.CLONE_PROPS = [// MouseEvent
 ['type', ''], ['target', null], ['currentTarget', null], ['which', 0]];
 exports.default = _ol_pointer_PointerEventHandler_;
 
-},{"../events.js":27,"../events/eventtarget.js":30,"../has.js":64,"../index.js":69,"../pointer/eventtype.js":112,"../pointer/mousesource.js":113,"../pointer/mssource.js":114,"../pointer/nativesource.js":115,"../pointer/pointerevent.js":116,"../pointer/touchsource.js":118}],118:[function(require,module,exports){
+},{"../events.js":25,"../events/eventtarget.js":28,"../has.js":60,"../index.js":65,"../pointer/eventtype.js":108,"../pointer/mousesource.js":109,"../pointer/mssource.js":110,"../pointer/nativesource.js":111,"../pointer/pointerevent.js":112,"../pointer/touchsource.js":114}],114:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22280,7 +19941,7 @@ _ol_pointer_TouchSource_.prototype.dedupSynthMouse_ = function (inEvent) {
 
 exports.default = _ol_pointer_TouchSource_;
 
-},{"../array.js":7,"../index.js":69,"../pointer/eventsource.js":111,"../pointer/mousesource.js":113}],119:[function(require,module,exports){
+},{"../array.js":6,"../index.js":65,"../pointer/eventsource.js":107,"../pointer/mousesource.js":109}],115:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22871,317 +20532,7 @@ _ol_proj_.addCommon();
 
 exports.default = _ol_proj_;
 
-},{"./extent.js":33,"./index.js":69,"./math.js":102,"./proj/epsg3857.js":121,"./proj/epsg4326.js":122,"./proj/proj4.js":123,"./proj/projection.js":124,"./proj/projections.js":125,"./proj/transforms.js":126,"./proj/units.js":127,"./sphere.js":194}],120:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _units = require("../proj/units.js");
-
-var _units2 = _interopRequireDefault(_units);
-
-var _proj = require("../proj/proj4.js");
-
-var _proj2 = _interopRequireDefault(_proj);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Projection definition class. One of these is created for each projection
- * supported in the application and stored in the {@link ol.proj} namespace.
- * You can use these in applications, but this is not required, as API params
- * and options use {@link ol.ProjectionLike} which means the simple string
- * code will suffice.
- *
- * You can use {@link ol.proj.get} to retrieve the object for a particular
- * projection.
- *
- * The library includes definitions for `EPSG:4326` and `EPSG:3857`, together
- * with the following aliases:
- * * `EPSG:4326`: CRS:84, urn:ogc:def:crs:EPSG:6.6:4326,
- *     urn:ogc:def:crs:OGC:1.3:CRS84, urn:ogc:def:crs:OGC:2:84,
- *     http://www.opengis.net/gml/srs/epsg.xml#4326,
- *     urn:x-ogc:def:crs:EPSG:4326
- * * `EPSG:3857`: EPSG:102100, EPSG:102113, EPSG:900913,
- *     urn:ogc:def:crs:EPSG:6.18:3:3857,
- *     http://www.opengis.net/gml/srs/epsg.xml#3857
- *
- * If you use proj4js, aliases can be added using `proj4.defs()`; see
- * [documentation](https://github.com/proj4js/proj4js). To set an alternative
- * namespace for proj4, use {@link ol.proj.setProj4}.
- *
- * @constructor
- * @param {olx.ProjectionOptions} options Projection options.
- * @struct
- * @api
- */
-
-
-var _ol_proj_Projection_ = function _ol_proj_Projection_(options) {
-  /**
-   * @private
-   * @type {string}
-   */
-  this.code_ = options.code;
-  /**
-   * Units of projected coordinates. When set to `ol.proj.Units.TILE_PIXELS`, a
-   * `this.extent_` and `this.worldExtent_` must be configured properly for each
-   * tile.
-   * @private
-   * @type {ol.proj.Units}
-   */
-
-  this.units_ =
-  /** @type {ol.proj.Units} */
-  options.units;
-  /**
-   * Validity extent of the projection in projected coordinates. For projections
-   * with `ol.proj.Units.TILE_PIXELS` units, this is the extent of the tile in
-   * tile pixel space.
-   * @private
-   * @type {ol.Extent}
-   */
-
-  this.extent_ = options.extent !== undefined ? options.extent : null;
-  /**
-   * Extent of the world in EPSG:4326. For projections with
-   * `ol.proj.Units.TILE_PIXELS` units, this is the extent of the tile in
-   * projected coordinate space.
-   * @private
-   * @type {ol.Extent}
-   */
-
-  this.worldExtent_ = options.worldExtent !== undefined ? options.worldExtent : null;
-  /**
-   * @private
-   * @type {string}
-   */
-
-  this.axisOrientation_ = options.axisOrientation !== undefined ? options.axisOrientation : 'enu';
-  /**
-   * @private
-   * @type {boolean}
-   */
-
-  this.global_ = options.global !== undefined ? options.global : false;
-  /**
-   * @private
-   * @type {boolean}
-   */
-
-  this.canWrapX_ = !!(this.global_ && this.extent_);
-  /**
-   * @private
-   * @type {function(number, ol.Coordinate):number|undefined}
-   */
-
-  this.getPointResolutionFunc_ = options.getPointResolution;
-  /**
-   * @private
-   * @type {ol.tilegrid.TileGrid}
-   */
-
-  this.defaultTileGrid_ = null;
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.metersPerUnit_ = options.metersPerUnit;
-  var code = options.code;
-
-  if (_index2.default.ENABLE_PROJ4JS) {
-    var proj4js = _proj2.default.get();
-
-    if (typeof proj4js == 'function') {
-      var def = proj4js.defs(code);
-
-      if (def !== undefined) {
-        if (def.axis !== undefined && options.axisOrientation === undefined) {
-          this.axisOrientation_ = def.axis;
-        }
-
-        if (options.metersPerUnit === undefined) {
-          this.metersPerUnit_ = def.to_meter;
-        }
-
-        if (options.units === undefined) {
-          this.units_ = def.units;
-        }
-      }
-    }
-  }
-};
-/**
- * @return {boolean} The projection is suitable for wrapping the x-axis
- */
-
-
-_ol_proj_Projection_.prototype.canWrapX = function () {
-  return this.canWrapX_;
-};
-/**
- * Get the code for this projection, e.g. 'EPSG:4326'.
- * @return {string} Code.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.getCode = function () {
-  return this.code_;
-};
-/**
- * Get the validity extent for this projection.
- * @return {ol.Extent} Extent.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.getExtent = function () {
-  return this.extent_;
-};
-/**
- * Get the units of this projection.
- * @return {ol.proj.Units} Units.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.getUnits = function () {
-  return this.units_;
-};
-/**
- * Get the amount of meters per unit of this projection.  If the projection is
- * not configured with `metersPerUnit` or a units identifier, the return is
- * `undefined`.
- * @return {number|undefined} Meters.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.getMetersPerUnit = function () {
-  return this.metersPerUnit_ || _units2.default.METERS_PER_UNIT[this.units_];
-};
-/**
- * Get the world extent for this projection.
- * @return {ol.Extent} Extent.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.getWorldExtent = function () {
-  return this.worldExtent_;
-};
-/**
- * Get the axis orientation of this projection.
- * Example values are:
- * enu - the default easting, northing, elevation.
- * neu - northing, easting, up - useful for "lat/long" geographic coordinates,
- *     or south orientated transverse mercator.
- * wnu - westing, northing, up - some planetary coordinate systems have
- *     "west positive" coordinate systems
- * @return {string} Axis orientation.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.getAxisOrientation = function () {
-  return this.axisOrientation_;
-};
-/**
- * Is this projection a global projection which spans the whole world?
- * @return {boolean} Whether the projection is global.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.isGlobal = function () {
-  return this.global_;
-};
-/**
-* Set if the projection is a global projection which spans the whole world
-* @param {boolean} global Whether the projection is global.
-* @api
-*/
-
-
-_ol_proj_Projection_.prototype.setGlobal = function (global) {
-  this.global_ = global;
-  this.canWrapX_ = !!(global && this.extent_);
-};
-/**
- * @return {ol.tilegrid.TileGrid} The default tile grid.
- */
-
-
-_ol_proj_Projection_.prototype.getDefaultTileGrid = function () {
-  return this.defaultTileGrid_;
-};
-/**
- * @param {ol.tilegrid.TileGrid} tileGrid The default tile grid.
- */
-
-
-_ol_proj_Projection_.prototype.setDefaultTileGrid = function (tileGrid) {
-  this.defaultTileGrid_ = tileGrid;
-};
-/**
- * Set the validity extent for this projection.
- * @param {ol.Extent} extent Extent.
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.setExtent = function (extent) {
-  this.extent_ = extent;
-  this.canWrapX_ = !!(this.global_ && extent);
-};
-/**
- * Set the world extent for this projection.
- * @param {ol.Extent} worldExtent World extent
- *     [minlon, minlat, maxlon, maxlat].
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.setWorldExtent = function (worldExtent) {
-  this.worldExtent_ = worldExtent;
-};
-/**
- * Set the getPointResolution function (see {@link ol.proj#getPointResolution}
- * for this projection.
- * @param {function(number, ol.Coordinate):number} func Function
- * @api
- */
-
-
-_ol_proj_Projection_.prototype.setGetPointResolution = function (func) {
-  this.getPointResolutionFunc_ = func;
-};
-/**
- * Get the custom point resolution function for this projection (if set).
- * @return {function(number, ol.Coordinate):number|undefined} The custom point
- * resolution function (if set).
- */
-
-
-_ol_proj_Projection_.prototype.getPointResolutionFunc = function () {
-  return this.getPointResolutionFunc_;
-};
-
-exports.default = _ol_proj_Projection_;
-
-},{"../index.js":69,"../proj/proj4.js":123,"../proj/units.js":127}],121:[function(require,module,exports){
+},{"./extent.js":31,"./index.js":65,"./math.js":98,"./proj/epsg3857.js":116,"./proj/epsg4326.js":117,"./proj/proj4.js":118,"./proj/projection.js":119,"./proj/projections.js":120,"./proj/transforms.js":121,"./proj/units.js":122,"./sphere.js":189}],116:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23344,7 +20695,7 @@ _ol_proj_EPSG3857_.toEPSG4326 = function (input, opt_output, opt_dimension) {
 
 exports.default = _ol_proj_EPSG3857_;
 
-},{"../index.js":69,"../math.js":102,"../proj/projection.js":124,"../proj/units.js":127}],122:[function(require,module,exports){
+},{"../index.js":65,"../math.js":98,"../proj/projection.js":119,"../proj/units.js":122}],117:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23431,7 +20782,7 @@ _ol_proj_EPSG4326_.METERS_PER_UNIT = Math.PI * _ol_proj_EPSG4326_.RADIUS / 180;
 _ol_proj_EPSG4326_.PROJECTIONS = [new _ol_proj_EPSG4326_.Projection_('CRS:84'), new _ol_proj_EPSG4326_.Projection_('EPSG:4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:EPSG::4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:EPSG:6.6:4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:OGC:1.3:CRS84'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:OGC:2:84'), new _ol_proj_EPSG4326_.Projection_('http://www.opengis.net/gml/srs/epsg.xml#4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:x-ogc:def:crs:EPSG:4326', 'neu')];
 exports.default = _ol_proj_EPSG4326_;
 
-},{"../index.js":69,"../proj/projection.js":124,"../proj/units.js":127}],123:[function(require,module,exports){
+},{"../index.js":65,"../proj/projection.js":119,"../proj/units.js":122}],118:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23464,7 +20815,7 @@ _ol_proj_proj4_.get = function () {
 
 exports.default = _ol_proj_proj4_;
 
-},{}],124:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23774,7 +21125,7 @@ _ol_proj_Projection_.prototype.getPointResolutionFunc = function () {
 
 exports.default = _ol_proj_Projection_;
 
-},{"../index.js":69,"../proj/proj4.js":123,"../proj/units.js":127}],125:[function(require,module,exports){
+},{"../index.js":65,"../proj/proj4.js":118,"../proj/units.js":122}],120:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23819,7 +21170,7 @@ _ol_proj_projections_.add = function (code, projection) {
 
 exports.default = _ol_proj_projections_;
 
-},{}],126:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23916,7 +21267,7 @@ _ol_proj_transforms_.get = function (sourceCode, destinationCode) {
 
 exports.default = _ol_proj_transforms_;
 
-},{"../obj.js":103}],127:[function(require,module,exports){
+},{"../obj.js":99}],122:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23951,7 +21302,7 @@ _ol_proj_Units_.METERS_PER_UNIT[_ol_proj_Units_.METERS] = 1;
 _ol_proj_Units_.METERS_PER_UNIT[_ol_proj_Units_.USFEET] = 1200 / 3937;
 exports.default = _ol_proj_Units_;
 
-},{}],128:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24103,7 +21454,7 @@ _ol_render_Box_.prototype.getGeometry = function () {
 
 exports.default = _ol_render_Box_;
 
-},{"../disposable.js":24,"../geom/polygon.js":62,"../index.js":69}],129:[function(require,module,exports){
+},{"../disposable.js":22,"../geom/polygon.js":58,"../index.js":65}],124:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24427,7 +21778,7 @@ _ol_render_canvas_.drawImage = function (context, transform, opacity, image, ori
 
 exports.default = _ol_render_canvas_;
 
-},{"../css.js":23,"../dom.js":25,"../obj.js":103,"../structs/lrucache.js":197,"../transform.js":225}],130:[function(require,module,exports){
+},{"../css.js":21,"../dom.js":23,"../obj.js":99,"../structs/lrucache.js":192,"../transform.js":217}],125:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24662,7 +22013,7 @@ _ol_render_canvas_ImageReplay_.prototype.setImageStyle = function (imageStyle, d
 
 exports.default = _ol_render_canvas_ImageReplay_;
 
-},{"../../index.js":69,"../canvas/instruction.js":132,"../canvas/replay.js":135}],131:[function(require,module,exports){
+},{"../../index.js":65,"../canvas/instruction.js":127,"../canvas/replay.js":130}],126:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25742,7 +23093,7 @@ _ol_render_canvas_Immediate_.prototype.setTextStyle = function (textStyle) {
 
 exports.default = _ol_render_canvas_Immediate_;
 
-},{"../../array.js":7,"../../colorlike.js":15,"../../extent.js":33,"../../geom/flat/transform.js":56,"../../geom/geometrytype.js":59,"../../geom/simplegeometry.js":63,"../../has.js":64,"../../index.js":69,"../../transform.js":225,"../canvas.js":129,"../vectorcontext.js":143}],132:[function(require,module,exports){
+},{"../../array.js":6,"../../colorlike.js":14,"../../extent.js":31,"../../geom/flat/transform.js":52,"../../geom/geometrytype.js":55,"../../geom/simplegeometry.js":59,"../../has.js":60,"../../index.js":65,"../../transform.js":217,"../canvas.js":124,"../vectorcontext.js":138}],127:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25769,7 +23120,7 @@ var _ol_render_canvas_Instruction_ = {
 };
 exports.default = _ol_render_canvas_Instruction_;
 
-},{}],133:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25917,7 +23268,7 @@ _ol_render_canvas_LineStringReplay_.prototype.applyStroke = function (state) {
 
 exports.default = _ol_render_canvas_LineStringReplay_;
 
-},{"../../index.js":69,"../canvas/instruction.js":132,"../canvas/replay.js":135}],134:[function(require,module,exports){
+},{"../../index.js":65,"../canvas/instruction.js":127,"../canvas/replay.js":130}],129:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26171,7 +23522,7 @@ _ol_render_canvas_PolygonReplay_.prototype.setFillStrokeStyles_ = function (geom
 
 exports.default = _ol_render_canvas_PolygonReplay_;
 
-},{"../../color.js":14,"../../geom/flat/simplify.js":52,"../../index.js":69,"../canvas.js":129,"../canvas/instruction.js":132,"../canvas/replay.js":135}],135:[function(require,module,exports){
+},{"../../color.js":13,"../../geom/flat/simplify.js":48,"../../index.js":65,"../canvas.js":124,"../canvas/instruction.js":127,"../canvas/replay.js":130}],130:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27507,7 +24858,7 @@ _ol_render_canvas_Replay_.prototype.getBufferedMaxExtent = function () {
 
 exports.default = _ol_render_canvas_Replay_;
 
-},{"../../array.js":7,"../../colorlike.js":15,"../../extent.js":33,"../../extent/relationship.js":35,"../../geom/flat/inflate.js":45,"../../geom/flat/length.js":48,"../../geom/flat/textpath.js":54,"../../geom/flat/transform.js":56,"../../geom/geometrytype.js":59,"../../has.js":64,"../../index.js":69,"../../obj.js":103,"../../transform.js":225,"../canvas.js":129,"../canvas/instruction.js":132,"../replay.js":140,"../vectorcontext.js":143}],136:[function(require,module,exports){
+},{"../../array.js":6,"../../colorlike.js":14,"../../extent.js":31,"../../extent/relationship.js":33,"../../geom/flat/inflate.js":41,"../../geom/flat/length.js":44,"../../geom/flat/textpath.js":50,"../../geom/flat/transform.js":52,"../../geom/geometrytype.js":55,"../../has.js":60,"../../index.js":65,"../../obj.js":99,"../../transform.js":217,"../canvas.js":124,"../canvas/instruction.js":127,"../replay.js":135,"../vectorcontext.js":138}],131:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28120,7 +25471,7 @@ _ol_render_canvas_ReplayGroup_.BATCH_CONSTRUCTORS_ = {
 };
 exports.default = _ol_render_canvas_ReplayGroup_;
 
-},{"../../array.js":7,"../../dom.js":25,"../../extent.js":33,"../../geom/flat/transform.js":56,"../../index.js":69,"../../obj.js":103,"../../transform.js":225,"../canvas/imagereplay.js":130,"../canvas/linestringreplay.js":133,"../canvas/polygonreplay.js":134,"../canvas/replay.js":135,"../canvas/textreplay.js":137,"../replay.js":140,"../replaygroup.js":141,"../replaytype.js":142}],137:[function(require,module,exports){
+},{"../../array.js":6,"../../dom.js":23,"../../extent.js":31,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../transform.js":217,"../canvas/imagereplay.js":125,"../canvas/linestringreplay.js":128,"../canvas/polygonreplay.js":129,"../canvas/replay.js":130,"../canvas/textreplay.js":132,"../replay.js":135,"../replaygroup.js":136,"../replaytype.js":137}],132:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28753,7 +26104,7 @@ _ol_render_canvas_TextReplay_.prototype.setTextStyle = function (textStyle, decl
 
 exports.default = _ol_render_canvas_TextReplay_;
 
-},{"../../colorlike.js":15,"../../dom.js":25,"../../extent.js":33,"../../geom/flat/straightchunk.js":53,"../../geom/geometrytype.js":59,"../../has.js":64,"../../index.js":69,"../../style/textplacement.js":218,"../canvas.js":129,"../canvas/instruction.js":132,"../canvas/replay.js":135,"../replay.js":140}],138:[function(require,module,exports){
+},{"../../colorlike.js":14,"../../dom.js":23,"../../extent.js":31,"../../geom/flat/straightchunk.js":49,"../../geom/geometrytype.js":55,"../../has.js":60,"../../index.js":65,"../../style/textplacement.js":210,"../canvas.js":124,"../canvas/instruction.js":127,"../canvas/replay.js":130,"../replay.js":135}],133:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28824,7 +26175,7 @@ _index2.default.inherits(_ol_render_Event_, _event2.default);
 
 exports.default = _ol_render_Event_;
 
-},{"../events/event.js":29,"../index.js":69}],139:[function(require,module,exports){
+},{"../events/event.js":27,"../index.js":65}],134:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28855,7 +26206,7 @@ var _ol_render_EventType_ = {
 };
 exports.default = _ol_render_EventType_;
 
-},{}],140:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28898,7 +26249,7 @@ _ol_render_replay_.TEXT_ALIGN['ideographic'] = 0.8;
 _ol_render_replay_.TEXT_ALIGN['bottom'] = 1;
 exports.default = _ol_render_replay_;
 
-},{"../render/replaytype.js":142}],141:[function(require,module,exports){
+},{"../render/replaytype.js":137}],136:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28930,7 +26281,7 @@ _ol_render_ReplayGroup_.prototype.isEmpty = function () {};
 
 exports.default = _ol_render_ReplayGroup_;
 
-},{}],142:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28950,7 +26301,7 @@ var _ol_render_ReplayType_ = {
 };
 exports.default = _ol_render_ReplayType_;
 
-},{}],143:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29091,7 +26442,7 @@ _ol_render_VectorContext_.prototype.setTextStyle = function (textStyle, opt_decl
 
 exports.default = _ol_render_VectorContext_;
 
-},{}],144:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29188,7 +26539,7 @@ _ol_render_webgl_.triangleIsCounterClockwise = function (x1, y1, x2, y2, x3, y3)
 _ol_render_webgl_.EPSILON = Number.EPSILON || 2.220446049250313e-16;
 exports.default = _ol_render_webgl_;
 
-},{}],145:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29665,7 +27016,7 @@ _ol_render_webgl_CircleReplay_.prototype.setFillStrokeStyle = function (fillStyl
 
 exports.default = _ol_render_webgl_CircleReplay_;
 
-},{"../../array.js":7,"../../color.js":14,"../../extent.js":33,"../../geom/flat/transform.js":56,"../../index.js":69,"../../obj.js":103,"../../webgl.js":230,"../../webgl/buffer.js":231,"../webgl.js":144,"../webgl/circlereplay/defaultshader.js":146,"../webgl/circlereplay/defaultshader/locations.js":147,"../webgl/replay.js":156}],146:[function(require,module,exports){
+},{"../../array.js":6,"../../color.js":13,"../../extent.js":31,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/circlereplay/defaultshader.js":141,"../webgl/circlereplay/defaultshader/locations.js":142,"../webgl/replay.js":151}],141:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29696,7 +27047,7 @@ _ol_render_webgl_circlereplay_defaultshader_.fragment = new _fragment2.default(_
 _ol_render_webgl_circlereplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_center;\nvarying vec2 v_offset;\nvarying float v_halfWidth;\nvarying float v_pixelRatio;\n\n\nattribute vec2 a_position;\nattribute float a_instruction;\nattribute float a_radius;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\nuniform float u_lineWidth;\nuniform float u_pixelRatio;\n\nvoid main(void) {\n  mat4 offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  v_center = vec4(u_projectionMatrix * vec4(a_position, 0.0, 1.0)).xy;\n  v_pixelRatio = u_pixelRatio;\n  float lineWidth = u_lineWidth * u_pixelRatio;\n  v_halfWidth = lineWidth / 2.0;\n  if (lineWidth == 0.0) {\n    lineWidth = 2.0 * u_pixelRatio;\n  }\n  vec2 offset;\n  // Radius with anitaliasing (roughly).\n  float radius = a_radius + 3.0 * u_pixelRatio;\n  // Until we get gl_VertexID in WebGL, we store an instruction.\n  if (a_instruction == 0.0) {\n    // Offsetting the edges of the triangle by lineWidth / 2 is necessary, however\n    // we should also leave some space for the antialiasing, thus we offset by lineWidth.\n    offset = vec2(-1.0, 1.0);\n  } else if (a_instruction == 1.0) {\n    offset = vec2(-1.0, -1.0);\n  } else if (a_instruction == 2.0) {\n    offset = vec2(1.0, -1.0);\n  } else {\n    offset = vec2(1.0, 1.0);\n  }\n\n  gl_Position = u_projectionMatrix * vec4(a_position + offset * radius, 0.0, 1.0) +\n      offsetMatrix * vec4(offset * lineWidth, 0.0, 0.0);\n  v_offset = vec4(u_projectionMatrix * vec4(a_position.x + a_radius, a_position.y,\n      0.0, 1.0)).xy;\n\n  if (distance(v_center, v_offset) > 20000.0) {\n    gl_Position = vec4(v_center, 0.0, 1.0);\n  }\n}\n\n\n' : 'varying vec2 a;varying vec2 b;varying float c;varying float d;attribute vec2 e;attribute float f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;uniform float k;uniform float l;void main(void){mat4 offsetMatrix=i*j;a=vec4(h*vec4(e,0.0,1.0)).xy;d=l;float lineWidth=k*l;c=lineWidth/2.0;if(lineWidth==0.0){lineWidth=2.0*l;}vec2 offset;float radius=g+3.0*l;//Until we get gl_VertexID in WebGL,we store an instruction.if(f==0.0){//Offsetting the edges of the triangle by lineWidth/2 is necessary,however//we should also leave some space for the antialiasing,thus we offset by lineWidth.offset=vec2(-1.0,1.0);}else if(f==1.0){offset=vec2(-1.0,-1.0);}else if(f==2.0){offset=vec2(1.0,-1.0);}else{offset=vec2(1.0,1.0);}gl_Position=h*vec4(e+offset*radius,0.0,1.0)+offsetMatrix*vec4(offset*lineWidth,0.0,0.0);b=vec4(h*vec4(e.x+g,e.y,0.0,1.0)).xy;if(distance(a,b)>20000.0){gl_Position=vec4(a,0.0,1.0);}}');
 exports.default = _ol_render_webgl_circlereplay_defaultshader_;
 
-},{"../../../index.js":69,"../../../webgl/fragment.js":234,"../../../webgl/vertex.js":236}],147:[function(require,module,exports){
+},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],142:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29785,7 +27136,7 @@ var _ol_render_webgl_circlereplay_defaultshader_Locations_ = function _ol_render
 
 exports.default = _ol_render_webgl_circlereplay_defaultshader_Locations_;
 
-},{"../../../../index.js":69}],148:[function(require,module,exports){
+},{"../../../../index.js":65}],143:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29969,7 +27320,7 @@ _ol_render_webgl_ImageReplay_.prototype.getHitDetectionTextures = function () {
 
 exports.default = _ol_render_webgl_ImageReplay_;
 
-},{"../../index.js":69,"../../webgl/buffer.js":231,"../webgl/texturereplay.js":159}],149:[function(require,module,exports){
+},{"../../index.js":65,"../../webgl/buffer.js":223,"../webgl/texturereplay.js":154}],144:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30421,7 +27772,7 @@ _ol_render_webgl_Immediate_.prototype.setTextStyle = function (textStyle) {
 
 exports.default = _ol_render_webgl_Immediate_;
 
-},{"../../extent.js":33,"../../geom/geometrytype.js":59,"../../index.js":69,"../replaytype.js":142,"../vectorcontext.js":143,"../webgl/replaygroup.js":157}],150:[function(require,module,exports){
+},{"../../extent.js":31,"../../geom/geometrytype.js":55,"../../index.js":65,"../replaytype.js":137,"../vectorcontext.js":138,"../webgl/replaygroup.js":152}],145:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31111,7 +28462,7 @@ _ol_render_webgl_LineStringReplay_.Instruction_ = {
 };
 exports.default = _ol_render_webgl_LineStringReplay_;
 
-},{"../../array.js":7,"../../color.js":14,"../../extent.js":33,"../../geom/flat/orient.js":49,"../../geom/flat/topology.js":55,"../../geom/flat/transform.js":56,"../../index.js":69,"../../obj.js":103,"../../webgl.js":230,"../../webgl/buffer.js":231,"../webgl.js":144,"../webgl/linestringreplay/defaultshader.js":151,"../webgl/linestringreplay/defaultshader/locations.js":152,"../webgl/replay.js":156}],151:[function(require,module,exports){
+},{"../../array.js":6,"../../color.js":13,"../../extent.js":31,"../../geom/flat/orient.js":45,"../../geom/flat/topology.js":51,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/linestringreplay/defaultshader.js":146,"../webgl/linestringreplay/defaultshader/locations.js":147,"../webgl/replay.js":151}],146:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31142,7 +28493,7 @@ _ol_render_webgl_linestringreplay_defaultshader_.fragment = new _fragment2.defau
 _ol_render_webgl_linestringreplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying float v_round;\nvarying vec2 v_roundVertex;\nvarying float v_halfWidth;\n\n\nattribute vec2 a_lastPos;\nattribute vec2 a_position;\nattribute vec2 a_nextPos;\nattribute float a_direction;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\nuniform float u_lineWidth;\nuniform float u_miterLimit;\n\nbool nearlyEquals(in float value, in float ref) {\n  float epsilon = 0.000000000001;\n  return value >= ref - epsilon && value <= ref + epsilon;\n}\n\nvoid alongNormal(out vec2 offset, in vec2 nextP, in float turnDir, in float direction) {\n  vec2 dirVect = nextP - a_position;\n  vec2 normal = normalize(vec2(-turnDir * dirVect.y, turnDir * dirVect.x));\n  offset = u_lineWidth / 2.0 * normal * direction;\n}\n\nvoid miterUp(out vec2 offset, out float round, in bool isRound, in float direction) {\n  float halfWidth = u_lineWidth / 2.0;\n  vec2 tangent = normalize(normalize(a_nextPos - a_position) + normalize(a_position - a_lastPos));\n  vec2 normal = vec2(-tangent.y, tangent.x);\n  vec2 dirVect = a_nextPos - a_position;\n  vec2 tmpNormal = normalize(vec2(-dirVect.y, dirVect.x));\n  float miterLength = abs(halfWidth / dot(normal, tmpNormal));\n  offset = normal * direction * miterLength;\n  round = 0.0;\n  if (isRound) {\n    round = 1.0;\n  } else if (miterLength > u_miterLimit + u_lineWidth) {\n    offset = halfWidth * tmpNormal * direction;\n  }\n}\n\nbool miterDown(out vec2 offset, in vec4 projPos, in mat4 offsetMatrix, in float direction) {\n  bool degenerate = false;\n  vec2 tangent = normalize(normalize(a_nextPos - a_position) + normalize(a_position - a_lastPos));\n  vec2 normal = vec2(-tangent.y, tangent.x);\n  vec2 dirVect = a_lastPos - a_position;\n  vec2 tmpNormal = normalize(vec2(-dirVect.y, dirVect.x));\n  vec2 longOffset, shortOffset, longVertex;\n  vec4 shortProjVertex;\n  float halfWidth = u_lineWidth / 2.0;\n  if (length(a_nextPos - a_position) > length(a_lastPos - a_position)) {\n    longOffset = tmpNormal * direction * halfWidth;\n    shortOffset = normalize(vec2(dirVect.y, -dirVect.x)) * direction * halfWidth;\n    longVertex = a_nextPos;\n    shortProjVertex = u_projectionMatrix * vec4(a_lastPos, 0.0, 1.0);\n  } else {\n    shortOffset = tmpNormal * direction * halfWidth;\n    longOffset = normalize(vec2(dirVect.y, -dirVect.x)) * direction * halfWidth;\n    longVertex = a_lastPos;\n    shortProjVertex = u_projectionMatrix * vec4(a_nextPos, 0.0, 1.0);\n  }\n  //Intersection algorithm based on theory by Paul Bourke (http://paulbourke.net/geometry/pointlineplane/).\n  vec4 p1 = u_projectionMatrix * vec4(longVertex, 0.0, 1.0) + offsetMatrix * vec4(longOffset, 0.0, 0.0);\n  vec4 p2 = projPos + offsetMatrix * vec4(longOffset, 0.0, 0.0);\n  vec4 p3 = shortProjVertex + offsetMatrix * vec4(-shortOffset, 0.0, 0.0);\n  vec4 p4 = shortProjVertex + offsetMatrix * vec4(shortOffset, 0.0, 0.0);\n  float denom = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);\n  float firstU = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / denom;\n  float secondU = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / denom;\n  float epsilon = 0.000000000001;\n  if (firstU > epsilon && firstU < 1.0 - epsilon && secondU > epsilon && secondU < 1.0 - epsilon) {\n    shortProjVertex.x = p1.x + firstU * (p2.x - p1.x);\n    shortProjVertex.y = p1.y + firstU * (p2.y - p1.y);\n    offset = shortProjVertex.xy;\n    degenerate = true;\n  } else {\n    float miterLength = abs(halfWidth / dot(normal, tmpNormal));\n    offset = normal * direction * miterLength;\n  }\n  return degenerate;\n}\n\nvoid squareCap(out vec2 offset, out float round, in bool isRound, in vec2 nextP,\n    in float turnDir, in float direction) {\n  round = 0.0;\n  vec2 dirVect = a_position - nextP;\n  vec2 firstNormal = normalize(dirVect);\n  vec2 secondNormal = vec2(turnDir * firstNormal.y * direction, -turnDir * firstNormal.x * direction);\n  vec2 hypotenuse = normalize(firstNormal - secondNormal);\n  vec2 normal = vec2(turnDir * hypotenuse.y * direction, -turnDir * hypotenuse.x * direction);\n  float length = sqrt(v_halfWidth * v_halfWidth * 2.0);\n  offset = normal * length;\n  if (isRound) {\n    round = 1.0;\n  }\n}\n\nvoid main(void) {\n  bool degenerate = false;\n  float direction = float(sign(a_direction));\n  mat4 offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  vec2 offset;\n  vec4 projPos = u_projectionMatrix * vec4(a_position, 0.0, 1.0);\n  bool round = nearlyEquals(mod(a_direction, 2.0), 0.0);\n\n  v_round = 0.0;\n  v_halfWidth = u_lineWidth / 2.0;\n  v_roundVertex = projPos.xy;\n\n  if (nearlyEquals(mod(a_direction, 3.0), 0.0) || nearlyEquals(mod(a_direction, 17.0), 0.0)) {\n    alongNormal(offset, a_nextPos, 1.0, direction);\n  } else if (nearlyEquals(mod(a_direction, 5.0), 0.0) || nearlyEquals(mod(a_direction, 13.0), 0.0)) {\n    alongNormal(offset, a_lastPos, -1.0, direction);\n  } else if (nearlyEquals(mod(a_direction, 23.0), 0.0)) {\n    miterUp(offset, v_round, round, direction);\n  } else if (nearlyEquals(mod(a_direction, 19.0), 0.0)) {\n    degenerate = miterDown(offset, projPos, offsetMatrix, direction);\n  } else if (nearlyEquals(mod(a_direction, 7.0), 0.0)) {\n    squareCap(offset, v_round, round, a_nextPos, 1.0, direction);\n  } else if (nearlyEquals(mod(a_direction, 11.0), 0.0)) {\n    squareCap(offset, v_round, round, a_lastPos, -1.0, direction);\n  }\n  if (!degenerate) {\n    vec4 offsets = offsetMatrix * vec4(offset, 0.0, 0.0);\n    gl_Position = projPos + offsets;\n  } else {\n    gl_Position = vec4(offset, 0.0, 1.0);\n  }\n}\n\n\n' : 'varying float a;varying vec2 aVertex;varying float c;attribute vec2 d;attribute vec2 e;attribute vec2 f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;uniform float k;uniform float l;bool nearlyEquals(in float value,in float ref){float epsilon=0.000000000001;return value>=ref-epsilon&&value<=ref+epsilon;}void alongNormal(out vec2 offset,in vec2 nextP,in float turnDir,in float direction){vec2 dirVect=nextP-e;vec2 normal=normalize(vec2(-turnDir*dirVect.y,turnDir*dirVect.x));offset=k/2.0*normal*direction;}void miterUp(out vec2 offset,out float round,in bool isRound,in float direction){float halfWidth=k/2.0;vec2 tangent=normalize(normalize(f-e)+normalize(e-d));vec2 normal=vec2(-tangent.y,tangent.x);vec2 dirVect=f-e;vec2 tmpNormal=normalize(vec2(-dirVect.y,dirVect.x));float miterLength=abs(halfWidth/dot(normal,tmpNormal));offset=normal*direction*miterLength;round=0.0;if(isRound){round=1.0;}else if(miterLength>l+k){offset=halfWidth*tmpNormal*direction;}} bool miterDown(out vec2 offset,in vec4 projPos,in mat4 offsetMatrix,in float direction){bool degenerate=false;vec2 tangent=normalize(normalize(f-e)+normalize(e-d));vec2 normal=vec2(-tangent.y,tangent.x);vec2 dirVect=d-e;vec2 tmpNormal=normalize(vec2(-dirVect.y,dirVect.x));vec2 longOffset,shortOffset,longVertex;vec4 shortProjVertex;float halfWidth=k/2.0;if(length(f-e)>length(d-e)){longOffset=tmpNormal*direction*halfWidth;shortOffset=normalize(vec2(dirVect.y,-dirVect.x))*direction*halfWidth;longVertex=f;shortProjVertex=h*vec4(d,0.0,1.0);}else{shortOffset=tmpNormal*direction*halfWidth;longOffset=normalize(vec2(dirVect.y,-dirVect.x))*direction*halfWidth;longVertex=d;shortProjVertex=h*vec4(f,0.0,1.0);}vec4 p1=h*vec4(longVertex,0.0,1.0)+offsetMatrix*vec4(longOffset,0.0,0.0);vec4 p2=projPos+offsetMatrix*vec4(longOffset,0.0,0.0);vec4 p3=shortProjVertex+offsetMatrix*vec4(-shortOffset,0.0,0.0);vec4 p4=shortProjVertex+offsetMatrix*vec4(shortOffset,0.0,0.0);float denom=(p4.y-p3.y)*(p2.x-p1.x)-(p4.x-p3.x)*(p2.y-p1.y);float firstU=((p4.x-p3.x)*(p1.y-p3.y)-(p4.y-p3.y)*(p1.x-p3.x))/denom;float secondU=((p2.x-p1.x)*(p1.y-p3.y)-(p2.y-p1.y)*(p1.x-p3.x))/denom;float epsilon=0.000000000001;if(firstU>epsilon&&firstU<1.0-epsilon&&secondU>epsilon&&secondU<1.0-epsilon){shortProjVertex.x=p1.x+firstU*(p2.x-p1.x);shortProjVertex.y=p1.y+firstU*(p2.y-p1.y);offset=shortProjVertex.xy;degenerate=true;}else{float miterLength=abs(halfWidth/dot(normal,tmpNormal));offset=normal*direction*miterLength;}return degenerate;}void squareCap(out vec2 offset,out float round,in bool isRound,in vec2 nextP,in float turnDir,in float direction){round=0.0;vec2 dirVect=e-nextP;vec2 firstNormal=normalize(dirVect);vec2 secondNormal=vec2(turnDir*firstNormal.y*direction,-turnDir*firstNormal.x*direction);vec2 hypotenuse=normalize(firstNormal-secondNormal);vec2 normal=vec2(turnDir*hypotenuse.y*direction,-turnDir*hypotenuse.x*direction);float length=sqrt(c*c*2.0);offset=normal*length;if(isRound){round=1.0;}} void main(void){bool degenerate=false;float direction=float(sign(g));mat4 offsetMatrix=i*j;vec2 offset;vec4 projPos=h*vec4(e,0.0,1.0);bool round=nearlyEquals(mod(g,2.0),0.0);a=0.0;c=k/2.0;aVertex=projPos.xy;if(nearlyEquals(mod(g,3.0),0.0)||nearlyEquals(mod(g,17.0),0.0)){alongNormal(offset,f,1.0,direction);}else if(nearlyEquals(mod(g,5.0),0.0)||nearlyEquals(mod(g,13.0),0.0)){alongNormal(offset,d,-1.0,direction);}else if(nearlyEquals(mod(g,23.0),0.0)){miterUp(offset,a,round,direction);}else if(nearlyEquals(mod(g,19.0),0.0)){degenerate=miterDown(offset,projPos,offsetMatrix,direction);}else if(nearlyEquals(mod(g,7.0),0.0)){squareCap(offset,a,round,f,1.0,direction);}else if(nearlyEquals(mod(g,11.0),0.0)){squareCap(offset,a,round,d,-1.0,direction);}if(!degenerate){vec4 offsets=offsetMatrix*vec4(offset,0.0,0.0);gl_Position=projPos+offsets;}else{gl_Position=vec4(offset,0.0,1.0);}}');
 exports.default = _ol_render_webgl_linestringreplay_defaultshader_;
 
-},{"../../../index.js":69,"../../../webgl/fragment.js":234,"../../../webgl/vertex.js":236}],152:[function(require,module,exports){
+},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],147:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31236,7 +28587,7 @@ var _ol_render_webgl_linestringreplay_defaultshader_Locations_ = function _ol_re
 
 exports.default = _ol_render_webgl_linestringreplay_defaultshader_Locations_;
 
-},{"../../../../index.js":69}],153:[function(require,module,exports){
+},{"../../../../index.js":65}],148:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -32438,7 +29789,7 @@ _ol_render_webgl_PolygonReplay_.prototype.setFillStrokeStyle = function (fillSty
 
 exports.default = _ol_render_webgl_PolygonReplay_;
 
-},{"../../array.js":7,"../../color.js":14,"../../extent.js":33,"../../geom/flat/contains.js":43,"../../geom/flat/orient.js":49,"../../geom/flat/transform.js":56,"../../index.js":69,"../../obj.js":103,"../../structs/linkedlist.js":196,"../../structs/rbush.js":199,"../../style/stroke.js":216,"../../webgl.js":230,"../../webgl/buffer.js":231,"../webgl.js":144,"../webgl/linestringreplay.js":150,"../webgl/polygonreplay/defaultshader.js":154,"../webgl/polygonreplay/defaultshader/locations.js":155,"../webgl/replay.js":156}],154:[function(require,module,exports){
+},{"../../array.js":6,"../../color.js":13,"../../extent.js":31,"../../geom/flat/contains.js":39,"../../geom/flat/orient.js":45,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../structs/linkedlist.js":191,"../../structs/rbush.js":194,"../../style/stroke.js":208,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/linestringreplay.js":145,"../webgl/polygonreplay/defaultshader.js":149,"../webgl/polygonreplay/defaultshader/locations.js":150,"../webgl/replay.js":151}],149:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32469,7 +29820,7 @@ _ol_render_webgl_polygonreplay_defaultshader_.fragment = new _fragment2.default(
 _ol_render_webgl_polygonreplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? '\n\nattribute vec2 a_position;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\n\nvoid main(void) {\n  gl_Position = u_projectionMatrix * vec4(a_position, 0.0, 1.0);\n}\n\n\n' : 'attribute vec2 a;uniform mat4 b;uniform mat4 c;uniform mat4 d;void main(void){gl_Position=b*vec4(a,0.0,1.0);}');
 exports.default = _ol_render_webgl_polygonreplay_defaultshader_;
 
-},{"../../../index.js":69,"../../../webgl/fragment.js":234,"../../../webgl/vertex.js":236}],155:[function(require,module,exports){
+},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],150:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32528,7 +29879,7 @@ var _ol_render_webgl_polygonreplay_defaultshader_Locations_ = function _ol_rende
 
 exports.default = _ol_render_webgl_polygonreplay_defaultshader_Locations_;
 
-},{"../../../../index.js":69}],156:[function(require,module,exports){
+},{"../../../../index.js":65}],151:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32916,7 +30267,7 @@ _ol_render_webgl_Replay_.prototype.drawElements = function (gl, context, start, 
 
 exports.default = _ol_render_webgl_Replay_;
 
-},{"../../extent.js":33,"../../index.js":69,"../../transform.js":225,"../../vec/mat4.js":226,"../../webgl.js":230,"../vectorcontext.js":143}],157:[function(require,module,exports){
+},{"../../extent.js":31,"../../index.js":65,"../../transform.js":217,"../../vec/mat4.js":218,"../../webgl.js":222,"../vectorcontext.js":138}],152:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33284,7 +30635,7 @@ _ol_render_webgl_ReplayGroup_.BATCH_CONSTRUCTORS_ = {
 };
 exports.default = _ol_render_webgl_ReplayGroup_;
 
-},{"../../array.js":7,"../../extent.js":33,"../../index.js":69,"../../obj.js":103,"../replay.js":140,"../replaygroup.js":141,"../webgl/circlereplay.js":145,"../webgl/imagereplay.js":148,"../webgl/linestringreplay.js":150,"../webgl/polygonreplay.js":153,"../webgl/textreplay.js":158}],158:[function(require,module,exports){
+},{"../../array.js":6,"../../extent.js":31,"../../index.js":65,"../../obj.js":99,"../replay.js":135,"../replaygroup.js":136,"../webgl/circlereplay.js":140,"../webgl/imagereplay.js":143,"../webgl/linestringreplay.js":145,"../webgl/polygonreplay.js":148,"../webgl/textreplay.js":153}],153:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33826,7 +31177,7 @@ _ol_render_webgl_TextReplay_.prototype.getHitDetectionTextures = function () {
 
 exports.default = _ol_render_webgl_TextReplay_;
 
-},{"../../colorlike.js":15,"../../dom.js":25,"../../geom/geometrytype.js":59,"../../has.js":64,"../../index.js":69,"../../style/atlasmanager.js":207,"../../webgl/buffer.js":231,"../replay.js":140,"../webgl.js":144,"../webgl/texturereplay.js":159}],159:[function(require,module,exports){
+},{"../../colorlike.js":14,"../../dom.js":23,"../../geom/geometrytype.js":55,"../../has.js":60,"../../index.js":65,"../../style/atlasmanager.js":199,"../../webgl/buffer.js":223,"../replay.js":135,"../webgl.js":139,"../webgl/texturereplay.js":154}],154:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34364,7 +31715,7 @@ _ol_render_webgl_TextureReplay_.prototype.getHitDetectionTextures = function () 
 
 exports.default = _ol_render_webgl_TextureReplay_;
 
-},{"../../extent.js":33,"../../index.js":69,"../../obj.js":103,"../../webgl.js":230,"../../webgl/context.js":232,"../webgl/replay.js":156,"../webgl/texturereplay/defaultshader.js":160,"../webgl/texturereplay/defaultshader/locations.js":161}],160:[function(require,module,exports){
+},{"../../extent.js":31,"../../index.js":65,"../../obj.js":99,"../../webgl.js":222,"../../webgl/context.js":224,"../webgl/replay.js":151,"../webgl/texturereplay/defaultshader.js":155,"../webgl/texturereplay/defaultshader/locations.js":156}],155:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34395,7 +31746,7 @@ _ol_render_webgl_texturereplay_defaultshader_.fragment = new _fragment2.default(
 _ol_render_webgl_texturereplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_texCoord;\nvarying float v_opacity;\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\nattribute vec2 a_offsets;\nattribute float a_opacity;\nattribute float a_rotateWithView;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\n\nvoid main(void) {\n  mat4 offsetMatrix = u_offsetScaleMatrix;\n  if (a_rotateWithView == 1.0) {\n    offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  }\n  vec4 offsets = offsetMatrix * vec4(a_offsets, 0.0, 0.0);\n  gl_Position = u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;\n  v_texCoord = a_texCoord;\n  v_opacity = a_opacity;\n}\n\n\n' : 'varying vec2 a;varying float b;attribute vec2 c;attribute vec2 d;attribute vec2 e;attribute float f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;void main(void){mat4 offsetMatrix=i;if(g==1.0){offsetMatrix=i*j;}vec4 offsets=offsetMatrix*vec4(e,0.0,0.0);gl_Position=h*vec4(c,0.0,1.0)+offsets;a=d;b=f;}');
 exports.default = _ol_render_webgl_texturereplay_defaultshader_;
 
-},{"../../../index.js":69,"../../../webgl/fragment.js":234,"../../../webgl/vertex.js":236}],161:[function(require,module,exports){
+},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],156:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34474,7 +31825,7 @@ var _ol_render_webgl_texturereplay_defaultshader_Locations_ = function _ol_rende
 
 exports.default = _ol_render_webgl_texturereplay_defaultshader_Locations_;
 
-},{"../../../../index.js":69}],162:[function(require,module,exports){
+},{"../../../../index.js":65}],157:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34741,7 +32092,7 @@ _ol_renderer_canvas_ImageLayer_.prototype.setVectorRenderer = function (renderer
 
 exports.default = _ol_renderer_canvas_ImageLayer_;
 
-},{"../../array.js":7,"../../extent.js":33,"../../imagecanvas.js":67,"../../index.js":69,"../../layer/vectorrendertype.js":91,"../../layertype.js":93,"../../obj.js":103,"../../plugins.js":109,"../../transform.js":225,"../../viewhint.js":228,"../canvas/intermediatecanvas.js":163,"../type.js":171}],163:[function(require,module,exports){
+},{"../../array.js":6,"../../extent.js":31,"../../imagecanvas.js":63,"../../index.js":65,"../../layer/vectorrendertype.js":87,"../../layertype.js":89,"../../obj.js":99,"../../plugins.js":105,"../../transform.js":217,"../../viewhint.js":220,"../canvas/intermediatecanvas.js":158,"../type.js":166}],158:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34917,7 +32268,7 @@ _ol_renderer_canvas_IntermediateCanvas_.prototype.forEachLayerAtCoordinate = fun
 
 exports.default = _ol_renderer_canvas_IntermediateCanvas_;
 
-},{"../../coordinate.js":22,"../../dom.js":25,"../../extent.js":33,"../../index.js":69,"../../transform.js":225,"../canvas/layer.js":164}],164:[function(require,module,exports){
+},{"../../coordinate.js":20,"../../dom.js":23,"../../extent.js":31,"../../index.js":65,"../../transform.js":217,"../canvas/layer.js":159}],159:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35164,7 +32515,7 @@ _ol_renderer_canvas_Layer_.prototype.prepareFrame = function (frameState, layerS
 
 exports.default = _ol_renderer_canvas_Layer_;
 
-},{"../../extent.js":33,"../../functions.js":38,"../../index.js":69,"../../render/canvas.js":129,"../../render/canvas/immediate.js":131,"../../render/event.js":138,"../../render/eventtype.js":139,"../../transform.js":225,"../layer.js":169}],165:[function(require,module,exports){
+},{"../../extent.js":31,"../../functions.js":36,"../../index.js":65,"../../render/canvas.js":124,"../../render/canvas/immediate.js":126,"../../render/event.js":133,"../../render/eventtype.js":134,"../../transform.js":217,"../layer.js":164}],160:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35452,7 +32803,7 @@ _ol_renderer_canvas_Map_.prototype.forEachLayerAtPixel = function (pixel, frameS
 
 exports.default = _ol_renderer_canvas_Map_;
 
-},{"../../array.js":7,"../../css.js":23,"../../dom.js":25,"../../index.js":69,"../../layer/layer.js":89,"../../render/canvas.js":129,"../../render/canvas/immediate.js":131,"../../render/event.js":138,"../../render/eventtype.js":139,"../../source/state.js":192,"../../transform.js":225,"../map.js":170,"../type.js":171}],166:[function(require,module,exports){
+},{"../../array.js":6,"../../css.js":21,"../../dom.js":23,"../../index.js":65,"../../layer/layer.js":85,"../../render/canvas.js":124,"../../render/canvas/immediate.js":126,"../../render/event.js":133,"../../render/eventtype.js":134,"../../source/state.js":187,"../../transform.js":217,"../map.js":165,"../type.js":166}],161:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35856,7 +33207,7 @@ _ol_renderer_canvas_TileLayer_.prototype.getImageTransform = function () {
 
 exports.default = _ol_renderer_canvas_TileLayer_;
 
-},{"../../dom.js":25,"../../extent.js":33,"../../index.js":69,"../../layertype.js":93,"../../tilerange.js":223,"../../tilestate.js":224,"../../transform.js":225,"../../viewhint.js":228,"../canvas/intermediatecanvas.js":163,"../type.js":171}],167:[function(require,module,exports){
+},{"../../dom.js":23,"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../tilerange.js":215,"../../tilestate.js":216,"../../transform.js":217,"../../viewhint.js":220,"../canvas/intermediatecanvas.js":158,"../type.js":166}],162:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36369,7 +33720,7 @@ _ol_renderer_canvas_VectorLayer_.prototype.renderFeature = function (feature, re
 
 exports.default = _ol_renderer_canvas_VectorLayer_;
 
-},{"../../dom.js":25,"../../events.js":27,"../../events/eventtype.js":31,"../../extent.js":33,"../../index.js":69,"../../layertype.js":93,"../../render/canvas.js":129,"../../render/canvas/replaygroup.js":136,"../../render/eventtype.js":139,"../../viewhint.js":228,"../canvas/layer.js":164,"../type.js":171,"../vector.js":172,"rbush":239}],168:[function(require,module,exports){
+},{"../../dom.js":23,"../../events.js":25,"../../events/eventtype.js":29,"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../render/canvas.js":124,"../../render/canvas/replaygroup.js":131,"../../render/eventtype.js":134,"../../viewhint.js":220,"../canvas/layer.js":159,"../type.js":166,"../vector.js":167,"rbush":231}],163:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37024,7 +34375,7 @@ _ol_renderer_canvas_VectorTileLayer_.prototype.renderTileImage_ = function (tile
 
 exports.default = _ol_renderer_canvas_VectorTileLayer_;
 
-},{"../../dom.js":25,"../../events.js":27,"../../events/eventtype.js":31,"../../extent.js":33,"../../index.js":69,"../../layer/vectortilerendertype.js":92,"../../layertype.js":93,"../../proj.js":119,"../../proj/units.js":127,"../../render/canvas.js":129,"../../render/canvas/replaygroup.js":136,"../../render/replay.js":140,"../../render/replaytype.js":142,"../../tilestate.js":224,"../../transform.js":225,"../canvas/tilelayer.js":166,"../type.js":171,"../vector.js":172,"rbush":239}],169:[function(require,module,exports){
+},{"../../dom.js":23,"../../events.js":25,"../../events/eventtype.js":29,"../../extent.js":31,"../../index.js":65,"../../layer/vectortilerendertype.js":88,"../../layertype.js":89,"../../proj.js":115,"../../proj/units.js":122,"../../render/canvas.js":124,"../../render/canvas/replaygroup.js":131,"../../render/replay.js":135,"../../render/replaytype.js":137,"../../tilestate.js":216,"../../transform.js":217,"../canvas/tilelayer.js":161,"../type.js":166,"../vector.js":167,"rbush":231}],164:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37345,7 +34696,7 @@ _ol_renderer_Layer_.prototype.manageTilePyramid = function (frameState, tileSour
 
 exports.default = _ol_renderer_Layer_;
 
-},{"../asserts.js":9,"../events.js":27,"../events/eventtype.js":31,"../functions.js":38,"../imagestate.js":68,"../index.js":69,"../observable.js":106,"../source/state.js":192,"../tilestate.js":224}],170:[function(require,module,exports){
+},{"../asserts.js":8,"../events.js":25,"../events/eventtype.js":29,"../functions.js":36,"../imagestate.js":64,"../index.js":65,"../observable.js":102,"../source/state.js":187,"../tilestate.js":216}],165:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37739,7 +35090,7 @@ _ol_renderer_Map_.sortByZIndex = function (state1, state2) {
 
 exports.default = _ol_renderer_Map_;
 
-},{"../disposable.js":24,"../events.js":27,"../events/eventtype.js":31,"../extent.js":33,"../functions.js":38,"../index.js":69,"../layer/layer.js":89,"../plugins.js":109,"../style.js":200,"../transform.js":225}],171:[function(require,module,exports){
+},{"../disposable.js":22,"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../functions.js":36,"../index.js":65,"../layer/layer.js":85,"../plugins.js":105,"../style.js":195,"../transform.js":217}],166:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37756,7 +35107,7 @@ var _ol_renderer_Type_ = {
 };
 exports.default = _ol_renderer_Type_;
 
-},{}],172:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38141,7 +35492,7 @@ _ol_renderer_vector_.GEOMETRY_RENDERERS_ = {
 };
 exports.default = _ol_renderer_vector_;
 
-},{"../geom/geometrytype.js":59,"../imagestate.js":68,"../index.js":69,"../render/replaytype.js":142}],173:[function(require,module,exports){
+},{"../geom/geometrytype.js":55,"../imagestate.js":64,"../index.js":65,"../render/replaytype.js":137}],168:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38172,7 +35523,7 @@ _ol_renderer_webgl_defaultmapshader_.fragment = new _fragment2.default(_index2.d
 _ol_renderer_webgl_defaultmapshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_texCoord;\n\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\n\nuniform mat4 u_texCoordMatrix;\nuniform mat4 u_projectionMatrix;\n\nvoid main(void) {\n  gl_Position = u_projectionMatrix * vec4(a_position, 0., 1.);\n  v_texCoord = (u_texCoordMatrix * vec4(a_texCoord, 0., 1.)).st;\n}\n\n\n' : 'varying vec2 a;attribute vec2 b;attribute vec2 c;uniform mat4 d;uniform mat4 e;void main(void){gl_Position=e*vec4(b,0.,1.);a=(d*vec4(c,0.,1.)).st;}');
 exports.default = _ol_renderer_webgl_defaultmapshader_;
 
-},{"../../index.js":69,"../../webgl/fragment.js":234,"../../webgl/vertex.js":236}],174:[function(require,module,exports){
+},{"../../index.js":65,"../../webgl/fragment.js":226,"../../webgl/vertex.js":228}],169:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38231,7 +35582,7 @@ var _ol_renderer_webgl_defaultmapshader_Locations_ = function _ol_renderer_webgl
 
 exports.default = _ol_renderer_webgl_defaultmapshader_Locations_;
 
-},{"../../../index.js":69}],175:[function(require,module,exports){
+},{"../../../index.js":65}],170:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38602,7 +35953,7 @@ _ol_renderer_webgl_ImageLayer_.prototype.getHitTransformationMatrix_ = function 
 
 exports.default = _ol_renderer_webgl_ImageLayer_;
 
-},{"../../dom.js":25,"../../extent.js":33,"../../functions.js":38,"../../index.js":69,"../../layertype.js":93,"../../transform.js":225,"../../viewhint.js":228,"../../webgl.js":230,"../../webgl/context.js":232,"../type.js":171,"../webgl/layer.js":176}],176:[function(require,module,exports){
+},{"../../dom.js":23,"../../extent.js":31,"../../functions.js":36,"../../index.js":65,"../../layertype.js":89,"../../transform.js":217,"../../viewhint.js":220,"../../webgl.js":222,"../../webgl/context.js":224,"../type.js":166,"../webgl/layer.js":171}],171:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38892,7 +36243,7 @@ _ol_renderer_webgl_Layer_.prototype.forEachLayerAtPixel = function (pixel, frame
 
 exports.default = _ol_renderer_webgl_Layer_;
 
-},{"../../index.js":69,"../../render/event.js":138,"../../render/eventtype.js":139,"../../render/webgl/immediate.js":149,"../../transform.js":225,"../../vec/mat4.js":226,"../../webgl.js":230,"../../webgl/buffer.js":231,"../../webgl/context.js":232,"../layer.js":169,"../webgl/defaultmapshader.js":173,"../webgl/defaultmapshader/locations.js":174}],177:[function(require,module,exports){
+},{"../../index.js":65,"../../render/event.js":133,"../../render/eventtype.js":134,"../../render/webgl/immediate.js":144,"../../transform.js":217,"../../vec/mat4.js":218,"../../webgl.js":222,"../../webgl/buffer.js":223,"../../webgl/context.js":224,"../layer.js":164,"../webgl/defaultmapshader.js":168,"../webgl/defaultmapshader/locations.js":169}],172:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39566,7 +36917,7 @@ _ol_renderer_webgl_Map_.prototype.forEachLayerAtPixel = function (pixel, frameSt
 
 exports.default = _ol_renderer_webgl_Map_;
 
-},{"../../array.js":7,"../../css.js":23,"../../dom.js":25,"../../events.js":27,"../../has.js":64,"../../index.js":69,"../../layer/layer.js":89,"../../render/event.js":138,"../../render/eventtype.js":139,"../../render/webgl/immediate.js":149,"../../source/state.js":192,"../../structs/lrucache.js":197,"../../structs/priorityqueue.js":198,"../../webgl.js":230,"../../webgl/context.js":232,"../../webgl/contexteventtype.js":233,"../map.js":170,"../type.js":171}],178:[function(require,module,exports){
+},{"../../array.js":6,"../../css.js":21,"../../dom.js":23,"../../events.js":25,"../../has.js":60,"../../index.js":65,"../../layer/layer.js":85,"../../render/event.js":133,"../../render/eventtype.js":134,"../../render/webgl/immediate.js":144,"../../source/state.js":187,"../../structs/lrucache.js":192,"../../structs/priorityqueue.js":193,"../../webgl.js":222,"../../webgl/context.js":224,"../../webgl/contexteventtype.js":225,"../map.js":165,"../type.js":166}],173:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39994,7 +37345,7 @@ _ol_renderer_webgl_TileLayer_.prototype.forEachLayerAtPixel = function (pixel, f
 
 exports.default = _ol_renderer_webgl_TileLayer_;
 
-},{"../../array.js":7,"../../extent.js":33,"../../index.js":69,"../../layertype.js":93,"../../math.js":102,"../../size.js":187,"../../tilerange.js":223,"../../tilestate.js":224,"../../transform.js":225,"../../webgl.js":230,"../../webgl/buffer.js":231,"../type.js":171,"../webgl/layer.js":176,"../webgl/tilelayershader.js":179,"../webgl/tilelayershader/locations.js":180}],179:[function(require,module,exports){
+},{"../../array.js":6,"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../math.js":98,"../../size.js":182,"../../tilerange.js":215,"../../tilestate.js":216,"../../transform.js":217,"../../webgl.js":222,"../../webgl/buffer.js":223,"../type.js":166,"../webgl/layer.js":171,"../webgl/tilelayershader.js":174,"../webgl/tilelayershader/locations.js":175}],174:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40025,7 +37376,7 @@ _ol_renderer_webgl_tilelayershader_.fragment = new _fragment2.default(_index2.de
 _ol_renderer_webgl_tilelayershader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_texCoord;\n\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\nuniform vec4 u_tileOffset;\n\nvoid main(void) {\n  gl_Position = vec4(a_position * u_tileOffset.xy + u_tileOffset.zw, 0., 1.);\n  v_texCoord = a_texCoord;\n}\n\n\n' : 'varying vec2 a;attribute vec2 b;attribute vec2 c;uniform vec4 d;void main(void){gl_Position=vec4(b*d.xy+d.zw,0.,1.);a=c;}');
 exports.default = _ol_renderer_webgl_tilelayershader_;
 
-},{"../../index.js":69,"../../webgl/fragment.js":234,"../../webgl/vertex.js":236}],180:[function(require,module,exports){
+},{"../../index.js":65,"../../webgl/fragment.js":226,"../../webgl/vertex.js":228}],175:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40074,7 +37425,7 @@ var _ol_renderer_webgl_tilelayershader_Locations_ = function _ol_renderer_webgl_
 
 exports.default = _ol_renderer_webgl_tilelayershader_Locations_;
 
-},{"../../../index.js":69}],181:[function(require,module,exports){
+},{"../../../index.js":65}],176:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40440,7 +37791,7 @@ _ol_renderer_webgl_VectorLayer_.prototype.renderFeature = function (feature, res
 
 exports.default = _ol_renderer_webgl_VectorLayer_;
 
-},{"../../extent.js":33,"../../index.js":69,"../../layertype.js":93,"../../render/webgl/replaygroup.js":157,"../../transform.js":225,"../../viewhint.js":228,"../type.js":171,"../vector.js":172,"../webgl/layer.js":176}],182:[function(require,module,exports){
+},{"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../render/webgl/replaygroup.js":152,"../../transform.js":217,"../../viewhint.js":220,"../type.js":166,"../vector.js":167,"../webgl/layer.js":171}],177:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40693,7 +38044,7 @@ _ol_reproj_.render = function (width, height, pixelRatio, sourceResolution, sour
 
 exports.default = _ol_reproj_;
 
-},{"./dom.js":25,"./extent.js":33,"./math.js":102,"./proj.js":119}],183:[function(require,module,exports){
+},{"./dom.js":23,"./extent.js":31,"./math.js":98,"./proj.js":115}],178:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40916,7 +38267,7 @@ _ol_reproj_Image_.prototype.unlistenSource_ = function () {
 
 exports.default = _ol_reproj_Image_;
 
-},{"../events.js":27,"../events/eventtype.js":31,"../extent.js":33,"../imagebase.js":66,"../imagestate.js":68,"../index.js":69,"../reproj.js":182,"../reproj/triangulation.js":184}],184:[function(require,module,exports){
+},{"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../imagebase.js":62,"../imagestate.js":64,"../index.js":65,"../reproj.js":177,"../reproj/triangulation.js":179}],179:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41250,7 +38601,7 @@ _ol_reproj_Triangulation_.prototype.getTriangles = function () {
 
 exports.default = _ol_reproj_Triangulation_;
 
-},{"../extent.js":33,"../index.js":69,"../math.js":102,"../proj.js":119}],185:[function(require,module,exports){
+},{"../extent.js":31,"../index.js":65,"../math.js":98,"../proj.js":115}],180:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41340,7 +38691,7 @@ _ol_ResolutionConstraint_.createSnapToPower = function (power, maxResolution, op
 
 exports.default = _ol_ResolutionConstraint_;
 
-},{"./array.js":7,"./math.js":102}],186:[function(require,module,exports){
+},{"./array.js":6,"./math.js":98}],181:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41440,7 +38791,7 @@ _ol_RotationConstraint_.createSnapToZero = function (opt_tolerance) {
 
 exports.default = _ol_RotationConstraint_;
 
-},{"./math.js":102}],187:[function(require,module,exports){
+},{"./math.js":98}],182:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41521,7 +38872,7 @@ _ol_size_.toSize = function (size, opt_size) {
 
 exports.default = _ol_size_;
 
-},{}],188:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41658,7 +39009,7 @@ _ol_source_ImageStatic_.prototype.handleImageChange = function (evt) {
 
 exports.default = _ol_source_ImageStatic_;
 
-},{"../dom.js":25,"../events.js":27,"../events/eventtype.js":31,"../extent.js":33,"../image.js":65,"../imagestate.js":68,"../index.js":69,"../proj.js":119,"../source/image.js":190}],189:[function(require,module,exports){
+},{"../dom.js":23,"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../image.js":61,"../imagestate.js":64,"../index.js":65,"../proj.js":115,"../source/image.js":185}],184:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42643,7 +39994,7 @@ _index2.default.inherits(_ol_source_Vector_.Event, _event2.default);
 
 exports.default = _ol_source_Vector_;
 
-},{"../array.js":7,"../asserts.js":9,"../collection.js":12,"../collectioneventtype.js":13,"../events.js":27,"../events/event.js":29,"../events/eventtype.js":31,"../extent.js":33,"../featureloader.js":36,"../functions.js":38,"../index.js":69,"../loadingstrategy.js":94,"../obj.js":103,"../objecteventtype.js":105,"../source/source.js":191,"../source/state.js":192,"../source/vectoreventtype.js":193,"../structs/rbush.js":199}],190:[function(require,module,exports){
+},{"../array.js":6,"../asserts.js":8,"../collection.js":11,"../collectioneventtype.js":12,"../events.js":25,"../events/event.js":27,"../events/eventtype.js":29,"../extent.js":31,"../featureloader.js":34,"../functions.js":36,"../index.js":65,"../loadingstrategy.js":90,"../obj.js":99,"../objecteventtype.js":101,"../source/source.js":186,"../source/state.js":187,"../source/vectoreventtype.js":188,"../structs/rbush.js":194}],185:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42899,7 +40250,7 @@ _ol_source_Image_.EventType_ = {
 };
 exports.default = _ol_source_Image_;
 
-},{"../array.js":7,"../events/event.js":29,"../extent.js":33,"../imagestate.js":68,"../index.js":69,"../proj.js":119,"../reproj/image.js":183,"../source/source.js":191}],191:[function(require,module,exports){
+},{"../array.js":6,"../events/event.js":27,"../extent.js":31,"../imagestate.js":64,"../index.js":65,"../proj.js":115,"../reproj/image.js":178,"../source/source.js":186}],186:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43167,7 +40518,7 @@ _ol_source_Source_.prototype.setState = function (state) {
 
 exports.default = _ol_source_Source_;
 
-},{"../attribution.js":10,"../index.js":69,"../object.js":104,"../proj.js":119,"../source/state.js":192}],192:[function(require,module,exports){
+},{"../attribution.js":9,"../index.js":65,"../object.js":100,"../proj.js":115,"../source/state.js":187}],187:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43186,7 +40537,7 @@ var _ol_source_State_ = {
 };
 exports.default = _ol_source_State_;
 
-},{}],193:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43228,7 +40579,7 @@ var _ol_source_VectorEventType_ = {
 };
 exports.default = _ol_source_VectorEventType_;
 
-},{}],194:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43586,7 +40937,7 @@ _ol_Sphere_.getArea_ = function (coordinates, radius) {
 
 exports.default = _ol_Sphere_;
 
-},{"./geom/geometrytype.js":59,"./math.js":102}],195:[function(require,module,exports){
+},{"./geom/geometrytype.js":55,"./math.js":98}],190:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43636,7 +40987,7 @@ _ol_string_.compareVersions = function (v1, v2) {
 
 exports.default = _ol_string_;
 
-},{}],196:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43918,7 +41269,7 @@ _ol_structs_LinkedList_.prototype.getLength = function () {
 
 exports.default = _ol_structs_LinkedList_;
 
-},{}],197:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44251,7 +41602,7 @@ _ol_structs_LRUCache_.prototype.prune = function () {
 
 exports.default = _ol_structs_LRUCache_;
 
-},{"../asserts.js":9,"../events/eventtarget.js":30,"../events/eventtype.js":31,"../index.js":69}],198:[function(require,module,exports){
+},{"../asserts.js":8,"../events/eventtarget.js":28,"../events/eventtype.js":29,"../index.js":65}],193:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44550,7 +41901,7 @@ _ol_structs_PriorityQueue_.prototype.reprioritize = function () {
 
 exports.default = _ol_structs_PriorityQueue_;
 
-},{"../asserts.js":9,"../obj.js":103}],199:[function(require,module,exports){
+},{"../asserts.js":8,"../obj.js":99}],194:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44808,7 +42159,7 @@ _ol_structs_RBush_.prototype.concat = function (rbush) {
 
 exports.default = _ol_structs_RBush_;
 
-},{"../extent.js":33,"../index.js":69,"../obj.js":103,"rbush":239}],200:[function(require,module,exports){
+},{"../extent.js":31,"../index.js":65,"../obj.js":99,"rbush":231}],195:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44834,106 +42185,7 @@ var _ol_style_ = {};
 _ol_style_.iconImageCache = new _iconimagecache2.default();
 exports.default = _ol_style_;
 
-},{"./style/iconimagecache.js":212}],201:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _color = require("../color.js");
-
-var _color2 = _interopRequireDefault(_color);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Set fill style for vector features.
- *
- * @constructor
- * @param {olx.style.FillOptions=} opt_options Options.
- * @api
- */
-
-
-var _ol_style_Fill_ = function _ol_style_Fill_(opt_options) {
-  var options = opt_options || {};
-  /**
-   * @private
-   * @type {ol.Color|ol.ColorLike}
-   */
-
-  this.color_ = options.color !== undefined ? options.color : null;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.checksum_ = undefined;
-};
-/**
- * Clones the style. The color is not cloned if it is an {@link ol.ColorLike}.
- * @return {ol.style.Fill} The cloned style.
- * @api
- */
-
-
-_ol_style_Fill_.prototype.clone = function () {
-  var color = this.getColor();
-  return new _ol_style_Fill_({
-    color: color && color.slice ? color.slice() : color || undefined
-  });
-};
-/**
- * Get the fill color.
- * @return {ol.Color|ol.ColorLike} Color.
- * @api
- */
-
-
-_ol_style_Fill_.prototype.getColor = function () {
-  return this.color_;
-};
-/**
- * Set the color.
- *
- * @param {ol.Color|ol.ColorLike} color Color.
- * @api
- */
-
-
-_ol_style_Fill_.prototype.setColor = function (color) {
-  this.color_ = color;
-  this.checksum_ = undefined;
-};
-/**
- * @return {string} The checksum.
- */
-
-
-_ol_style_Fill_.prototype.getChecksum = function () {
-  if (this.checksum_ === undefined) {
-    if (this.color_ instanceof CanvasPattern || this.color_ instanceof CanvasGradient) {
-      this.checksum_ = _index2.default.getUid(this.color_).toString();
-    } else {
-      this.checksum_ = 'f' + (this.color_ ? _color2.default.asString(this.color_) : '-');
-    }
-  }
-
-  return this.checksum_;
-};
-
-exports.default = _ol_style_Fill_;
-
-},{"../color.js":14,"../index.js":69}],202:[function(require,module,exports){
+},{"./style/iconimagecache.js":204}],196:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45359,735 +42611,7 @@ _ol_style_Icon_.prototype.unlistenImageChange = function (listener, thisArg) {
 
 exports.default = _ol_style_Icon_;
 
-},{"../asserts.js":9,"../color.js":14,"../events.js":27,"../events/eventtype.js":31,"../imagestate.js":68,"../index.js":69,"../style/iconanchorunits.js":210,"../style/iconimage.js":211,"../style/iconorigin.js":213,"../style/image.js":214}],203:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Set stroke style for vector features.
- * Note that the defaults given are the Canvas defaults, which will be used if
- * option is not defined. The `get` functions return whatever was entered in
- * the options; they will not return the default.
- *
- * @constructor
- * @param {olx.style.StrokeOptions=} opt_options Options.
- * @api
- */
-
-
-var _ol_style_Stroke_ = function _ol_style_Stroke_(opt_options) {
-  var options = opt_options || {};
-  /**
-   * @private
-   * @type {ol.Color|ol.ColorLike}
-   */
-
-  this.color_ = options.color !== undefined ? options.color : null;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.lineCap_ = options.lineCap;
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-
-  this.lineDash_ = options.lineDash !== undefined ? options.lineDash : null;
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.lineDashOffset_ = options.lineDashOffset;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.lineJoin_ = options.lineJoin;
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.miterLimit_ = options.miterLimit;
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.width_ = options.width;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.checksum_ = undefined;
-};
-/**
- * Clones the style.
- * @return {ol.style.Stroke} The cloned style.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.clone = function () {
-  var color = this.getColor();
-  return new _ol_style_Stroke_({
-    color: color && color.slice ? color.slice() : color || undefined,
-    lineCap: this.getLineCap(),
-    lineDash: this.getLineDash() ? this.getLineDash().slice() : undefined,
-    lineDashOffset: this.getLineDashOffset(),
-    lineJoin: this.getLineJoin(),
-    miterLimit: this.getMiterLimit(),
-    width: this.getWidth()
-  });
-};
-/**
- * Get the stroke color.
- * @return {ol.Color|ol.ColorLike} Color.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.getColor = function () {
-  return this.color_;
-};
-/**
- * Get the line cap type for the stroke.
- * @return {string|undefined} Line cap.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.getLineCap = function () {
-  return this.lineCap_;
-};
-/**
- * Get the line dash style for the stroke.
- * @return {Array.<number>} Line dash.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.getLineDash = function () {
-  return this.lineDash_;
-};
-/**
- * Get the line dash offset for the stroke.
- * @return {number|undefined} Line dash offset.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.getLineDashOffset = function () {
-  return this.lineDashOffset_;
-};
-/**
- * Get the line join type for the stroke.
- * @return {string|undefined} Line join.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.getLineJoin = function () {
-  return this.lineJoin_;
-};
-/**
- * Get the miter limit for the stroke.
- * @return {number|undefined} Miter limit.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.getMiterLimit = function () {
-  return this.miterLimit_;
-};
-/**
- * Get the stroke width.
- * @return {number|undefined} Width.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.getWidth = function () {
-  return this.width_;
-};
-/**
- * Set the color.
- *
- * @param {ol.Color|ol.ColorLike} color Color.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.setColor = function (color) {
-  this.color_ = color;
-  this.checksum_ = undefined;
-};
-/**
- * Set the line cap.
- *
- * @param {string|undefined} lineCap Line cap.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.setLineCap = function (lineCap) {
-  this.lineCap_ = lineCap;
-  this.checksum_ = undefined;
-};
-/**
- * Set the line dash.
- *
- * Please note that Internet Explorer 10 and lower [do not support][mdn] the
- * `setLineDash` method on the `CanvasRenderingContext2D` and therefore this
- * property will have no visual effect in these browsers.
- *
- * [mdn]: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility
- *
- * @param {Array.<number>} lineDash Line dash.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.setLineDash = function (lineDash) {
-  this.lineDash_ = lineDash;
-  this.checksum_ = undefined;
-};
-/**
- * Set the line dash offset.
- *
- * @param {number|undefined} lineDashOffset Line dash offset.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.setLineDashOffset = function (lineDashOffset) {
-  this.lineDashOffset_ = lineDashOffset;
-  this.checksum_ = undefined;
-};
-/**
- * Set the line join.
- *
- * @param {string|undefined} lineJoin Line join.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.setLineJoin = function (lineJoin) {
-  this.lineJoin_ = lineJoin;
-  this.checksum_ = undefined;
-};
-/**
- * Set the miter limit.
- *
- * @param {number|undefined} miterLimit Miter limit.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.setMiterLimit = function (miterLimit) {
-  this.miterLimit_ = miterLimit;
-  this.checksum_ = undefined;
-};
-/**
- * Set the width.
- *
- * @param {number|undefined} width Width.
- * @api
- */
-
-
-_ol_style_Stroke_.prototype.setWidth = function (width) {
-  this.width_ = width;
-  this.checksum_ = undefined;
-};
-/**
- * @return {string} The checksum.
- */
-
-
-_ol_style_Stroke_.prototype.getChecksum = function () {
-  if (this.checksum_ === undefined) {
-    this.checksum_ = 's';
-
-    if (this.color_) {
-      if (typeof this.color_ === 'string') {
-        this.checksum_ += this.color_;
-      } else {
-        this.checksum_ += _index2.default.getUid(this.color_).toString();
-      }
-    } else {
-      this.checksum_ += '-';
-    }
-
-    this.checksum_ += ',' + (this.lineCap_ !== undefined ? this.lineCap_.toString() : '-') + ',' + (this.lineDash_ ? this.lineDash_.toString() : '-') + ',' + (this.lineDashOffset_ !== undefined ? this.lineDashOffset_ : '-') + ',' + (this.lineJoin_ !== undefined ? this.lineJoin_ : '-') + ',' + (this.miterLimit_ !== undefined ? this.miterLimit_.toString() : '-') + ',' + (this.width_ !== undefined ? this.width_.toString() : '-');
-  }
-
-  return this.checksum_;
-};
-
-exports.default = _ol_style_Stroke_;
-
-},{"../index.js":69}],204:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _asserts = require("../asserts.js");
-
-var _asserts2 = _interopRequireDefault(_asserts);
-
-var _geometrytype = require("../geom/geometrytype.js");
-
-var _geometrytype2 = _interopRequireDefault(_geometrytype);
-
-var _circle = require("../style/circle.js");
-
-var _circle2 = _interopRequireDefault(_circle);
-
-var _fill = require("../style/fill.js");
-
-var _fill2 = _interopRequireDefault(_fill);
-
-var _stroke = require("../style/stroke.js");
-
-var _stroke2 = _interopRequireDefault(_stroke);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Container for vector feature rendering styles. Any changes made to the style
- * or its children through `set*()` methods will not take effect until the
- * feature or layer that uses the style is re-rendered.
- *
- * @constructor
- * @struct
- * @param {olx.style.StyleOptions=} opt_options Style options.
- * @api
- */
-
-
-var _ol_style_Style_ = function _ol_style_Style_(opt_options) {
-  var options = opt_options || {};
-  /**
-   * @private
-   * @type {string|ol.geom.Geometry|ol.StyleGeometryFunction}
-   */
-
-  this.geometry_ = null;
-  /**
-   * @private
-   * @type {!ol.StyleGeometryFunction}
-   */
-
-  this.geometryFunction_ = _ol_style_Style_.defaultGeometryFunction;
-
-  if (options.geometry !== undefined) {
-    this.setGeometry(options.geometry);
-  }
-  /**
-   * @private
-   * @type {ol.style.Fill}
-   */
-
-
-  this.fill_ = options.fill !== undefined ? options.fill : null;
-  /**
-   * @private
-   * @type {ol.style.Image}
-   */
-
-  this.image_ = options.image !== undefined ? options.image : null;
-  /**
-   * @private
-   * @type {ol.StyleRenderFunction|null}
-   */
-
-  this.renderer_ = options.renderer !== undefined ? options.renderer : null;
-  /**
-   * @private
-   * @type {ol.style.Stroke}
-   */
-
-  this.stroke_ = options.stroke !== undefined ? options.stroke : null;
-  /**
-   * @private
-   * @type {ol.style.Text}
-   */
-
-  this.text_ = options.text !== undefined ? options.text : null;
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.zIndex_ = options.zIndex;
-};
-/**
- * Clones the style.
- * @return {ol.style.Style} The cloned style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.clone = function () {
-  var geometry = this.getGeometry();
-
-  if (geometry && geometry.clone) {
-    geometry = geometry.clone();
-  }
-
-  return new _ol_style_Style_({
-    geometry: geometry,
-    fill: this.getFill() ? this.getFill().clone() : undefined,
-    image: this.getImage() ? this.getImage().clone() : undefined,
-    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
-    text: this.getText() ? this.getText().clone() : undefined,
-    zIndex: this.getZIndex()
-  });
-};
-/**
- * Get the custom renderer function that was configured with
- * {@link #setRenderer} or the `renderer` constructor option.
- * @return {ol.StyleRenderFunction|null} Custom renderer function.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getRenderer = function () {
-  return this.renderer_;
-};
-/**
- * Sets a custom renderer function for this style. When set, `fill`, `stroke`
- * and `image` options of the style will be ignored.
- * @param {ol.StyleRenderFunction|null} renderer Custom renderer function.
- * @api
- */
-
-
-_ol_style_Style_.prototype.setRenderer = function (renderer) {
-  this.renderer_ = renderer;
-};
-/**
- * Get the geometry to be rendered.
- * @return {string|ol.geom.Geometry|ol.StyleGeometryFunction}
- * Feature property or geometry or function that returns the geometry that will
- * be rendered with this style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getGeometry = function () {
-  return this.geometry_;
-};
-/**
- * Get the function used to generate a geometry for rendering.
- * @return {!ol.StyleGeometryFunction} Function that is called with a feature
- * and returns the geometry to render instead of the feature's geometry.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getGeometryFunction = function () {
-  return this.geometryFunction_;
-};
-/**
- * Get the fill style.
- * @return {ol.style.Fill} Fill style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getFill = function () {
-  return this.fill_;
-};
-/**
- * Set the fill style.
- * @param {ol.style.Fill} fill Fill style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.setFill = function (fill) {
-  this.fill_ = fill;
-};
-/**
- * Get the image style.
- * @return {ol.style.Image} Image style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getImage = function () {
-  return this.image_;
-};
-/**
- * Set the image style.
- * @param {ol.style.Image} image Image style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.setImage = function (image) {
-  this.image_ = image;
-};
-/**
- * Get the stroke style.
- * @return {ol.style.Stroke} Stroke style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getStroke = function () {
-  return this.stroke_;
-};
-/**
- * Set the stroke style.
- * @param {ol.style.Stroke} stroke Stroke style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.setStroke = function (stroke) {
-  this.stroke_ = stroke;
-};
-/**
- * Get the text style.
- * @return {ol.style.Text} Text style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getText = function () {
-  return this.text_;
-};
-/**
- * Set the text style.
- * @param {ol.style.Text} text Text style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.setText = function (text) {
-  this.text_ = text;
-};
-/**
- * Get the z-index for the style.
- * @return {number|undefined} ZIndex.
- * @api
- */
-
-
-_ol_style_Style_.prototype.getZIndex = function () {
-  return this.zIndex_;
-};
-/**
- * Set a geometry that is rendered instead of the feature's geometry.
- *
- * @param {string|ol.geom.Geometry|ol.StyleGeometryFunction} geometry
- *     Feature property or geometry or function returning a geometry to render
- *     for this style.
- * @api
- */
-
-
-_ol_style_Style_.prototype.setGeometry = function (geometry) {
-  if (typeof geometry === 'function') {
-    this.geometryFunction_ = geometry;
-  } else if (typeof geometry === 'string') {
-    this.geometryFunction_ = function (feature) {
-      return (
-        /** @type {ol.geom.Geometry} */
-        feature.get(geometry)
-      );
-    };
-  } else if (!geometry) {
-    this.geometryFunction_ = _ol_style_Style_.defaultGeometryFunction;
-  } else if (geometry !== undefined) {
-    this.geometryFunction_ = function () {
-      return (
-        /** @type {ol.geom.Geometry} */
-        geometry
-      );
-    };
-  }
-
-  this.geometry_ = geometry;
-};
-/**
- * Set the z-index.
- *
- * @param {number|undefined} zIndex ZIndex.
- * @api
- */
-
-
-_ol_style_Style_.prototype.setZIndex = function (zIndex) {
-  this.zIndex_ = zIndex;
-};
-/**
- * Convert the provided object into a style function.  Functions passed through
- * unchanged.  Arrays of ol.style.Style or single style objects wrapped in a
- * new style function.
- * @param {ol.StyleFunction|Array.<ol.style.Style>|ol.style.Style} obj
- *     A style function, a single style, or an array of styles.
- * @return {ol.StyleFunction} A style function.
- */
-
-
-_ol_style_Style_.createFunction = function (obj) {
-  var styleFunction;
-
-  if (typeof obj === 'function') {
-    styleFunction = obj;
-  } else {
-    /**
-     * @type {Array.<ol.style.Style>}
-     */
-    var styles;
-
-    if (Array.isArray(obj)) {
-      styles = obj;
-    } else {
-      _asserts2.default.assert(obj instanceof _ol_style_Style_, 41); // Expected an `ol.style.Style` or an array of `ol.style.Style`
-
-
-      styles = [obj];
-    }
-
-    styleFunction = function styleFunction() {
-      return styles;
-    };
-  }
-
-  return styleFunction;
-};
-/**
- * @type {Array.<ol.style.Style>}
- * @private
- */
-
-
-_ol_style_Style_.default_ = null;
-/**
- * @param {ol.Feature|ol.render.Feature} feature Feature.
- * @param {number} resolution Resolution.
- * @return {Array.<ol.style.Style>} Style.
- */
-
-_ol_style_Style_.defaultFunction = function (feature, resolution) {
-  // We don't use an immediately-invoked function
-  // and a closure so we don't get an error at script evaluation time in
-  // browsers that do not support Canvas. (ol.style.Circle does
-  // canvas.getContext('2d') at construction time, which will cause an.error
-  // in such browsers.)
-  if (!_ol_style_Style_.default_) {
-    var fill = new _fill2.default({
-      color: 'rgba(255,255,255,0.4)'
-    });
-    var stroke = new _stroke2.default({
-      color: '#3399CC',
-      width: 1.25
-    });
-    _ol_style_Style_.default_ = [new _ol_style_Style_({
-      image: new _circle2.default({
-        fill: fill,
-        stroke: stroke,
-        radius: 5
-      }),
-      fill: fill,
-      stroke: stroke
-    })];
-  }
-
-  return _ol_style_Style_.default_;
-};
-/**
- * Default styles for editing features.
- * @return {Object.<ol.geom.GeometryType, Array.<ol.style.Style>>} Styles
- */
-
-
-_ol_style_Style_.createDefaultEditing = function () {
-  /** @type {Object.<ol.geom.GeometryType, Array.<ol.style.Style>>} */
-  var styles = {};
-  var white = [255, 255, 255, 1];
-  var blue = [0, 153, 255, 1];
-  var width = 3;
-  styles[_geometrytype2.default.POLYGON] = [new _ol_style_Style_({
-    fill: new _fill2.default({
-      color: [255, 255, 255, 0.5]
-    })
-  })];
-  styles[_geometrytype2.default.MULTI_POLYGON] = styles[_geometrytype2.default.POLYGON];
-  styles[_geometrytype2.default.LINE_STRING] = [new _ol_style_Style_({
-    stroke: new _stroke2.default({
-      color: white,
-      width: width + 2
-    })
-  }), new _ol_style_Style_({
-    stroke: new _stroke2.default({
-      color: blue,
-      width: width
-    })
-  })];
-  styles[_geometrytype2.default.MULTI_LINE_STRING] = styles[_geometrytype2.default.LINE_STRING];
-  styles[_geometrytype2.default.CIRCLE] = styles[_geometrytype2.default.POLYGON].concat(styles[_geometrytype2.default.LINE_STRING]);
-  styles[_geometrytype2.default.POINT] = [new _ol_style_Style_({
-    image: new _circle2.default({
-      radius: width * 2,
-      fill: new _fill2.default({
-        color: blue
-      }),
-      stroke: new _stroke2.default({
-        color: white,
-        width: width / 2
-      })
-    }),
-    zIndex: Infinity
-  })];
-  styles[_geometrytype2.default.MULTI_POINT] = styles[_geometrytype2.default.POINT];
-  styles[_geometrytype2.default.GEOMETRY_COLLECTION] = styles[_geometrytype2.default.POLYGON].concat(styles[_geometrytype2.default.LINE_STRING], styles[_geometrytype2.default.POINT]);
-  return styles;
-};
-/**
- * Function that is called with a feature and returns its default geometry.
- * @param {ol.Feature|ol.render.Feature} feature Feature to get the geometry
- *     for.
- * @return {ol.geom.Geometry|ol.render.Feature|undefined} Geometry to render.
- */
-
-
-_ol_style_Style_.defaultGeometryFunction = function (feature) {
-  return feature.getGeometry();
-};
-
-exports.default = _ol_style_Style_;
-
-},{"../asserts.js":9,"../geom/geometrytype.js":59,"../style/circle.js":208,"../style/fill.js":209,"../style/stroke.js":216}],205:[function(require,module,exports){
+},{"../asserts.js":8,"../color.js":13,"../events.js":25,"../events/eventtype.js":29,"../imagestate.js":64,"../index.js":65,"../style/iconanchorunits.js":202,"../style/iconimage.js":203,"../style/iconorigin.js":205,"../style/image.js":206}],197:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46609,7 +43133,7 @@ _ol_style_Text_.prototype.setPadding = function (padding) {
 
 exports.default = _ol_style_Text_;
 
-},{"../style/fill.js":209,"../style/textplacement.js":218}],206:[function(require,module,exports){
+},{"../style/fill.js":201,"../style/textplacement.js":210}],198:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46808,7 +43332,7 @@ _ol_style_Atlas_.prototype.updateBlocks_ = function (index, newBlock1, newBlock2
 
 exports.default = _ol_style_Atlas_;
 
-},{"../dom.js":25}],207:[function(require,module,exports){
+},{"../dom.js":23}],199:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47050,7 +43574,7 @@ _ol_style_AtlasManager_.prototype.add_ = function (isHitAtlas, id, width, height
 
 exports.default = _ol_style_AtlasManager_;
 
-},{"../index.js":69,"../style/atlas.js":206}],208:[function(require,module,exports){
+},{"../index.js":65,"../style/atlas.js":198}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47130,7 +43654,7 @@ _ol_style_Circle_.prototype.setRadius = function (radius) {
 
 exports.default = _ol_style_Circle_;
 
-},{"../index.js":69,"../style/regularshape.js":215}],209:[function(require,module,exports){
+},{"../index.js":65,"../style/regularshape.js":207}],201:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47229,7 +43753,7 @@ _ol_style_Fill_.prototype.getChecksum = function () {
 
 exports.default = _ol_style_Fill_;
 
-},{"../color.js":14,"../index.js":69}],210:[function(require,module,exports){
+},{"../color.js":13,"../index.js":65}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47246,7 +43770,7 @@ var _ol_style_IconAnchorUnits_ = {
 };
 exports.default = _ol_style_IconAnchorUnits_;
 
-},{}],211:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47558,7 +44082,7 @@ _ol_style_IconImage_.prototype.unlistenImage_ = function () {
 
 exports.default = _ol_style_IconImage_;
 
-},{"../dom.js":25,"../events.js":27,"../events/eventtarget.js":30,"../events/eventtype.js":31,"../imagestate.js":68,"../index.js":69,"../style.js":200}],212:[function(require,module,exports){
+},{"../dom.js":23,"../events.js":25,"../events/eventtarget.js":28,"../events/eventtype.js":29,"../imagestate.js":64,"../index.js":65,"../style.js":195}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47683,7 +44207,7 @@ _ol_style_IconImageCache_.prototype.setSize = function (maxCacheSize) {
 
 exports.default = _ol_style_IconImageCache_;
 
-},{"../color.js":14}],213:[function(require,module,exports){
+},{"../color.js":13}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47702,7 +44226,7 @@ var _ol_style_IconOrigin_ = {
 };
 exports.default = _ol_style_IconOrigin_;
 
-},{}],214:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47946,7 +44470,7 @@ _ol_style_Image_.prototype.unlistenImageChange = function (listener, thisArg) {}
 
 exports.default = _ol_style_Image_;
 
-},{}],215:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48549,7 +45073,7 @@ _ol_style_RegularShape_.prototype.getChecksum = function () {
 
 exports.default = _ol_style_RegularShape_;
 
-},{"../colorlike.js":15,"../dom.js":25,"../has.js":64,"../imagestate.js":68,"../index.js":69,"../render/canvas.js":129,"../style/image.js":214}],216:[function(require,module,exports){
+},{"../colorlike.js":14,"../dom.js":23,"../has.js":60,"../imagestate.js":64,"../index.js":65,"../render/canvas.js":124,"../style/image.js":206}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48835,7 +45359,7 @@ _ol_style_Stroke_.prototype.getChecksum = function () {
 
 exports.default = _ol_style_Stroke_;
 
-},{"../index.js":69}],217:[function(require,module,exports){
+},{"../index.js":65}],209:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49277,7 +45801,7 @@ _ol_style_Style_.defaultGeometryFunction = function (feature) {
 
 exports.default = _ol_style_Style_;
 
-},{"../asserts.js":9,"../geom/geometrytype.js":59,"../style/circle.js":208,"../style/fill.js":209,"../style/stroke.js":216}],218:[function(require,module,exports){
+},{"../asserts.js":8,"../geom/geometrytype.js":55,"../style/circle.js":200,"../style/fill.js":201,"../style/stroke.js":208}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49297,7 +45821,7 @@ var _ol_style_TextPlacement_ = {
 };
 exports.default = _ol_style_TextPlacement_;
 
-},{}],219:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49426,7 +45950,7 @@ _ol_tilecoord_.withinExtentAndZ = function (tileCoord, tileGrid) {
 
 exports.default = _ol_tilecoord_;
 
-},{}],220:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49629,7 +46153,7 @@ _ol_tilegrid_.extentFromProjection = function (projection) {
 
 exports.default = _ol_tilegrid_;
 
-},{"./extent.js":33,"./extent/corner.js":34,"./index.js":69,"./obj.js":103,"./proj.js":119,"./proj/units.js":127,"./size.js":187,"./tilegrid/tilegrid.js":221}],221:[function(require,module,exports){
+},{"./extent.js":31,"./extent/corner.js":32,"./index.js":65,"./obj.js":99,"./proj.js":115,"./proj/units.js":122,"./size.js":182,"./tilegrid/tilegrid.js":213}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50220,7 +46744,7 @@ _ol_tilegrid_TileGrid_.prototype.calculateTileRanges_ = function (extent) {
 
 exports.default = _ol_tilegrid_TileGrid_;
 
-},{"../array.js":7,"../asserts.js":9,"../extent.js":33,"../index.js":69,"../math.js":102,"../size.js":187,"../tilecoord.js":219,"../tilerange.js":223}],222:[function(require,module,exports){
+},{"../array.js":6,"../asserts.js":8,"../extent.js":31,"../index.js":65,"../math.js":98,"../size.js":182,"../tilecoord.js":211,"../tilerange.js":215}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50390,7 +46914,7 @@ _ol_TileQueue_.prototype.loadMoreTiles = function (maxTotalLoading, maxNewLoads)
 
 exports.default = _ol_TileQueue_;
 
-},{"./events.js":27,"./events/eventtype.js":31,"./index.js":69,"./structs/priorityqueue.js":198,"./tilestate.js":224}],223:[function(require,module,exports){
+},{"./events.js":25,"./events/eventtype.js":29,"./index.js":65,"./structs/priorityqueue.js":193,"./tilestate.js":216}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50545,7 +47069,7 @@ _ol_TileRange_.prototype.intersects = function (tileRange) {
 
 exports.default = _ol_TileRange_;
 
-},{}],224:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50565,7 +47089,7 @@ var _ol_TileState_ = {
 };
 exports.default = _ol_TileState_;
 
-},{}],225:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50809,7 +47333,7 @@ _ol_transform_.determinant = function (mat) {
 
 exports.default = _ol_transform_;
 
-},{"./asserts.js":9}],226:[function(require,module,exports){
+},{"./asserts.js":8}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50842,7 +47366,7 @@ _ol_vec_Mat4_.fromTransform = function (mat4, transform) {
 
 exports.default = _ol_vec_Mat4_;
 
-},{}],227:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52205,7 +48729,7 @@ _ol_View_.isNoopAnimation = function (animation) {
 
 exports.default = _ol_View_;
 
-},{"./array.js":7,"./asserts.js":9,"./centerconstraint.js":11,"./coordinate.js":22,"./easing.js":26,"./extent.js":33,"./geom/geometrytype.js":59,"./geom/polygon.js":62,"./geom/simplegeometry.js":63,"./index.js":69,"./math.js":102,"./obj.js":103,"./object.js":104,"./proj.js":119,"./proj/units.js":127,"./resolutionconstraint.js":185,"./rotationconstraint.js":186,"./viewhint.js":228,"./viewproperty.js":229}],228:[function(require,module,exports){
+},{"./array.js":6,"./asserts.js":8,"./centerconstraint.js":10,"./coordinate.js":20,"./easing.js":24,"./extent.js":31,"./geom/geometrytype.js":55,"./geom/polygon.js":58,"./geom/simplegeometry.js":59,"./index.js":65,"./math.js":98,"./obj.js":99,"./object.js":100,"./proj.js":115,"./proj/units.js":122,"./resolutionconstraint.js":180,"./rotationconstraint.js":181,"./viewhint.js":220,"./viewproperty.js":221}],220:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52221,7 +48745,7 @@ var _ol_ViewHint_ = {
 };
 exports.default = _ol_ViewHint_;
 
-},{}],229:[function(require,module,exports){
+},{}],221:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52238,7 +48762,7 @@ var _ol_ViewProperty_ = {
 };
 exports.default = _ol_ViewProperty_;
 
-},{}],230:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52499,7 +49023,7 @@ _ol_webgl_.getContext = function (canvas, opt_attributes) {
 
 exports.default = _ol_webgl_;
 
-},{}],231:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52565,7 +49089,7 @@ _ol_webgl_Buffer_.Usage_ = {
 };
 exports.default = _ol_webgl_Buffer_;
 
-},{"../webgl.js":230}],232:[function(require,module,exports){
+},{"../webgl.js":222}],224:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52973,7 +49497,7 @@ _ol_webgl_Context_.createTexture = function (gl, image, opt_wrapS, opt_wrapT) {
 
 exports.default = _ol_webgl_Context_;
 
-},{"../array.js":7,"../disposable.js":24,"../events.js":27,"../index.js":69,"../obj.js":103,"../webgl.js":230,"../webgl/contexteventtype.js":233}],233:[function(require,module,exports){
+},{"../array.js":6,"../disposable.js":22,"../events.js":25,"../index.js":65,"../obj.js":99,"../webgl.js":222,"../webgl/contexteventtype.js":225}],225:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52989,7 +49513,7 @@ var _ol_webgl_ContextEventType_ = {
 };
 exports.default = _ol_webgl_ContextEventType_;
 
-},{}],234:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -53037,7 +49561,7 @@ _ol_webgl_Fragment_.prototype.getType = function () {
 
 exports.default = _ol_webgl_Fragment_;
 
-},{"../index.js":69,"../webgl.js":230,"../webgl/shader.js":235}],235:[function(require,module,exports){
+},{"../index.js":65,"../webgl.js":222,"../webgl/shader.js":227}],227:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -53091,7 +49615,7 @@ _ol_webgl_Shader_.prototype.getSource = function () {
 _ol_webgl_Shader_.prototype.isAnimated = _functions2.default.FALSE;
 exports.default = _ol_webgl_Shader_;
 
-},{"../functions.js":38}],236:[function(require,module,exports){
+},{"../functions.js":36}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -53139,7 +49663,7 @@ _ol_webgl_Vertex_.prototype.getType = function () {
 
 exports.default = _ol_webgl_Vertex_;
 
-},{"../index.js":69,"../webgl.js":230,"../webgl/shader.js":235}],237:[function(require,module,exports){
+},{"../index.js":65,"../webgl.js":222,"../webgl/shader.js":227}],229:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -53687,7 +50211,7 @@ _ol_xml_.pushSerializeAndPop = function (object, serializersNS, nodeFactory, val
 
 exports.default = _ol_xml_;
 
-},{"./array.js":7}],238:[function(require,module,exports){
+},{"./array.js":6}],230:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -53756,7 +50280,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   return quickselect;
 });
 
-},{}],239:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 'use strict';
 
 module.exports = rbush;
@@ -54263,4 +50787,4 @@ function multiSelect(arr, left, right, n, compare) {
   }
 }
 
-},{"quickselect":238}]},{},[1]);
+},{"quickselect":230}]},{},[1]);

@@ -16,7 +16,6 @@ import OlStyleText from 'ol/style/Text';
 import OlStyleStroke from 'ol/style/Stroke';
 import OlStyleFill from 'ol/style/Fill';
 import OlInteraction from 'ol/interaction';
-import OlControlFullscreen from 'ol/control/FullScreen';
 
 /** Model for location */
 interface ILocation {
@@ -248,10 +247,6 @@ export function getMap(
     view: view,
     controls: []
   });
-
-  /* Add controls */
-  const fullscreen = new OlControlFullscreen();
-  map.addControl(fullscreen);
 
   /* Handle click */
   map.on('click', (evt: any) => {

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A web implementation of InstiMap in Openlayers",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pulsejet/InstiMapWeb"
+  },
   "scripts": {
     "build-demo": "browserify -g [ babelify --presets [ \"@babel/preset-env\" ] ] demo/demo.js -o demo/bundle.js",
     "build": "tsc"

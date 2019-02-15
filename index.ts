@@ -430,3 +430,10 @@ export function isFollowingUser(): boolean {
 export function getGeolocationLast(): any {
   return geoLocationLast;
 }
+
+/** Call this to remove watches */
+export function cleanup() {
+  if (geoLocationId != null && geoLocationId != undefined) {
+    navigator.geolocation.clearWatch(geoLocationId);
+  }
+}

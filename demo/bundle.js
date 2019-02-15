@@ -460,6 +460,15 @@ function getGeolocationLast() {
 }
 
 exports.getGeolocationLast = getGeolocationLast;
+/** Call this to remove watches */
+
+function cleanup() {
+  if (geoLocationId != null && geoLocationId != undefined) {
+    navigator.geolocation.clearWatch(geoLocationId);
+  }
+}
+
+exports.cleanup = cleanup;
 
 },{"ol/Feature":3,"ol/Map":4,"ol/Overlay":5,"ol/extent":31,"ol/geom/point":57,"ol/geom/polygon":58,"ol/interaction":66,"ol/layer/Image":81,"ol/layer/Vector":82,"ol/proj/projection":119,"ol/source/ImageStatic":183,"ol/source/Vector":184,"ol/style/Icon":196,"ol/style/Text":197,"ol/style/fill":201,"ol/style/stroke":208,"ol/style/style":209,"ol/view":219}],3:[function(require,module,exports){
 "use strict";

@@ -18,7 +18,7 @@ import OlStyleFill from 'ol/style/Fill';
 import OlInteraction from 'ol/interaction';
 
 /** Model for location */
-interface ILocation {
+export interface ILocation {
   id: string;
   name: string;
   short_name: string;

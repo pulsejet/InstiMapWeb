@@ -2,7 +2,8 @@
   "name": "instimapweb",
   "version": "1.0.0",
   "description": "A web implementation of InstiMap in Openlayers",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/pulsejet/InstiMapWeb"

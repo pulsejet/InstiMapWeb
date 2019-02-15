@@ -1,4 +1,4 @@
-const InstiMap = require('../index.js');
+const InstiMap = require('../dist/index.js');
 
 fetch('locations.json')
   .then(function(response) {

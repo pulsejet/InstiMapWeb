@@ -16,6 +16,8 @@ fetch('locations.json').then(function (response) {
     user_marker_id: 'user-marker'
   }, jsonResponse, function (location) {
     console.log(location);
+  }, function () {
+    console.log('map loaded');
   });
 });
 
@@ -103,7 +105,7 @@ var MAP_WEIGHTS_X = [-7.769917472065843, 159.26978694839946, 244.46989575495544,
 var MAP_WEIGHTS_Y = [14.199431377059842, -158.80601990819815, 68.9630034040724, 5.796703402034644, 1.1348242200568706, 0.11891051684489184, -0.2930832938484276, 0.1448231125788526, -5.282895700923075];
 /** Make and get the map. Call only once. */
 
-function getMap(config, locations, locationSelectCallback) {
+function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
   _config = config;
   /* Make features array */
 
@@ -222,7 +224,7 @@ function getMap(config, locations, locationSelectCallback) {
       img.src = src;
 
       img.onload = function () {
-        loadHighRes();
+        loadHighRes(mapLoadedCallback);
       };
     }
   });
@@ -355,7 +357,7 @@ function setResidencesVisible(visible) {
 exports.setResidencesVisible = setResidencesVisible;
 /** Load the high resolution map */
 
-function loadHighRes() {
+function loadHighRes(callback) {
   /* High res source */
   var highResSource = new ImageStatic_1.default({
     url: _config.mapPath,
@@ -370,6 +372,7 @@ function loadHighRes() {
 
   highRes.onload = function () {
     imlayer.setSource(highResSource);
+    callback();
   };
 }
 /** Determine if we support geolocation */

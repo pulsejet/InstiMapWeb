@@ -14,6 +14,8 @@ fetch('locations.json')
         marker_id: 'marker',
         user_marker_id: 'user-marker',
     }, jsonResponse, (location) => {
-        console.log(location);
+      console.log(location);
+    }, () => {
+      console.log('map loaded');
     });
   });

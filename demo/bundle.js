@@ -34,25 +34,25 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var Map_1 = __importDefault(require("ol/Map"));
+var map_1 = __importDefault(require("ol/map"));
 
-var Image_1 = __importDefault(require("ol/layer/Image"));
+var image_1 = __importDefault(require("ol/layer/image"));
 
 var view_1 = __importDefault(require("ol/view"));
 
 var extent_1 = __importDefault(require("ol/extent"));
 
-var Overlay_1 = __importDefault(require("ol/Overlay"));
+var overlay_1 = __importDefault(require("ol/overlay"));
 
-var Vector_1 = __importDefault(require("ol/layer/Vector"));
+var vector_1 = __importDefault(require("ol/layer/vector"));
 
-var ImageStatic_1 = __importDefault(require("ol/source/ImageStatic"));
+var imagestatic_1 = __importDefault(require("ol/source/imagestatic"));
 
-var Vector_2 = __importDefault(require("ol/source/Vector"));
+var vector_2 = __importDefault(require("ol/source/vector"));
 
 var projection_1 = __importDefault(require("ol/proj/projection"));
 
-var Feature_1 = __importDefault(require("ol/Feature"));
+var feature_1 = __importDefault(require("ol/feature"));
 
 var point_1 = __importDefault(require("ol/geom/point"));
 
@@ -60,9 +60,9 @@ var polygon_1 = __importDefault(require("ol/geom/polygon"));
 
 var style_1 = __importDefault(require("ol/style/style"));
 
-var Icon_1 = __importDefault(require("ol/style/Icon"));
+var icon_1 = __importDefault(require("ol/style/icon"));
 
-var Text_1 = __importDefault(require("ol/style/Text"));
+var text_1 = __importDefault(require("ol/style/text"));
 
 var stroke_1 = __importDefault(require("ol/style/stroke"));
 
@@ -120,7 +120,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
 
     if (loc.parent === null) {
       /* Make the Feature */
-      var iconFeature = new Feature_1.default({
+      var iconFeature = new feature_1.default({
         geometry: new point_1.default(pos),
         loc: loc
       });
@@ -132,7 +132,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
   /* Make vector source and layer from features */
 
 
-  var vectorSource = new Vector_2.default({
+  var vectorSource = new vector_2.default({
     features: features
   });
   /* Style the vector layer */
@@ -173,7 +173,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
     /* Make text object */
 
 
-    var text = new Text_1.default({
+    var text = new text_1.default({
       offsetY: 20,
       padding: [20, 20, 20, 20],
       font: font_size + "px Roboto",
@@ -188,7 +188,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
     });
     /* Icon image*/
 
-    var icon = new Icon_1.default({
+    var icon = new icon_1.default({
       src: _config.markersBase + "marker_dot_" + icon_color + ".png",
       scale: 0.2
     });
@@ -201,7 +201,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
     return [style];
   };
 
-  vectorLayer = new Vector_1.default({
+  vectorLayer = new vector_1.default({
     source: vectorSource,
     style: vectorLayerStyle
   });
@@ -213,7 +213,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
     units: 'pixels',
     extent: imExtent
   });
-  var staticSource = new ImageStatic_1.default({
+  var staticSource = new imagestatic_1.default({
     url: config.mapMinPath,
     attributions: attributions,
     projection: imProjection,
@@ -231,7 +231,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
   });
   /* Make image layer */
 
-  imlayer = new Image_1.default({
+  imlayer = new image_1.default({
     source: staticSource
   });
   /* Disable tilting */
@@ -252,7 +252,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
   });
   /* Generate map */
 
-  map = new Map_1.default({
+  map = new map_1.default({
     interactions: interactions,
     layers: [imlayer, vectorLayer],
     target: _config.map_id,
@@ -270,7 +270,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
     var XYMin = map.getCoordinateFromPixel(pixelWithOffsetMin);
     var XYMax = map.getCoordinateFromPixel(pixelWithOffsetMax);
     var ext = XYMax.concat(XYMin);
-    var extentFeat = new Feature_1.default(new polygon_1.default([[[ext[0], ext[1]], [ext[0], ext[3]], [ext[2], ext[3]], [ext[2], ext[1]], [ext[0], ext[1]]]]));
+    var extentFeat = new feature_1.default(new polygon_1.default([[[ext[0], ext[1]], [ext[0], ext[3]], [ext[2], ext[3]], [ext[2], ext[1]], [ext[0], ext[1]]]]));
     /* Get first nearby feature */
 
     var feature = vectorLayer.getSource().forEachFeatureIntersectingExtent(extentFeat.getGeometry().getExtent(), function (f) {
@@ -327,7 +327,7 @@ function moveMarker(x, y, center, markerid) {
 
   var pos = [Number(x), 3575 - Number(y)];
   var element = document.getElementById(markerid);
-  var marker = new Overlay_1.default({
+  var marker = new overlay_1.default({
     position: pos,
     positioning: 'bottom-center',
     element: element,
@@ -360,7 +360,7 @@ exports.setResidencesVisible = setResidencesVisible;
 
 function loadHighRes() {
   /* High res source */
-  var highResSource = new ImageStatic_1.default({
+  var highResSource = new imagestatic_1.default({
     url: _config.mapPath,
     attributions: attributions,
     projection: imProjection,
@@ -470,1113 +470,7 @@ function cleanup() {
 
 exports.cleanup = cleanup;
 
-},{"ol/Feature":3,"ol/Map":4,"ol/Overlay":5,"ol/extent":31,"ol/geom/point":57,"ol/geom/polygon":58,"ol/interaction":66,"ol/layer/Image":81,"ol/layer/Vector":82,"ol/proj/projection":119,"ol/source/ImageStatic":183,"ol/source/Vector":184,"ol/style/Icon":196,"ol/style/Text":197,"ol/style/fill":201,"ol/style/stroke":208,"ol/style/style":209,"ol/view":219}],3:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _asserts = require("./asserts.js");
-
-var _asserts2 = _interopRequireDefault(_asserts);
-
-var _events = require("./events.js");
-
-var _events2 = _interopRequireDefault(_events);
-
-var _eventtype = require("./events/eventtype.js");
-
-var _eventtype2 = _interopRequireDefault(_eventtype);
-
-var _index = require("./index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _object = require("./object.js");
-
-var _object2 = _interopRequireDefault(_object);
-
-var _geometry = require("./geom/geometry.js");
-
-var _geometry2 = _interopRequireDefault(_geometry);
-
-var _style = require("./style/style.js");
-
-var _style2 = _interopRequireDefault(_style);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * A vector object for geographic features with a geometry and other
- * attribute properties, similar to the features in vector file formats like
- * GeoJSON.
- *
- * Features can be styled individually with `setStyle`; otherwise they use the
- * style of their vector layer.
- *
- * Note that attribute properties are set as {@link ol.Object} properties on
- * the feature object, so they are observable, and have get/set accessors.
- *
- * Typically, a feature has a single geometry property. You can set the
- * geometry using the `setGeometry` method and get it with `getGeometry`.
- * It is possible to store more than one geometry on a feature using attribute
- * properties. By default, the geometry used for rendering is identified by
- * the property name `geometry`. If you want to use another geometry property
- * for rendering, use the `setGeometryName` method to change the attribute
- * property associated with the geometry for the feature.  For example:
- *
- * ```js
- * var feature = new ol.Feature({
- *   geometry: new ol.geom.Polygon(polyCoords),
- *   labelPoint: new ol.geom.Point(labelCoords),
- *   name: 'My Polygon'
- * });
- *
- * // get the polygon geometry
- * var poly = feature.getGeometry();
- *
- * // Render the feature as a point using the coordinates from labelPoint
- * feature.setGeometryName('labelPoint');
- *
- * // get the point geometry
- * var point = feature.getGeometry();
- * ```
- *
- * @constructor
- * @extends {ol.Object}
- * @param {ol.geom.Geometry|Object.<string, *>=} opt_geometryOrProperties
- *     You may pass a Geometry object directly, or an object literal
- *     containing properties.  If you pass an object literal, you may
- *     include a Geometry associated with a `geometry` key.
- * @api
- */
-
-
-var _ol_Feature_ = function _ol_Feature_(opt_geometryOrProperties) {
-  _object2.default.call(this);
-  /**
-   * @private
-   * @type {number|string|undefined}
-   */
-
-
-  this.id_ = undefined;
-  /**
-   * @type {string}
-   * @private
-   */
-
-  this.geometryName_ = 'geometry';
-  /**
-   * User provided style.
-   * @private
-   * @type {ol.style.Style|Array.<ol.style.Style>|
-   *     ol.FeatureStyleFunction}
-   */
-
-  this.style_ = null;
-  /**
-   * @private
-   * @type {ol.FeatureStyleFunction|undefined}
-   */
-
-  this.styleFunction_ = undefined;
-  /**
-   * @private
-   * @type {?ol.EventsKey}
-   */
-
-  this.geometryChangeKey_ = null;
-
-  _events2.default.listen(this, _object2.default.getChangeEventType(this.geometryName_), this.handleGeometryChanged_, this);
-
-  if (opt_geometryOrProperties !== undefined) {
-    if (opt_geometryOrProperties instanceof _geometry2.default || !opt_geometryOrProperties) {
-      var geometry = opt_geometryOrProperties;
-      this.setGeometry(geometry);
-    } else {
-      /** @type {Object.<string, *>} */
-      var properties = opt_geometryOrProperties;
-      this.setProperties(properties);
-    }
-  }
-};
-
-_index2.default.inherits(_ol_Feature_, _object2.default);
-/**
- * Clone this feature. If the original feature has a geometry it
- * is also cloned. The feature id is not set in the clone.
- * @return {ol.Feature} The clone.
- * @api
- */
-
-
-_ol_Feature_.prototype.clone = function () {
-  var clone = new _ol_Feature_(this.getProperties());
-  clone.setGeometryName(this.getGeometryName());
-  var geometry = this.getGeometry();
-
-  if (geometry) {
-    clone.setGeometry(geometry.clone());
-  }
-
-  var style = this.getStyle();
-
-  if (style) {
-    clone.setStyle(style);
-  }
-
-  return clone;
-};
-/**
- * Get the feature's default geometry.  A feature may have any number of named
- * geometries.  The "default" geometry (the one that is rendered by default) is
- * set when calling {@link ol.Feature#setGeometry}.
- * @return {ol.geom.Geometry|undefined} The default geometry for the feature.
- * @api
- * @observable
- */
-
-
-_ol_Feature_.prototype.getGeometry = function () {
-  return (
-    /** @type {ol.geom.Geometry|undefined} */
-    this.get(this.geometryName_)
-  );
-};
-/**
- * Get the feature identifier.  This is a stable identifier for the feature and
- * is either set when reading data from a remote source or set explicitly by
- * calling {@link ol.Feature#setId}.
- * @return {number|string|undefined} Id.
- * @api
- */
-
-
-_ol_Feature_.prototype.getId = function () {
-  return this.id_;
-};
-/**
- * Get the name of the feature's default geometry.  By default, the default
- * geometry is named `geometry`.
- * @return {string} Get the property name associated with the default geometry
- *     for this feature.
- * @api
- */
-
-
-_ol_Feature_.prototype.getGeometryName = function () {
-  return this.geometryName_;
-};
-/**
- * Get the feature's style. Will return what was provided to the
- * {@link ol.Feature#setStyle} method.
- * @return {ol.style.Style|Array.<ol.style.Style>|
- *     ol.FeatureStyleFunction|ol.StyleFunction} The feature style.
- * @api
- */
-
-
-_ol_Feature_.prototype.getStyle = function () {
-  return this.style_;
-};
-/**
- * Get the feature's style function.
- * @return {ol.FeatureStyleFunction|undefined} Return a function
- * representing the current style of this feature.
- * @api
- */
-
-
-_ol_Feature_.prototype.getStyleFunction = function () {
-  return this.styleFunction_;
-};
-/**
- * @private
- */
-
-
-_ol_Feature_.prototype.handleGeometryChange_ = function () {
-  this.changed();
-};
-/**
- * @private
- */
-
-
-_ol_Feature_.prototype.handleGeometryChanged_ = function () {
-  if (this.geometryChangeKey_) {
-    _events2.default.unlistenByKey(this.geometryChangeKey_);
-
-    this.geometryChangeKey_ = null;
-  }
-
-  var geometry = this.getGeometry();
-
-  if (geometry) {
-    this.geometryChangeKey_ = _events2.default.listen(geometry, _eventtype2.default.CHANGE, this.handleGeometryChange_, this);
-  }
-
-  this.changed();
-};
-/**
- * Set the default geometry for the feature.  This will update the property
- * with the name returned by {@link ol.Feature#getGeometryName}.
- * @param {ol.geom.Geometry|undefined} geometry The new geometry.
- * @api
- * @observable
- */
-
-
-_ol_Feature_.prototype.setGeometry = function (geometry) {
-  this.set(this.geometryName_, geometry);
-};
-/**
- * Set the style for the feature.  This can be a single style object, an array
- * of styles, or a function that takes a resolution and returns an array of
- * styles. If it is `null` the feature has no style (a `null` style).
- * @param {ol.style.Style|Array.<ol.style.Style>|
- *     ol.FeatureStyleFunction|ol.StyleFunction} style Style for this feature.
- * @api
- * @fires ol.events.Event#event:change
- */
-
-
-_ol_Feature_.prototype.setStyle = function (style) {
-  this.style_ = style;
-  this.styleFunction_ = !style ? undefined : _ol_Feature_.createStyleFunction(style);
-  this.changed();
-};
-/**
- * Set the feature id.  The feature id is considered stable and may be used when
- * requesting features or comparing identifiers returned from a remote source.
- * The feature id can be used with the {@link ol.source.Vector#getFeatureById}
- * method.
- * @param {number|string|undefined} id The feature id.
- * @api
- * @fires ol.events.Event#event:change
- */
-
-
-_ol_Feature_.prototype.setId = function (id) {
-  this.id_ = id;
-  this.changed();
-};
-/**
- * Set the property name to be used when getting the feature's default geometry.
- * When calling {@link ol.Feature#getGeometry}, the value of the property with
- * this name will be returned.
- * @param {string} name The property name of the default geometry.
- * @api
- */
-
-
-_ol_Feature_.prototype.setGeometryName = function (name) {
-  _events2.default.unlisten(this, _object2.default.getChangeEventType(this.geometryName_), this.handleGeometryChanged_, this);
-
-  this.geometryName_ = name;
-
-  _events2.default.listen(this, _object2.default.getChangeEventType(this.geometryName_), this.handleGeometryChanged_, this);
-
-  this.handleGeometryChanged_();
-};
-/**
- * Convert the provided object into a feature style function.  Functions passed
- * through unchanged.  Arrays of ol.style.Style or single style objects wrapped
- * in a new feature style function.
- * @param {ol.FeatureStyleFunction|!Array.<ol.style.Style>|!ol.style.Style} obj
- *     A feature style function, a single style, or an array of styles.
- * @return {ol.FeatureStyleFunction} A style function.
- */
-
-
-_ol_Feature_.createStyleFunction = function (obj) {
-  var styleFunction;
-
-  if (typeof obj === 'function') {
-    if (obj.length == 2) {
-      styleFunction = function styleFunction(resolution) {
-        return (
-          /** @type {ol.StyleFunction} */
-          obj(this, resolution)
-        );
-      };
-    } else {
-      styleFunction = obj;
-    }
-  } else {
-    /**
-     * @type {Array.<ol.style.Style>}
-     */
-    var styles;
-
-    if (Array.isArray(obj)) {
-      styles = obj;
-    } else {
-      _asserts2.default.assert(obj instanceof _style2.default, 41); // Expected an `ol.style.Style` or an array of `ol.style.Style`
-
-
-      styles = [obj];
-    }
-
-    styleFunction = function styleFunction() {
-      return styles;
-    };
-  }
-
-  return styleFunction;
-};
-
-exports.default = _ol_Feature_;
-
-},{"./asserts.js":8,"./events.js":25,"./events/eventtype.js":29,"./geom/geometry.js":53,"./index.js":65,"./object.js":100,"./style/style.js":209}],4:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("./index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _pluggablemap = require("./pluggablemap.js");
-
-var _pluggablemap2 = _interopRequireDefault(_pluggablemap);
-
-var _plugintype = require("./plugintype.js");
-
-var _plugintype2 = _interopRequireDefault(_plugintype);
-
-var _control = require("./control.js");
-
-var _control2 = _interopRequireDefault(_control);
-
-var _interaction = require("./interaction.js");
-
-var _interaction2 = _interopRequireDefault(_interaction);
-
-var _obj = require("./obj.js");
-
-var _obj2 = _interopRequireDefault(_obj);
-
-var _plugins = require("./plugins.js");
-
-var _plugins2 = _interopRequireDefault(_plugins);
-
-var _imagelayer = require("./renderer/canvas/imagelayer.js");
-
-var _imagelayer2 = _interopRequireDefault(_imagelayer);
-
-var _map = require("./renderer/canvas/map.js");
-
-var _map2 = _interopRequireDefault(_map);
-
-var _tilelayer = require("./renderer/canvas/tilelayer.js");
-
-var _tilelayer2 = _interopRequireDefault(_tilelayer);
-
-var _vectorlayer = require("./renderer/canvas/vectorlayer.js");
-
-var _vectorlayer2 = _interopRequireDefault(_vectorlayer);
-
-var _vectortilelayer = require("./renderer/canvas/vectortilelayer.js");
-
-var _vectortilelayer2 = _interopRequireDefault(_vectortilelayer);
-
-var _imagelayer3 = require("./renderer/webgl/imagelayer.js");
-
-var _imagelayer4 = _interopRequireDefault(_imagelayer3);
-
-var _map3 = require("./renderer/webgl/map.js");
-
-var _map4 = _interopRequireDefault(_map3);
-
-var _tilelayer3 = require("./renderer/webgl/tilelayer.js");
-
-var _tilelayer4 = _interopRequireDefault(_tilelayer3);
-
-var _vectorlayer3 = require("./renderer/webgl/vectorlayer.js");
-
-var _vectorlayer4 = _interopRequireDefault(_vectorlayer3);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-
-if (_index2.default.ENABLE_CANVAS) {
-  _plugins2.default.register(_plugintype2.default.MAP_RENDERER, _map2.default);
-
-  _plugins2.default.registerMultiple(_plugintype2.default.LAYER_RENDERER, [_imagelayer2.default, _tilelayer2.default, _vectorlayer2.default, _vectortilelayer2.default]);
-}
-
-if (_index2.default.ENABLE_WEBGL) {
-  _plugins2.default.register(_plugintype2.default.MAP_RENDERER, _map4.default);
-
-  _plugins2.default.registerMultiple(_plugintype2.default.LAYER_RENDERER, [_imagelayer4.default, _tilelayer4.default, _vectorlayer4.default]);
-}
-/**
- * @classdesc
- * The map is the core component of OpenLayers. For a map to render, a view,
- * one or more layers, and a target container are needed:
- *
- *     var map = new ol.Map({
- *       view: new ol.View({
- *         center: [0, 0],
- *         zoom: 1
- *       }),
- *       layers: [
- *         new ol.layer.Tile({
- *           source: new ol.source.OSM()
- *         })
- *       ],
- *       target: 'map'
- *     });
- *
- * The above snippet creates a map using a {@link ol.layer.Tile} to display
- * {@link ol.source.OSM} OSM data and render it to a DOM element with the
- * id `map`.
- *
- * The constructor places a viewport container (with CSS class name
- * `ol-viewport`) in the target element (see `getViewport()`), and then two
- * further elements within the viewport: one with CSS class name
- * `ol-overlaycontainer-stopevent` for controls and some overlays, and one with
- * CSS class name `ol-overlaycontainer` for other overlays (see the `stopEvent`
- * option of {@link ol.Overlay} for the difference). The map itself is placed in
- * a further element within the viewport.
- *
- * Layers are stored as a `ol.Collection` in layerGroups. A top-level group is
- * provided by the library. This is what is accessed by `getLayerGroup` and
- * `setLayerGroup`. Layers entered in the options are added to this group, and
- * `addLayer` and `removeLayer` change the layer collection in the group.
- * `getLayers` is a convenience function for `getLayerGroup().getLayers()`.
- * Note that `ol.layer.Group` is a subclass of `ol.layer.Base`, so layers
- * entered in the options or added with `addLayer` can be groups, which can
- * contain further groups, and so on.
- *
- * @constructor
- * @extends {ol.PluggableMap}
- * @param {olx.MapOptions} options Map options.
- * @fires ol.MapBrowserEvent
- * @fires ol.MapEvent
- * @fires ol.render.Event#postcompose
- * @fires ol.render.Event#precompose
- * @api
- */
-
-
-var _ol_Map_ = function _ol_Map_(options) {
-  options = _obj2.default.assign({}, options);
-
-  if (!options.controls) {
-    options.controls = _control2.default.defaults();
-  }
-
-  if (!options.interactions) {
-    options.interactions = _interaction2.default.defaults();
-  }
-
-  _pluggablemap2.default.call(this, options);
-};
-
-_index2.default.inherits(_ol_Map_, _pluggablemap2.default);
-
-exports.default = _ol_Map_;
-
-},{"./control.js":15,"./index.js":65,"./interaction.js":66,"./obj.js":99,"./pluggablemap.js":104,"./plugins.js":105,"./plugintype.js":106,"./renderer/canvas/imagelayer.js":157,"./renderer/canvas/map.js":160,"./renderer/canvas/tilelayer.js":161,"./renderer/canvas/vectorlayer.js":162,"./renderer/canvas/vectortilelayer.js":163,"./renderer/webgl/imagelayer.js":170,"./renderer/webgl/map.js":172,"./renderer/webgl/tilelayer.js":173,"./renderer/webgl/vectorlayer.js":176}],5:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("./index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _mapeventtype = require("./mapeventtype.js");
-
-var _mapeventtype2 = _interopRequireDefault(_mapeventtype);
-
-var _object = require("./object.js");
-
-var _object2 = _interopRequireDefault(_object);
-
-var _overlaypositioning = require("./overlaypositioning.js");
-
-var _overlaypositioning2 = _interopRequireDefault(_overlaypositioning);
-
-var _css = require("./css.js");
-
-var _css2 = _interopRequireDefault(_css);
-
-var _dom = require("./dom.js");
-
-var _dom2 = _interopRequireDefault(_dom);
-
-var _events = require("./events.js");
-
-var _events2 = _interopRequireDefault(_events);
-
-var _extent = require("./extent.js");
-
-var _extent2 = _interopRequireDefault(_extent);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * An element to be displayed over the map and attached to a single map
- * location.  Like {@link ol.control.Control}, Overlays are visible widgets.
- * Unlike Controls, they are not in a fixed position on the screen, but are tied
- * to a geographical coordinate, so panning the map will move an Overlay but not
- * a Control.
- *
- * Example:
- *
- *     var popup = new ol.Overlay({
- *       element: document.getElementById('popup')
- *     });
- *     popup.setPosition(coordinate);
- *     map.addOverlay(popup);
- *
- * @constructor
- * @extends {ol.Object}
- * @param {olx.OverlayOptions} options Overlay options.
- * @api
- */
-
-
-var _ol_Overlay_ = function _ol_Overlay_(options) {
-  _object2.default.call(this);
-  /**
-   * @protected
-   * @type {olx.OverlayOptions}
-   */
-
-
-  this.options = options;
-  /**
-   * @protected
-   * @type {number|string|undefined}
-   */
-
-  this.id = options.id;
-  /**
-   * @protected
-   * @type {boolean}
-   */
-
-  this.insertFirst = options.insertFirst !== undefined ? options.insertFirst : true;
-  /**
-   * @protected
-   * @type {boolean}
-   */
-
-  this.stopEvent = options.stopEvent !== undefined ? options.stopEvent : true;
-  /**
-   * @protected
-   * @type {Element}
-   */
-
-  this.element = document.createElement('DIV');
-  this.element.className = options.className !== undefined ? options.className : 'ol-overlay-container ' + _css2.default.CLASS_SELECTABLE;
-  this.element.style.position = 'absolute';
-  /**
-   * @protected
-   * @type {boolean}
-   */
-
-  this.autoPan = options.autoPan !== undefined ? options.autoPan : false;
-  /**
-   * @protected
-   * @type {olx.OverlayPanOptions}
-   */
-
-  this.autoPanAnimation = options.autoPanAnimation ||
-  /** @type {olx.OverlayPanOptions} */
-  {};
-  /**
-   * @protected
-   * @type {number}
-   */
-
-  this.autoPanMargin = options.autoPanMargin !== undefined ? options.autoPanMargin : 20;
-  /**
-   * @protected
-   * @type {{bottom_: string,
-   *         left_: string,
-   *         right_: string,
-   *         top_: string,
-   *         visible: boolean}}
-   */
-
-  this.rendered = {
-    bottom_: '',
-    left_: '',
-    right_: '',
-    top_: '',
-    visible: true
-  };
-  /**
-   * @protected
-   * @type {?ol.EventsKey}
-   */
-
-  this.mapPostrenderListenerKey = null;
-
-  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.ELEMENT), this.handleElementChanged, this);
-
-  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.MAP), this.handleMapChanged, this);
-
-  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.OFFSET), this.handleOffsetChanged, this);
-
-  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.POSITION), this.handlePositionChanged, this);
-
-  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.POSITIONING), this.handlePositioningChanged, this);
-
-  if (options.element !== undefined) {
-    this.setElement(options.element);
-  }
-
-  this.setOffset(options.offset !== undefined ? options.offset : [0, 0]);
-  this.setPositioning(options.positioning !== undefined ?
-  /** @type {ol.OverlayPositioning} */
-  options.positioning : _overlaypositioning2.default.TOP_LEFT);
-
-  if (options.position !== undefined) {
-    this.setPosition(options.position);
-  }
-};
-
-_index2.default.inherits(_ol_Overlay_, _object2.default);
-/**
- * Get the DOM element of this overlay.
- * @return {Element|undefined} The Element containing the overlay.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.getElement = function () {
-  return (
-    /** @type {Element|undefined} */
-    this.get(_ol_Overlay_.Property.ELEMENT)
-  );
-};
-/**
- * Get the overlay identifier which is set on constructor.
- * @return {number|string|undefined} Id.
- * @api
- */
-
-
-_ol_Overlay_.prototype.getId = function () {
-  return this.id;
-};
-/**
- * Get the map associated with this overlay.
- * @return {ol.PluggableMap|undefined} The map that the overlay is part of.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.getMap = function () {
-  return (
-    /** @type {ol.PluggableMap|undefined} */
-    this.get(_ol_Overlay_.Property.MAP)
-  );
-};
-/**
- * Get the offset of this overlay.
- * @return {Array.<number>} The offset.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.getOffset = function () {
-  return (
-    /** @type {Array.<number>} */
-    this.get(_ol_Overlay_.Property.OFFSET)
-  );
-};
-/**
- * Get the current position of this overlay.
- * @return {ol.Coordinate|undefined} The spatial point that the overlay is
- *     anchored at.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.getPosition = function () {
-  return (
-    /** @type {ol.Coordinate|undefined} */
-    this.get(_ol_Overlay_.Property.POSITION)
-  );
-};
-/**
- * Get the current positioning of this overlay.
- * @return {ol.OverlayPositioning} How the overlay is positioned
- *     relative to its point on the map.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.getPositioning = function () {
-  return (
-    /** @type {ol.OverlayPositioning} */
-    this.get(_ol_Overlay_.Property.POSITIONING)
-  );
-};
-/**
- * @protected
- */
-
-
-_ol_Overlay_.prototype.handleElementChanged = function () {
-  _dom2.default.removeChildren(this.element);
-
-  var element = this.getElement();
-
-  if (element) {
-    this.element.appendChild(element);
-  }
-};
-/**
- * @protected
- */
-
-
-_ol_Overlay_.prototype.handleMapChanged = function () {
-  if (this.mapPostrenderListenerKey) {
-    _dom2.default.removeNode(this.element);
-
-    _events2.default.unlistenByKey(this.mapPostrenderListenerKey);
-
-    this.mapPostrenderListenerKey = null;
-  }
-
-  var map = this.getMap();
-
-  if (map) {
-    this.mapPostrenderListenerKey = _events2.default.listen(map, _mapeventtype2.default.POSTRENDER, this.render, this);
-    this.updatePixelPosition();
-    var container = this.stopEvent ? map.getOverlayContainerStopEvent() : map.getOverlayContainer();
-
-    if (this.insertFirst) {
-      container.insertBefore(this.element, container.childNodes[0] || null);
-    } else {
-      container.appendChild(this.element);
-    }
-  }
-};
-/**
- * @protected
- */
-
-
-_ol_Overlay_.prototype.render = function () {
-  this.updatePixelPosition();
-};
-/**
- * @protected
- */
-
-
-_ol_Overlay_.prototype.handleOffsetChanged = function () {
-  this.updatePixelPosition();
-};
-/**
- * @protected
- */
-
-
-_ol_Overlay_.prototype.handlePositionChanged = function () {
-  this.updatePixelPosition();
-
-  if (this.get(_ol_Overlay_.Property.POSITION) && this.autoPan) {
-    this.panIntoView();
-  }
-};
-/**
- * @protected
- */
-
-
-_ol_Overlay_.prototype.handlePositioningChanged = function () {
-  this.updatePixelPosition();
-};
-/**
- * Set the DOM element to be associated with this overlay.
- * @param {Element|undefined} element The Element containing the overlay.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.setElement = function (element) {
-  this.set(_ol_Overlay_.Property.ELEMENT, element);
-};
-/**
- * Set the map to be associated with this overlay.
- * @param {ol.PluggableMap|undefined} map The map that the overlay is part of.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.setMap = function (map) {
-  this.set(_ol_Overlay_.Property.MAP, map);
-};
-/**
- * Set the offset for this overlay.
- * @param {Array.<number>} offset Offset.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.setOffset = function (offset) {
-  this.set(_ol_Overlay_.Property.OFFSET, offset);
-};
-/**
- * Set the position for this overlay. If the position is `undefined` the
- * overlay is hidden.
- * @param {ol.Coordinate|undefined} position The spatial point that the overlay
- *     is anchored at.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.setPosition = function (position) {
-  this.set(_ol_Overlay_.Property.POSITION, position);
-};
-/**
- * Pan the map so that the overlay is entirely visible in the current viewport
- * (if necessary).
- * @protected
- */
-
-
-_ol_Overlay_.prototype.panIntoView = function () {
-  var map = this.getMap();
-
-  if (!map || !map.getTargetElement()) {
-    return;
-  }
-
-  var mapRect = this.getRect(map.getTargetElement(), map.getSize());
-  var element =
-  /** @type {!Element} */
-  this.getElement();
-  var overlayRect = this.getRect(element, [_dom2.default.outerWidth(element), _dom2.default.outerHeight(element)]);
-  var margin = this.autoPanMargin;
-
-  if (!_extent2.default.containsExtent(mapRect, overlayRect)) {
-    // the overlay is not completely inside the viewport, so pan the map
-    var offsetLeft = overlayRect[0] - mapRect[0];
-    var offsetRight = mapRect[2] - overlayRect[2];
-    var offsetTop = overlayRect[1] - mapRect[1];
-    var offsetBottom = mapRect[3] - overlayRect[3];
-    var delta = [0, 0];
-
-    if (offsetLeft < 0) {
-      // move map to the left
-      delta[0] = offsetLeft - margin;
-    } else if (offsetRight < 0) {
-      // move map to the right
-      delta[0] = Math.abs(offsetRight) + margin;
-    }
-
-    if (offsetTop < 0) {
-      // move map up
-      delta[1] = offsetTop - margin;
-    } else if (offsetBottom < 0) {
-      // move map down
-      delta[1] = Math.abs(offsetBottom) + margin;
-    }
-
-    if (delta[0] !== 0 || delta[1] !== 0) {
-      var center =
-      /** @type {ol.Coordinate} */
-      map.getView().getCenter();
-      var centerPx = map.getPixelFromCoordinate(center);
-      var newCenterPx = [centerPx[0] + delta[0], centerPx[1] + delta[1]];
-      map.getView().animate({
-        center: map.getCoordinateFromPixel(newCenterPx),
-        duration: this.autoPanAnimation.duration,
-        easing: this.autoPanAnimation.easing
-      });
-    }
-  }
-};
-/**
- * Get the extent of an element relative to the document
- * @param {Element|undefined} element The element.
- * @param {ol.Size|undefined} size The size of the element.
- * @return {ol.Extent} The extent.
- * @protected
- */
-
-
-_ol_Overlay_.prototype.getRect = function (element, size) {
-  var box = element.getBoundingClientRect();
-  var offsetX = box.left + window.pageXOffset;
-  var offsetY = box.top + window.pageYOffset;
-  return [offsetX, offsetY, offsetX + size[0], offsetY + size[1]];
-};
-/**
- * Set the positioning for this overlay.
- * @param {ol.OverlayPositioning} positioning how the overlay is
- *     positioned relative to its point on the map.
- * @observable
- * @api
- */
-
-
-_ol_Overlay_.prototype.setPositioning = function (positioning) {
-  this.set(_ol_Overlay_.Property.POSITIONING, positioning);
-};
-/**
- * Modify the visibility of the element.
- * @param {boolean} visible Element visibility.
- * @protected
- */
-
-
-_ol_Overlay_.prototype.setVisible = function (visible) {
-  if (this.rendered.visible !== visible) {
-    this.element.style.display = visible ? '' : 'none';
-    this.rendered.visible = visible;
-  }
-};
-/**
- * Update pixel position.
- * @protected
- */
-
-
-_ol_Overlay_.prototype.updatePixelPosition = function () {
-  var map = this.getMap();
-  var position = this.getPosition();
-
-  if (!map || !map.isRendered() || !position) {
-    this.setVisible(false);
-    return;
-  }
-
-  var pixel = map.getPixelFromCoordinate(position);
-  var mapSize = map.getSize();
-  this.updateRenderedPosition(pixel, mapSize);
-};
-/**
- * @param {ol.Pixel} pixel The pixel location.
- * @param {ol.Size|undefined} mapSize The map size.
- * @protected
- */
-
-
-_ol_Overlay_.prototype.updateRenderedPosition = function (pixel, mapSize) {
-  var style = this.element.style;
-  var offset = this.getOffset();
-  var positioning = this.getPositioning();
-  this.setVisible(true);
-  var offsetX = offset[0];
-  var offsetY = offset[1];
-
-  if (positioning == _overlaypositioning2.default.BOTTOM_RIGHT || positioning == _overlaypositioning2.default.CENTER_RIGHT || positioning == _overlaypositioning2.default.TOP_RIGHT) {
-    if (this.rendered.left_ !== '') {
-      this.rendered.left_ = style.left = '';
-    }
-
-    var right = Math.round(mapSize[0] - pixel[0] - offsetX) + 'px';
-
-    if (this.rendered.right_ != right) {
-      this.rendered.right_ = style.right = right;
-    }
-  } else {
-    if (this.rendered.right_ !== '') {
-      this.rendered.right_ = style.right = '';
-    }
-
-    if (positioning == _overlaypositioning2.default.BOTTOM_CENTER || positioning == _overlaypositioning2.default.CENTER_CENTER || positioning == _overlaypositioning2.default.TOP_CENTER) {
-      offsetX -= this.element.offsetWidth / 2;
-    }
-
-    var left = Math.round(pixel[0] + offsetX) + 'px';
-
-    if (this.rendered.left_ != left) {
-      this.rendered.left_ = style.left = left;
-    }
-  }
-
-  if (positioning == _overlaypositioning2.default.BOTTOM_LEFT || positioning == _overlaypositioning2.default.BOTTOM_CENTER || positioning == _overlaypositioning2.default.BOTTOM_RIGHT) {
-    if (this.rendered.top_ !== '') {
-      this.rendered.top_ = style.top = '';
-    }
-
-    var bottom = Math.round(mapSize[1] - pixel[1] - offsetY) + 'px';
-
-    if (this.rendered.bottom_ != bottom) {
-      this.rendered.bottom_ = style.bottom = bottom;
-    }
-  } else {
-    if (this.rendered.bottom_ !== '') {
-      this.rendered.bottom_ = style.bottom = '';
-    }
-
-    if (positioning == _overlaypositioning2.default.CENTER_LEFT || positioning == _overlaypositioning2.default.CENTER_CENTER || positioning == _overlaypositioning2.default.CENTER_RIGHT) {
-      offsetY -= this.element.offsetHeight / 2;
-    }
-
-    var top = Math.round(pixel[1] + offsetY) + 'px';
-
-    if (this.rendered.top_ != top) {
-      this.rendered.top_ = style.top = top;
-    }
-  }
-};
-/**
- * returns the options this Overlay has been created with
- * @public
- * @return {olx.OverlayOptions} overlay options
- */
-
-
-_ol_Overlay_.prototype.getOptions = function () {
-  return this.options;
-};
-/**
- * @enum {string}
- * @protected
- */
-
-
-_ol_Overlay_.Property = {
-  ELEMENT: 'element',
-  MAP: 'map',
-  OFFSET: 'offset',
-  POSITION: 'position',
-  POSITIONING: 'positioning'
-};
-exports.default = _ol_Overlay_;
-
-},{"./css.js":21,"./dom.js":23,"./events.js":25,"./extent.js":31,"./index.js":65,"./mapeventtype.js":96,"./object.js":100,"./overlaypositioning.js":103}],6:[function(require,module,exports){
+},{"ol/extent":28,"ol/feature":31,"ol/geom/point":55,"ol/geom/polygon":56,"ol/interaction":64,"ol/layer/image":81,"ol/layer/vector":84,"ol/map":89,"ol/overlay":102,"ol/proj/projection":119,"ol/source/imagestatic":184,"ol/source/vector":187,"ol/style/fill":199,"ol/style/icon":200,"ol/style/stroke":207,"ol/style/style":208,"ol/style/text":209,"ol/view":219}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1850,7 +744,7 @@ _ol_array_.isSorted = function (arr, opt_func, opt_strict) {
 
 exports.default = _ol_array_;
 
-},{}],7:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1901,7 +795,7 @@ _index2.default.inherits(_ol_AssertionError_, Error);
 
 exports.default = _ol_AssertionError_;
 
-},{"./index.js":65}],8:[function(require,module,exports){
+},{"./index.js":63}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1932,7 +826,7 @@ _ol_asserts_.assert = function (assertion, errorCode) {
 
 exports.default = _ol_asserts_;
 
-},{"./assertionerror.js":7}],9:[function(require,module,exports){
+},{"./assertionerror.js":4}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2053,7 +947,7 @@ _ol_Attribution_.prototype.intersectsAnyTileRange = function (tileRanges, tileGr
 
 exports.default = _ol_Attribution_;
 
-},{"./math.js":98,"./tilegrid.js":212,"./tilerange.js":215}],10:[function(require,module,exports){
+},{"./math.js":97,"./tilegrid.js":212,"./tilerange.js":215}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2103,7 +997,7 @@ _ol_CenterConstraint_.none = function (center) {
 
 exports.default = _ol_CenterConstraint_;
 
-},{"./math.js":98}],11:[function(require,module,exports){
+},{"./math.js":97}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2441,7 +1335,7 @@ _index2.default.inherits(_ol_Collection_.Event, _event2.default);
 
 exports.default = _ol_Collection_;
 
-},{"./assertionerror.js":7,"./collectioneventtype.js":12,"./events/event.js":27,"./index.js":65,"./object.js":100}],12:[function(require,module,exports){
+},{"./assertionerror.js":4,"./collectioneventtype.js":9,"./events/event.js":24,"./index.js":63,"./object.js":99}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2468,7 +1362,7 @@ var _ol_CollectionEventType_ = {
 };
 exports.default = _ol_CollectionEventType_;
 
-},{}],13:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2724,7 +1618,7 @@ _ol_color_.toString = function (color) {
 
 exports.default = _ol_color_;
 
-},{"./asserts.js":8,"./math.js":98}],14:[function(require,module,exports){
+},{"./asserts.js":5,"./math.js":97}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2772,7 +1666,7 @@ _ol_colorlike_.isColorLike = function (color) {
 
 exports.default = _ol_colorlike_;
 
-},{"./color.js":13}],15:[function(require,module,exports){
+},{"./color.js":10}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2841,7 +1735,7 @@ _ol_control_.defaults = function (opt_options) {
 
 exports.default = _ol_control_;
 
-},{"./collection.js":11,"./control/attribution.js":16,"./control/rotate.js":18,"./control/zoom.js":19}],16:[function(require,module,exports){
+},{"./collection.js":8,"./control/attribution.js":13,"./control/rotate.js":15,"./control/zoom.js":16}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3267,7 +2161,7 @@ _ol_control_Attribution_.prototype.getCollapsed = function () {
 
 exports.default = _ol_control_Attribution_;
 
-},{"../array.js":6,"../control/control.js":17,"../css.js":21,"../dom.js":23,"../events.js":25,"../events/eventtype.js":29,"../index.js":65,"../layer/layer.js":85,"../obj.js":99}],17:[function(require,module,exports){
+},{"../array.js":3,"../control/control.js":14,"../css.js":18,"../dom.js":20,"../events.js":22,"../events/eventtype.js":26,"../index.js":63,"../layer/layer.js":82,"../obj.js":98}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3439,7 +2333,7 @@ _ol_control_Control_.prototype.setTarget = function (target) {
 
 exports.default = _ol_control_Control_;
 
-},{"../dom.js":23,"../events.js":25,"../index.js":65,"../mapeventtype.js":96,"../object.js":100}],18:[function(require,module,exports){
+},{"../dom.js":20,"../events.js":22,"../index.js":63,"../mapeventtype.js":95,"../object.js":99}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3637,7 +2531,7 @@ _ol_control_Rotate_.render = function (mapEvent) {
 
 exports.default = _ol_control_Rotate_;
 
-},{"../control/control.js":17,"../css.js":21,"../easing.js":24,"../events.js":25,"../events/eventtype.js":29,"../index.js":65}],19:[function(require,module,exports){
+},{"../control/control.js":14,"../css.js":18,"../easing.js":21,"../events.js":22,"../events/eventtype.js":26,"../index.js":63}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3780,7 +2674,7 @@ _ol_control_Zoom_.prototype.zoomByDelta_ = function (delta) {
 
 exports.default = _ol_control_Zoom_;
 
-},{"../control/control.js":17,"../css.js":21,"../easing.js":24,"../events.js":25,"../events/eventtype.js":29,"../index.js":65}],20:[function(require,module,exports){
+},{"../control/control.js":14,"../css.js":18,"../easing.js":21,"../events.js":22,"../events/eventtype.js":26,"../index.js":63}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4172,7 +3066,7 @@ _ol_coordinate_.toStringXY = function (coordinate, opt_fractionDigits) {
 
 exports.default = _ol_coordinate_;
 
-},{"./math.js":98,"./string.js":190}],21:[function(require,module,exports){
+},{"./math.js":97,"./string.js":190}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4252,7 +3146,7 @@ _ol_css_.getFontFamilies = function () {
 
 exports.default = _ol_css_;
 
-},{}],22:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4302,7 +3196,7 @@ _ol_Disposable_.prototype.dispose = function () {
 _ol_Disposable_.prototype.disposeInternal = _index2.default.nullFunction;
 exports.default = _ol_Disposable_;
 
-},{"./index.js":65}],23:[function(require,module,exports){
+},{"./index.js":63}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4394,7 +3288,7 @@ _ol_dom_.removeChildren = function (node) {
 
 exports.default = _ol_dom_;
 
-},{}],24:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4464,7 +3358,7 @@ _ol_easing_.upAndDown = function (t) {
 
 exports.default = _ol_easing_;
 
-},{}],25:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4745,7 +3639,7 @@ _ol_events_.unlistenAll = function (target) {
 
 exports.default = _ol_events_;
 
-},{"./obj.js":99}],26:[function(require,module,exports){
+},{"./obj.js":98}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4981,7 +3875,7 @@ _ol_events_condition_.primaryAction = function (mapBrowserEvent) {
 
 exports.default = _ol_events_condition_;
 
-},{"../asserts.js":8,"../functions.js":36,"../has.js":60,"../mapbrowsereventtype.js":93}],27:[function(require,module,exports){
+},{"../asserts.js":5,"../functions.js":34,"../has.js":58,"../mapbrowsereventtype.js":92}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5059,7 +3953,7 @@ _ol_events_Event_.preventDefault = function (evt) {
 
 exports.default = _ol_events_Event_;
 
-},{}],28:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5253,7 +4147,7 @@ _ol_events_EventTarget_.prototype.removeEventListener = function (type, listener
 
 exports.default = _ol_events_EventTarget_;
 
-},{"../disposable.js":22,"../events.js":25,"../events/event.js":27,"../index.js":65}],29:[function(require,module,exports){
+},{"../disposable.js":19,"../events.js":22,"../events/event.js":24,"../index.js":63}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5295,7 +4189,7 @@ var _ol_events_EventType_ = {
 };
 exports.default = _ol_events_EventType_;
 
-},{}],30:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5314,7 +4208,7 @@ var _ol_events_KeyCode_ = {
 };
 exports.default = _ol_events_KeyCode_;
 
-},{}],31:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6156,7 +5050,7 @@ _ol_extent_.applyTransform = function (extent, transformFn, opt_extent) {
 
 exports.default = _ol_extent_;
 
-},{"./asserts.js":8,"./extent/corner.js":32,"./extent/relationship.js":33}],32:[function(require,module,exports){
+},{"./asserts.js":5,"./extent/corner.js":29,"./extent/relationship.js":30}],29:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6175,7 +5069,7 @@ var _ol_extent_Corner_ = {
 };
 exports.default = _ol_extent_Corner_;
 
-},{}],33:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6196,7 +5090,371 @@ var _ol_extent_Relationship_ = {
 };
 exports.default = _ol_extent_Relationship_;
 
-},{}],34:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _asserts = require("./asserts.js");
+
+var _asserts2 = _interopRequireDefault(_asserts);
+
+var _events = require("./events.js");
+
+var _events2 = _interopRequireDefault(_events);
+
+var _eventtype = require("./events/eventtype.js");
+
+var _eventtype2 = _interopRequireDefault(_eventtype);
+
+var _index = require("./index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _object = require("./object.js");
+
+var _object2 = _interopRequireDefault(_object);
+
+var _geometry = require("./geom/geometry.js");
+
+var _geometry2 = _interopRequireDefault(_geometry);
+
+var _style = require("./style/style.js");
+
+var _style2 = _interopRequireDefault(_style);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * A vector object for geographic features with a geometry and other
+ * attribute properties, similar to the features in vector file formats like
+ * GeoJSON.
+ *
+ * Features can be styled individually with `setStyle`; otherwise they use the
+ * style of their vector layer.
+ *
+ * Note that attribute properties are set as {@link ol.Object} properties on
+ * the feature object, so they are observable, and have get/set accessors.
+ *
+ * Typically, a feature has a single geometry property. You can set the
+ * geometry using the `setGeometry` method and get it with `getGeometry`.
+ * It is possible to store more than one geometry on a feature using attribute
+ * properties. By default, the geometry used for rendering is identified by
+ * the property name `geometry`. If you want to use another geometry property
+ * for rendering, use the `setGeometryName` method to change the attribute
+ * property associated with the geometry for the feature.  For example:
+ *
+ * ```js
+ * var feature = new ol.Feature({
+ *   geometry: new ol.geom.Polygon(polyCoords),
+ *   labelPoint: new ol.geom.Point(labelCoords),
+ *   name: 'My Polygon'
+ * });
+ *
+ * // get the polygon geometry
+ * var poly = feature.getGeometry();
+ *
+ * // Render the feature as a point using the coordinates from labelPoint
+ * feature.setGeometryName('labelPoint');
+ *
+ * // get the point geometry
+ * var point = feature.getGeometry();
+ * ```
+ *
+ * @constructor
+ * @extends {ol.Object}
+ * @param {ol.geom.Geometry|Object.<string, *>=} opt_geometryOrProperties
+ *     You may pass a Geometry object directly, or an object literal
+ *     containing properties.  If you pass an object literal, you may
+ *     include a Geometry associated with a `geometry` key.
+ * @api
+ */
+
+
+var _ol_Feature_ = function _ol_Feature_(opt_geometryOrProperties) {
+  _object2.default.call(this);
+  /**
+   * @private
+   * @type {number|string|undefined}
+   */
+
+
+  this.id_ = undefined;
+  /**
+   * @type {string}
+   * @private
+   */
+
+  this.geometryName_ = 'geometry';
+  /**
+   * User provided style.
+   * @private
+   * @type {ol.style.Style|Array.<ol.style.Style>|
+   *     ol.FeatureStyleFunction}
+   */
+
+  this.style_ = null;
+  /**
+   * @private
+   * @type {ol.FeatureStyleFunction|undefined}
+   */
+
+  this.styleFunction_ = undefined;
+  /**
+   * @private
+   * @type {?ol.EventsKey}
+   */
+
+  this.geometryChangeKey_ = null;
+
+  _events2.default.listen(this, _object2.default.getChangeEventType(this.geometryName_), this.handleGeometryChanged_, this);
+
+  if (opt_geometryOrProperties !== undefined) {
+    if (opt_geometryOrProperties instanceof _geometry2.default || !opt_geometryOrProperties) {
+      var geometry = opt_geometryOrProperties;
+      this.setGeometry(geometry);
+    } else {
+      /** @type {Object.<string, *>} */
+      var properties = opt_geometryOrProperties;
+      this.setProperties(properties);
+    }
+  }
+};
+
+_index2.default.inherits(_ol_Feature_, _object2.default);
+/**
+ * Clone this feature. If the original feature has a geometry it
+ * is also cloned. The feature id is not set in the clone.
+ * @return {ol.Feature} The clone.
+ * @api
+ */
+
+
+_ol_Feature_.prototype.clone = function () {
+  var clone = new _ol_Feature_(this.getProperties());
+  clone.setGeometryName(this.getGeometryName());
+  var geometry = this.getGeometry();
+
+  if (geometry) {
+    clone.setGeometry(geometry.clone());
+  }
+
+  var style = this.getStyle();
+
+  if (style) {
+    clone.setStyle(style);
+  }
+
+  return clone;
+};
+/**
+ * Get the feature's default geometry.  A feature may have any number of named
+ * geometries.  The "default" geometry (the one that is rendered by default) is
+ * set when calling {@link ol.Feature#setGeometry}.
+ * @return {ol.geom.Geometry|undefined} The default geometry for the feature.
+ * @api
+ * @observable
+ */
+
+
+_ol_Feature_.prototype.getGeometry = function () {
+  return (
+    /** @type {ol.geom.Geometry|undefined} */
+    this.get(this.geometryName_)
+  );
+};
+/**
+ * Get the feature identifier.  This is a stable identifier for the feature and
+ * is either set when reading data from a remote source or set explicitly by
+ * calling {@link ol.Feature#setId}.
+ * @return {number|string|undefined} Id.
+ * @api
+ */
+
+
+_ol_Feature_.prototype.getId = function () {
+  return this.id_;
+};
+/**
+ * Get the name of the feature's default geometry.  By default, the default
+ * geometry is named `geometry`.
+ * @return {string} Get the property name associated with the default geometry
+ *     for this feature.
+ * @api
+ */
+
+
+_ol_Feature_.prototype.getGeometryName = function () {
+  return this.geometryName_;
+};
+/**
+ * Get the feature's style. Will return what was provided to the
+ * {@link ol.Feature#setStyle} method.
+ * @return {ol.style.Style|Array.<ol.style.Style>|
+ *     ol.FeatureStyleFunction|ol.StyleFunction} The feature style.
+ * @api
+ */
+
+
+_ol_Feature_.prototype.getStyle = function () {
+  return this.style_;
+};
+/**
+ * Get the feature's style function.
+ * @return {ol.FeatureStyleFunction|undefined} Return a function
+ * representing the current style of this feature.
+ * @api
+ */
+
+
+_ol_Feature_.prototype.getStyleFunction = function () {
+  return this.styleFunction_;
+};
+/**
+ * @private
+ */
+
+
+_ol_Feature_.prototype.handleGeometryChange_ = function () {
+  this.changed();
+};
+/**
+ * @private
+ */
+
+
+_ol_Feature_.prototype.handleGeometryChanged_ = function () {
+  if (this.geometryChangeKey_) {
+    _events2.default.unlistenByKey(this.geometryChangeKey_);
+
+    this.geometryChangeKey_ = null;
+  }
+
+  var geometry = this.getGeometry();
+
+  if (geometry) {
+    this.geometryChangeKey_ = _events2.default.listen(geometry, _eventtype2.default.CHANGE, this.handleGeometryChange_, this);
+  }
+
+  this.changed();
+};
+/**
+ * Set the default geometry for the feature.  This will update the property
+ * with the name returned by {@link ol.Feature#getGeometryName}.
+ * @param {ol.geom.Geometry|undefined} geometry The new geometry.
+ * @api
+ * @observable
+ */
+
+
+_ol_Feature_.prototype.setGeometry = function (geometry) {
+  this.set(this.geometryName_, geometry);
+};
+/**
+ * Set the style for the feature.  This can be a single style object, an array
+ * of styles, or a function that takes a resolution and returns an array of
+ * styles. If it is `null` the feature has no style (a `null` style).
+ * @param {ol.style.Style|Array.<ol.style.Style>|
+ *     ol.FeatureStyleFunction|ol.StyleFunction} style Style for this feature.
+ * @api
+ * @fires ol.events.Event#event:change
+ */
+
+
+_ol_Feature_.prototype.setStyle = function (style) {
+  this.style_ = style;
+  this.styleFunction_ = !style ? undefined : _ol_Feature_.createStyleFunction(style);
+  this.changed();
+};
+/**
+ * Set the feature id.  The feature id is considered stable and may be used when
+ * requesting features or comparing identifiers returned from a remote source.
+ * The feature id can be used with the {@link ol.source.Vector#getFeatureById}
+ * method.
+ * @param {number|string|undefined} id The feature id.
+ * @api
+ * @fires ol.events.Event#event:change
+ */
+
+
+_ol_Feature_.prototype.setId = function (id) {
+  this.id_ = id;
+  this.changed();
+};
+/**
+ * Set the property name to be used when getting the feature's default geometry.
+ * When calling {@link ol.Feature#getGeometry}, the value of the property with
+ * this name will be returned.
+ * @param {string} name The property name of the default geometry.
+ * @api
+ */
+
+
+_ol_Feature_.prototype.setGeometryName = function (name) {
+  _events2.default.unlisten(this, _object2.default.getChangeEventType(this.geometryName_), this.handleGeometryChanged_, this);
+
+  this.geometryName_ = name;
+
+  _events2.default.listen(this, _object2.default.getChangeEventType(this.geometryName_), this.handleGeometryChanged_, this);
+
+  this.handleGeometryChanged_();
+};
+/**
+ * Convert the provided object into a feature style function.  Functions passed
+ * through unchanged.  Arrays of ol.style.Style or single style objects wrapped
+ * in a new feature style function.
+ * @param {ol.FeatureStyleFunction|!Array.<ol.style.Style>|!ol.style.Style} obj
+ *     A feature style function, a single style, or an array of styles.
+ * @return {ol.FeatureStyleFunction} A style function.
+ */
+
+
+_ol_Feature_.createStyleFunction = function (obj) {
+  var styleFunction;
+
+  if (typeof obj === 'function') {
+    if (obj.length == 2) {
+      styleFunction = function styleFunction(resolution) {
+        return (
+          /** @type {ol.StyleFunction} */
+          obj(this, resolution)
+        );
+      };
+    } else {
+      styleFunction = obj;
+    }
+  } else {
+    /**
+     * @type {Array.<ol.style.Style>}
+     */
+    var styles;
+
+    if (Array.isArray(obj)) {
+      styles = obj;
+    } else {
+      _asserts2.default.assert(obj instanceof _style2.default, 41); // Expected an `ol.style.Style` or an array of `ol.style.Style`
+
+
+      styles = [obj];
+    }
+
+    styleFunction = function styleFunction() {
+      return styles;
+    };
+  }
+
+  return styleFunction;
+};
+
+exports.default = _ol_Feature_;
+
+},{"./asserts.js":5,"./events.js":22,"./events/eventtype.js":26,"./geom/geometry.js":51,"./index.js":63,"./object.js":99,"./style/style.js":208}],32:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6328,7 +5586,7 @@ _ol_featureloader_.xhr = function (url, format) {
 
 exports.default = _ol_featureloader_;
 
-},{"./format/formattype.js":35,"./index.js":65,"./xml.js":229}],35:[function(require,module,exports){
+},{"./format/formattype.js":33,"./index.js":63,"./xml.js":229}],33:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6346,7 +5604,7 @@ var _ol_format_FormatType_ = {
 };
 exports.default = _ol_format_FormatType_;
 
-},{}],36:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6373,7 +5631,7 @@ _ol_functions_.FALSE = function () {
 
 exports.default = _ol_functions_;
 
-},{}],37:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6448,7 +5706,7 @@ _ol_geom_flat_area_.linearRingss = function (flatCoordinates, offset, endss, str
 
 exports.default = _ol_geom_flat_area_;
 
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6734,7 +5992,7 @@ _ol_geom_flat_closest_.getssClosestPoint = function (flatCoordinates, offset, en
 
 exports.default = _ol_geom_flat_closest_;
 
-},{"../../math.js":98}],39:[function(require,module,exports){
+},{"../../math.js":97}],37:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6877,7 +6135,7 @@ _ol_geom_flat_contains_.linearRingssContainsXY = function (flatCoordinates, offs
 
 exports.default = _ol_geom_flat_contains_;
 
-},{"../../extent.js":31}],40:[function(require,module,exports){
+},{"../../extent.js":28}],38:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6977,7 +6235,7 @@ _ol_geom_flat_deflate_.coordinatesss = function (flatCoordinates, offset, coordi
 
 exports.default = _ol_geom_flat_deflate_;
 
-},{}],41:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7057,7 +6315,7 @@ _ol_geom_flat_inflate_.coordinatesss = function (flatCoordinates, offset, endss,
 
 exports.default = _ol_geom_flat_inflate_;
 
-},{}],42:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7181,7 +6439,7 @@ _ol_geom_flat_interiorpoint_.linearRingss = function (flatCoordinates, offset, e
 
 exports.default = _ol_geom_flat_interiorpoint_;
 
-},{"../../array.js":6,"../flat/contains.js":39}],43:[function(require,module,exports){
+},{"../../array.js":3,"../flat/contains.js":37}],41:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7359,7 +6617,7 @@ _ol_geom_flat_intersectsextent_.linearRingss = function (flatCoordinates, offset
 
 exports.default = _ol_geom_flat_intersectsextent_;
 
-},{"../../extent.js":31,"../flat/contains.js":39,"../flat/segments.js":47}],44:[function(require,module,exports){
+},{"../../extent.js":28,"../flat/contains.js":37,"../flat/segments.js":45}],42:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7410,7 +6668,7 @@ _ol_geom_flat_length_.linearRing = function (flatCoordinates, offset, end, strid
 
 exports.default = _ol_geom_flat_length_;
 
-},{}],45:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7580,7 +6838,7 @@ _ol_geom_flat_orient_.orientLinearRingss = function (flatCoordinates, offset, en
 
 exports.default = _ol_geom_flat_orient_;
 
-},{"../flat/reverse.js":46}],46:[function(require,module,exports){
+},{"../flat/reverse.js":44}],44:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7611,7 +6869,7 @@ _ol_geom_flat_reverse_.coordinates = function (flatCoordinates, offset, end, str
 
 exports.default = _ol_geom_flat_reverse_;
 
-},{}],47:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7657,7 +6915,7 @@ _ol_geom_flat_segments_.forEach = function (flatCoordinates, offset, end, stride
 
 exports.default = _ol_geom_flat_segments_;
 
-},{}],48:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8075,7 +7333,7 @@ _ol_geom_flat_simplify_.quantizess = function (flatCoordinates, offset, endss, s
 
 exports.default = _ol_geom_flat_simplify_;
 
-},{"../../math.js":98}],49:[function(require,module,exports){
+},{"../../math.js":97}],47:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8140,7 +7398,7 @@ _ol_geom_flat_straightchunk_.lineString = function (maxAngle, flatCoordinates, o
 
 exports.default = _ol_geom_flat_straightchunk_;
 
-},{}],50:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8258,7 +7516,7 @@ _ol_geom_flat_textpath_.lineString = function (flatCoordinates, offset, end, str
 
 exports.default = _ol_geom_flat_textpath_;
 
-},{"../../math.js":98}],51:[function(require,module,exports){
+},{"../../math.js":97}],49:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8297,7 +7555,7 @@ _ol_geom_flat_topology_.lineStringIsClosed = function (flatCoordinates, offset, 
 
 exports.default = _ol_geom_flat_topology_;
 
-},{"../flat/area.js":37}],52:[function(require,module,exports){
+},{"../flat/area.js":35}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8441,7 +7699,7 @@ _ol_geom_flat_transform_.translate = function (flatCoordinates, offset, end, str
 
 exports.default = _ol_geom_flat_transform_;
 
-},{}],53:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8750,7 +8008,7 @@ _ol_geom_Geometry_.prototype.transform = function (source, destination) {
 
 exports.default = _ol_geom_Geometry_;
 
-},{"../extent.js":31,"../functions.js":36,"../geom/flat/transform.js":52,"../index.js":65,"../object.js":100,"../proj.js":115,"../proj/units.js":122,"../transform.js":217}],54:[function(require,module,exports){
+},{"../extent.js":28,"../functions.js":34,"../geom/flat/transform.js":50,"../index.js":63,"../object.js":99,"../proj.js":115,"../proj/units.js":122,"../transform.js":217}],52:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8771,7 +8029,7 @@ var _ol_geom_GeometryLayout_ = {
 };
 exports.default = _ol_geom_GeometryLayout_;
 
-},{}],55:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8797,7 +8055,7 @@ var _ol_geom_GeometryType_ = {
 };
 exports.default = _ol_geom_GeometryType_;
 
-},{}],56:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8995,7 +8253,7 @@ _ol_geom_LinearRing_.prototype.setFlatCoordinates = function (layout, flatCoordi
 
 exports.default = _ol_geom_LinearRing_;
 
-},{"../extent.js":31,"../geom/flat/area.js":37,"../geom/flat/closest.js":38,"../geom/flat/deflate.js":40,"../geom/flat/inflate.js":41,"../geom/flat/simplify.js":48,"../geom/geometrylayout.js":54,"../geom/geometrytype.js":55,"../geom/simplegeometry.js":59,"../index.js":65}],57:[function(require,module,exports){
+},{"../extent.js":28,"../geom/flat/area.js":35,"../geom/flat/closest.js":36,"../geom/flat/deflate.js":38,"../geom/flat/inflate.js":39,"../geom/flat/simplify.js":46,"../geom/geometrylayout.js":52,"../geom/geometrytype.js":53,"../geom/simplegeometry.js":57,"../index.js":63}],55:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9161,7 +8419,7 @@ _ol_geom_Point_.prototype.setFlatCoordinates = function (layout, flatCoordinates
 
 exports.default = _ol_geom_Point_;
 
-},{"../extent.js":31,"../geom/flat/deflate.js":40,"../geom/geometrylayout.js":54,"../geom/geometrytype.js":55,"../geom/simplegeometry.js":59,"../index.js":65,"../math.js":98}],58:[function(require,module,exports){
+},{"../extent.js":28,"../geom/flat/deflate.js":38,"../geom/geometrylayout.js":52,"../geom/geometrytype.js":53,"../geom/simplegeometry.js":57,"../index.js":63,"../math.js":97}],56:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9694,7 +8952,7 @@ _ol_geom_Polygon_.makeRegular = function (polygon, center, radius, opt_angle) {
 
 exports.default = _ol_geom_Polygon_;
 
-},{"../array.js":6,"../extent.js":31,"../geom/flat/area.js":37,"../geom/flat/closest.js":38,"../geom/flat/contains.js":39,"../geom/flat/deflate.js":40,"../geom/flat/inflate.js":41,"../geom/flat/interiorpoint.js":42,"../geom/flat/intersectsextent.js":43,"../geom/flat/orient.js":45,"../geom/flat/simplify.js":48,"../geom/geometrylayout.js":54,"../geom/geometrytype.js":55,"../geom/linearring.js":56,"../geom/point.js":57,"../geom/simplegeometry.js":59,"../index.js":65,"../math.js":98}],59:[function(require,module,exports){
+},{"../array.js":3,"../extent.js":28,"../geom/flat/area.js":35,"../geom/flat/closest.js":36,"../geom/flat/contains.js":37,"../geom/flat/deflate.js":38,"../geom/flat/inflate.js":39,"../geom/flat/interiorpoint.js":40,"../geom/flat/intersectsextent.js":41,"../geom/flat/orient.js":43,"../geom/flat/simplify.js":46,"../geom/geometrylayout.js":52,"../geom/geometrytype.js":53,"../geom/linearring.js":54,"../geom/point.js":55,"../geom/simplegeometry.js":57,"../index.js":63,"../math.js":97}],57:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10085,7 +9343,7 @@ _ol_geom_SimpleGeometry_.transform2D = function (simpleGeometry, transform, opt_
 
 exports.default = _ol_geom_SimpleGeometry_;
 
-},{"../extent.js":31,"../functions.js":36,"../geom/flat/transform.js":52,"../geom/geometry.js":53,"../geom/geometrylayout.js":54,"../index.js":65,"../obj.js":99}],60:[function(require,module,exports){
+},{"../extent.js":28,"../functions.js":34,"../geom/flat/transform.js":50,"../geom/geometry.js":51,"../geom/geometrylayout.js":52,"../index.js":63,"../obj.js":98}],58:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10266,7 +9524,7 @@ _ol_has_.WEBGL;
 
 exports.default = _ol_has_;
 
-},{"./index.js":65,"./webgl.js":222}],61:[function(require,module,exports){
+},{"./index.js":63,"./webgl.js":222}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10431,7 +9689,7 @@ _ol_Image_.prototype.unlistenImage_ = function () {
 
 exports.default = _ol_Image_;
 
-},{"./events.js":25,"./events/eventtype.js":29,"./extent.js":31,"./imagebase.js":62,"./imagestate.js":64,"./index.js":65}],62:[function(require,module,exports){
+},{"./events.js":22,"./events/eventtype.js":26,"./extent.js":28,"./imagebase.js":60,"./imagestate.js":62,"./index.js":63}],60:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10556,7 +9814,7 @@ _ol_ImageBase_.prototype.load = function () {};
 
 exports.default = _ol_ImageBase_;
 
-},{"./events/eventtarget.js":28,"./events/eventtype.js":29,"./index.js":65}],63:[function(require,module,exports){
+},{"./events/eventtarget.js":25,"./events/eventtype.js":26,"./index.js":63}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10667,7 +9925,7 @@ _ol_ImageCanvas_.prototype.getImage = function () {
 
 exports.default = _ol_ImageCanvas_;
 
-},{"./imagebase.js":62,"./imagestate.js":64,"./index.js":65}],64:[function(require,module,exports){
+},{"./imagebase.js":60,"./imagestate.js":62,"./index.js":63}],62:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10685,7 +9943,7 @@ var _ol_ImageState_ = {
 };
 exports.default = _ol_ImageState_;
 
-},{}],65:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10916,7 +10174,7 @@ _ol_.getUid = function (obj) {
 _ol_.uidCounter_ = 0;
 exports.default = _ol_;
 
-},{}],66:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11072,7 +10330,7 @@ _ol_interaction_.defaults = function (opt_options) {
 
 exports.default = _ol_interaction_;
 
-},{"./collection.js":11,"./interaction/doubleclickzoom.js":67,"./interaction/dragpan.js":69,"./interaction/dragrotate.js":70,"./interaction/dragzoom.js":71,"./interaction/keyboardpan.js":73,"./interaction/keyboardzoom.js":74,"./interaction/mousewheelzoom.js":75,"./interaction/pinchrotate.js":76,"./interaction/pinchzoom.js":77,"./kinetic.js":80}],67:[function(require,module,exports){
+},{"./collection.js":8,"./interaction/doubleclickzoom.js":65,"./interaction/dragpan.js":67,"./interaction/dragrotate.js":68,"./interaction/dragzoom.js":69,"./interaction/keyboardpan.js":71,"./interaction/keyboardzoom.js":72,"./interaction/mousewheelzoom.js":73,"./interaction/pinchrotate.js":74,"./interaction/pinchzoom.js":75,"./kinetic.js":78}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11160,7 +10418,7 @@ _ol_interaction_DoubleClickZoom_.handleEvent = function (mapBrowserEvent) {
 
 exports.default = _ol_interaction_DoubleClickZoom_;
 
-},{"../index.js":65,"../interaction/interaction.js":72,"../mapbrowsereventtype.js":93}],68:[function(require,module,exports){
+},{"../index.js":63,"../interaction/interaction.js":70,"../mapbrowsereventtype.js":92}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11413,7 +10671,7 @@ _index2.default.inherits(_ol_interaction_DragBox_.Event, _event2.default);
 
 exports.default = _ol_interaction_DragBox_;
 
-},{"../events/condition.js":26,"../events/event.js":27,"../index.js":65,"../interaction/pointer.js":78,"../render/box.js":123}],69:[function(require,module,exports){
+},{"../events/condition.js":23,"../events/event.js":24,"../index.js":63,"../interaction/pointer.js":76,"../render/box.js":123}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11630,7 +10888,7 @@ _ol_interaction_DragPan_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_DragPan_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_DragPan_;
 
-},{"../coordinate.js":20,"../easing.js":24,"../events/condition.js":26,"../functions.js":36,"../index.js":65,"../interaction/pointer.js":78,"../viewhint.js":220}],70:[function(require,module,exports){
+},{"../coordinate.js":17,"../easing.js":21,"../events/condition.js":23,"../functions.js":34,"../index.js":63,"../interaction/pointer.js":76,"../viewhint.js":220}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11799,7 +11057,7 @@ _ol_interaction_DragRotate_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_DragRotate_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_DragRotate_;
 
-},{"../events/condition.js":26,"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../interaction/pointer.js":78,"../rotationconstraint.js":181,"../viewhint.js":220}],71:[function(require,module,exports){
+},{"../events/condition.js":23,"../functions.js":34,"../index.js":63,"../interaction/interaction.js":70,"../interaction/pointer.js":76,"../rotationconstraint.js":181,"../viewhint.js":220}],69:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11912,7 +11170,7 @@ _ol_interaction_DragZoom_.prototype.onBoxEnd = function () {
 
 exports.default = _ol_interaction_DragZoom_;
 
-},{"../easing.js":24,"../events/condition.js":26,"../extent.js":31,"../index.js":65,"../interaction/dragbox.js":68}],72:[function(require,module,exports){
+},{"../easing.js":21,"../events/condition.js":23,"../extent.js":28,"../index.js":63,"../interaction/dragbox.js":66}],70:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12173,7 +11431,7 @@ _ol_interaction_Interaction_.zoomWithoutConstraints = function (view, resolution
 
 exports.default = _ol_interaction_Interaction_;
 
-},{"../easing.js":24,"../index.js":65,"../interaction/property.js":79,"../math.js":98,"../object.js":100}],73:[function(require,module,exports){
+},{"../easing.js":21,"../index.js":63,"../interaction/property.js":77,"../math.js":97,"../object.js":99}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12316,7 +11574,7 @@ _ol_interaction_KeyboardPan_.handleEvent = function (mapBrowserEvent) {
 
 exports.default = _ol_interaction_KeyboardPan_;
 
-},{"../coordinate.js":20,"../events/condition.js":26,"../events/eventtype.js":29,"../events/keycode.js":30,"../index.js":65,"../interaction/interaction.js":72}],74:[function(require,module,exports){
+},{"../coordinate.js":17,"../events/condition.js":23,"../events/eventtype.js":26,"../events/keycode.js":27,"../index.js":63,"../interaction/interaction.js":70}],72:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12425,7 +11683,7 @@ _ol_interaction_KeyboardZoom_.handleEvent = function (mapBrowserEvent) {
 
 exports.default = _ol_interaction_KeyboardZoom_;
 
-},{"../events/condition.js":26,"../events/eventtype.js":29,"../index.js":65,"../interaction/interaction.js":72}],75:[function(require,module,exports){
+},{"../events/condition.js":23,"../events/eventtype.js":26,"../index.js":63,"../interaction/interaction.js":70}],73:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12755,7 +12013,7 @@ _ol_interaction_MouseWheelZoom_.Mode_ = {
 };
 exports.default = _ol_interaction_MouseWheelZoom_;
 
-},{"../easing.js":24,"../events/eventtype.js":29,"../has.js":60,"../index.js":65,"../interaction/interaction.js":72,"../math.js":98,"../viewhint.js":220}],76:[function(require,module,exports){
+},{"../easing.js":21,"../events/eventtype.js":26,"../has.js":58,"../index.js":63,"../interaction/interaction.js":70,"../math.js":97,"../viewhint.js":220}],74:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -12959,7 +12217,7 @@ _ol_interaction_PinchRotate_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_PinchRotate_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_PinchRotate_;
 
-},{"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../interaction/pointer.js":78,"../rotationconstraint.js":181,"../viewhint.js":220}],77:[function(require,module,exports){
+},{"../functions.js":34,"../index.js":63,"../interaction/interaction.js":70,"../interaction/pointer.js":76,"../rotationconstraint.js":181,"../viewhint.js":220}],75:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13158,7 +12416,7 @@ _ol_interaction_PinchZoom_.handleDownEvent_ = function (mapBrowserEvent) {
 _ol_interaction_PinchZoom_.prototype.shouldStopEvent = _functions2.default.FALSE;
 exports.default = _ol_interaction_PinchZoom_;
 
-},{"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../interaction/pointer.js":78,"../viewhint.js":220}],78:[function(require,module,exports){
+},{"../functions.js":34,"../index.js":63,"../interaction/interaction.js":70,"../interaction/pointer.js":76,"../viewhint.js":220}],76:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13402,7 +12660,7 @@ _ol_interaction_Pointer_.prototype.shouldStopEvent = function (handled) {
 
 exports.default = _ol_interaction_Pointer_;
 
-},{"../functions.js":36,"../index.js":65,"../interaction/interaction.js":72,"../mapbrowsereventtype.js":93,"../mapbrowserpointerevent.js":94,"../obj.js":99}],79:[function(require,module,exports){
+},{"../functions.js":34,"../index.js":63,"../interaction/interaction.js":70,"../mapbrowsereventtype.js":92,"../mapbrowserpointerevent.js":93,"../obj.js":98}],77:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13417,7 +12675,7 @@ var _ol_interaction_Property_ = {
 };
 exports.default = _ol_interaction_Property_;
 
-},{}],80:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -13553,327 +12811,7 @@ _ol_Kinetic_.prototype.getAngle = function () {
 
 exports.default = _ol_Kinetic_;
 
-},{}],81:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _layertype = require("../layertype.js");
-
-var _layertype2 = _interopRequireDefault(_layertype);
-
-var _layer = require("../layer/layer.js");
-
-var _layer2 = _interopRequireDefault(_layer);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Server-rendered images that are available for arbitrary extents and
- * resolutions.
- * Note that any property set in the options is set as a {@link ol.Object}
- * property on the layer object; for example, setting `title: 'My Title'` in the
- * options means that `title` is observable, and has get/set accessors.
- *
- * @constructor
- * @extends {ol.layer.Layer}
- * @fires ol.render.Event
- * @param {olx.layer.ImageOptions=} opt_options Layer options.
- * @api
- */
-
-
-var _ol_layer_Image_ = function _ol_layer_Image_(opt_options) {
-  var options = opt_options ? opt_options : {};
-
-  _layer2.default.call(this,
-  /** @type {olx.layer.LayerOptions} */
-  options);
-  /**
-   * The layer type.
-   * @protected
-   * @type {ol.LayerType}
-   */
-
-
-  this.type = _layertype2.default.IMAGE;
-};
-
-_index2.default.inherits(_ol_layer_Image_, _layer2.default);
-/**
- * Return the associated {@link ol.source.Image source} of the image layer.
- * @function
- * @return {ol.source.Image} Source.
- * @api
- */
-
-
-_ol_layer_Image_.prototype.getSource;
-exports.default = _ol_layer_Image_;
-
-},{"../index.js":65,"../layer/layer.js":85,"../layertype.js":89}],82:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _layertype = require("../layertype.js");
-
-var _layertype2 = _interopRequireDefault(_layertype);
-
-var _layer = require("../layer/layer.js");
-
-var _layer2 = _interopRequireDefault(_layer);
-
-var _vectorrendertype = require("../layer/vectorrendertype.js");
-
-var _vectorrendertype2 = _interopRequireDefault(_vectorrendertype);
-
-var _obj = require("../obj.js");
-
-var _obj2 = _interopRequireDefault(_obj);
-
-var _style = require("../style/style.js");
-
-var _style2 = _interopRequireDefault(_style);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Vector data that is rendered client-side.
- * Note that any property set in the options is set as a {@link ol.Object}
- * property on the layer object; for example, setting `title: 'My Title'` in the
- * options means that `title` is observable, and has get/set accessors.
- *
- * @constructor
- * @extends {ol.layer.Layer}
- * @fires ol.render.Event
- * @param {olx.layer.VectorOptions=} opt_options Options.
- * @api
- */
-
-
-var _ol_layer_Vector_ = function _ol_layer_Vector_(opt_options) {
-  var options = opt_options ? opt_options :
-  /** @type {olx.layer.VectorOptions} */
-  {};
-
-  var baseOptions = _obj2.default.assign({}, options);
-
-  delete baseOptions.style;
-  delete baseOptions.renderBuffer;
-  delete baseOptions.updateWhileAnimating;
-  delete baseOptions.updateWhileInteracting;
-
-  _layer2.default.call(this,
-  /** @type {olx.layer.LayerOptions} */
-  baseOptions);
-  /**
-   * @private
-   * @type {boolean}
-   */
-
-
-  this.declutter_ = options.declutter !== undefined ? options.declutter : false;
-  /**
-   * @type {number}
-   * @private
-   */
-
-  this.renderBuffer_ = options.renderBuffer !== undefined ? options.renderBuffer : 100;
-  /**
-   * User provided style.
-   * @type {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
-   * @private
-   */
-
-  this.style_ = null;
-  /**
-   * Style function for use within the library.
-   * @type {ol.StyleFunction|undefined}
-   * @private
-   */
-
-  this.styleFunction_ = undefined;
-  this.setStyle(options.style);
-  /**
-   * @type {boolean}
-   * @private
-   */
-
-  this.updateWhileAnimating_ = options.updateWhileAnimating !== undefined ? options.updateWhileAnimating : false;
-  /**
-   * @type {boolean}
-   * @private
-   */
-
-  this.updateWhileInteracting_ = options.updateWhileInteracting !== undefined ? options.updateWhileInteracting : false;
-  /**
-   * @private
-   * @type {ol.layer.VectorTileRenderType|string}
-   */
-
-  this.renderMode_ = options.renderMode || _vectorrendertype2.default.VECTOR;
-  /**
-   * The layer type.
-   * @protected
-   * @type {ol.LayerType}
-   */
-
-  this.type = _layertype2.default.VECTOR;
-};
-
-_index2.default.inherits(_ol_layer_Vector_, _layer2.default);
-/**
- * @return {boolean} Declutter.
- */
-
-
-_ol_layer_Vector_.prototype.getDeclutter = function () {
-  return this.declutter_;
-};
-/**
- * @param {boolean} declutter Declutter.
- */
-
-
-_ol_layer_Vector_.prototype.setDeclutter = function (declutter) {
-  this.declutter_ = declutter;
-};
-/**
- * @return {number|undefined} Render buffer.
- */
-
-
-_ol_layer_Vector_.prototype.getRenderBuffer = function () {
-  return this.renderBuffer_;
-};
-/**
- * @return {function(ol.Feature, ol.Feature): number|null|undefined} Render
- *     order.
- */
-
-
-_ol_layer_Vector_.prototype.getRenderOrder = function () {
-  return (
-    /** @type {ol.RenderOrderFunction|null|undefined} */
-    this.get(_ol_layer_Vector_.Property_.RENDER_ORDER)
-  );
-};
-/**
- * Return the associated {@link ol.source.Vector vectorsource} of the layer.
- * @function
- * @return {ol.source.Vector} Source.
- * @api
- */
-
-
-_ol_layer_Vector_.prototype.getSource;
-/**
- * Get the style for features.  This returns whatever was passed to the `style`
- * option at construction or to the `setStyle` method.
- * @return {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
- *     Layer style.
- * @api
- */
-
-_ol_layer_Vector_.prototype.getStyle = function () {
-  return this.style_;
-};
-/**
- * Get the style function.
- * @return {ol.StyleFunction|undefined} Layer style function.
- * @api
- */
-
-
-_ol_layer_Vector_.prototype.getStyleFunction = function () {
-  return this.styleFunction_;
-};
-/**
- * @return {boolean} Whether the rendered layer should be updated while
- *     animating.
- */
-
-
-_ol_layer_Vector_.prototype.getUpdateWhileAnimating = function () {
-  return this.updateWhileAnimating_;
-};
-/**
- * @return {boolean} Whether the rendered layer should be updated while
- *     interacting.
- */
-
-
-_ol_layer_Vector_.prototype.getUpdateWhileInteracting = function () {
-  return this.updateWhileInteracting_;
-};
-/**
- * @param {ol.RenderOrderFunction|null|undefined} renderOrder
- *     Render order.
- */
-
-
-_ol_layer_Vector_.prototype.setRenderOrder = function (renderOrder) {
-  this.set(_ol_layer_Vector_.Property_.RENDER_ORDER, renderOrder);
-};
-/**
- * Set the style for features.  This can be a single style object, an array
- * of styles, or a function that takes a feature and resolution and returns
- * an array of styles. If it is `undefined` the default style is used. If
- * it is `null` the layer has no style (a `null` style), so only features
- * that have their own styles will be rendered in the layer. See
- * {@link ol.style} for information on the default style.
- * @param {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction|null|undefined}
- *     style Layer style.
- * @api
- */
-
-
-_ol_layer_Vector_.prototype.setStyle = function (style) {
-  this.style_ = style !== undefined ? style : _style2.default.defaultFunction;
-  this.styleFunction_ = style === null ? undefined : _style2.default.createFunction(this.style_);
-  this.changed();
-};
-/**
- * @return {ol.layer.VectorRenderType|string} The render mode.
- */
-
-
-_ol_layer_Vector_.prototype.getRenderMode = function () {
-  return this.renderMode_;
-};
-/**
- * @enum {string}
- * @private
- */
-
-
-_ol_layer_Vector_.Property_ = {
-  RENDER_ORDER: 'renderOrder'
-};
-exports.default = _ol_layer_Vector_;
-
-},{"../index.js":65,"../layer/layer.js":85,"../layer/vectorrendertype.js":87,"../layertype.js":89,"../obj.js":99,"../style/style.js":209}],83:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14165,7 +13103,7 @@ _ol_layer_Base_.prototype.setZIndex = function (zindex) {
 
 exports.default = _ol_layer_Base_;
 
-},{"../index.js":65,"../layer/property.js":86,"../math.js":98,"../obj.js":99,"../object.js":100}],84:[function(require,module,exports){
+},{"../index.js":63,"../layer/property.js":83,"../math.js":97,"../obj.js":98,"../object.js":99}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14447,7 +13385,75 @@ _ol_layer_Group_.Property_ = {
 };
 exports.default = _ol_layer_Group_;
 
-},{"../asserts.js":8,"../collection.js":11,"../collectioneventtype.js":12,"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../index.js":65,"../layer/base.js":83,"../obj.js":99,"../object.js":100,"../objecteventtype.js":101,"../source/state.js":187}],85:[function(require,module,exports){
+},{"../asserts.js":5,"../collection.js":8,"../collectioneventtype.js":9,"../events.js":22,"../events/eventtype.js":26,"../extent.js":28,"../index.js":63,"../layer/base.js":79,"../obj.js":98,"../object.js":99,"../objecteventtype.js":100,"../source/state.js":186}],81:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("../index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _layertype = require("../layertype.js");
+
+var _layertype2 = _interopRequireDefault(_layertype);
+
+var _layer = require("../layer/layer.js");
+
+var _layer2 = _interopRequireDefault(_layer);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * Server-rendered images that are available for arbitrary extents and
+ * resolutions.
+ * Note that any property set in the options is set as a {@link ol.Object}
+ * property on the layer object; for example, setting `title: 'My Title'` in the
+ * options means that `title` is observable, and has get/set accessors.
+ *
+ * @constructor
+ * @extends {ol.layer.Layer}
+ * @fires ol.render.Event
+ * @param {olx.layer.ImageOptions=} opt_options Layer options.
+ * @api
+ */
+
+
+var _ol_layer_Image_ = function _ol_layer_Image_(opt_options) {
+  var options = opt_options ? opt_options : {};
+
+  _layer2.default.call(this,
+  /** @type {olx.layer.LayerOptions} */
+  options);
+  /**
+   * The layer type.
+   * @protected
+   * @type {ol.LayerType}
+   */
+
+
+  this.type = _layertype2.default.IMAGE;
+};
+
+_index2.default.inherits(_ol_layer_Image_, _layer2.default);
+/**
+ * Return the associated {@link ol.source.Image source} of the image layer.
+ * @function
+ * @return {ol.source.Image} Source.
+ * @api
+ */
+
+
+_ol_layer_Image_.prototype.getSource;
+exports.default = _ol_layer_Image_;
+
+},{"../index.js":63,"../layer/layer.js":82,"../layertype.js":87}],82:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14700,7 +13706,7 @@ _ol_layer_Layer_.prototype.setSource = function (source) {
 
 exports.default = _ol_layer_Layer_;
 
-},{"../events.js":25,"../events/eventtype.js":29,"../index.js":65,"../layer/base.js":83,"../layer/property.js":86,"../obj.js":99,"../object.js":100,"../render/eventtype.js":134,"../source/state.js":187}],86:[function(require,module,exports){
+},{"../events.js":22,"../events/eventtype.js":26,"../index.js":63,"../layer/base.js":79,"../layer/property.js":83,"../obj.js":98,"../object.js":99,"../render/eventtype.js":134,"../source/state.js":186}],83:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14721,7 +13727,259 @@ var _ol_layer_Property_ = {
 };
 exports.default = _ol_layer_Property_;
 
-},{}],87:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("../index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _layertype = require("../layertype.js");
+
+var _layertype2 = _interopRequireDefault(_layertype);
+
+var _layer = require("../layer/layer.js");
+
+var _layer2 = _interopRequireDefault(_layer);
+
+var _vectorrendertype = require("../layer/vectorrendertype.js");
+
+var _vectorrendertype2 = _interopRequireDefault(_vectorrendertype);
+
+var _obj = require("../obj.js");
+
+var _obj2 = _interopRequireDefault(_obj);
+
+var _style = require("../style/style.js");
+
+var _style2 = _interopRequireDefault(_style);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * Vector data that is rendered client-side.
+ * Note that any property set in the options is set as a {@link ol.Object}
+ * property on the layer object; for example, setting `title: 'My Title'` in the
+ * options means that `title` is observable, and has get/set accessors.
+ *
+ * @constructor
+ * @extends {ol.layer.Layer}
+ * @fires ol.render.Event
+ * @param {olx.layer.VectorOptions=} opt_options Options.
+ * @api
+ */
+
+
+var _ol_layer_Vector_ = function _ol_layer_Vector_(opt_options) {
+  var options = opt_options ? opt_options :
+  /** @type {olx.layer.VectorOptions} */
+  {};
+
+  var baseOptions = _obj2.default.assign({}, options);
+
+  delete baseOptions.style;
+  delete baseOptions.renderBuffer;
+  delete baseOptions.updateWhileAnimating;
+  delete baseOptions.updateWhileInteracting;
+
+  _layer2.default.call(this,
+  /** @type {olx.layer.LayerOptions} */
+  baseOptions);
+  /**
+   * @private
+   * @type {boolean}
+   */
+
+
+  this.declutter_ = options.declutter !== undefined ? options.declutter : false;
+  /**
+   * @type {number}
+   * @private
+   */
+
+  this.renderBuffer_ = options.renderBuffer !== undefined ? options.renderBuffer : 100;
+  /**
+   * User provided style.
+   * @type {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
+   * @private
+   */
+
+  this.style_ = null;
+  /**
+   * Style function for use within the library.
+   * @type {ol.StyleFunction|undefined}
+   * @private
+   */
+
+  this.styleFunction_ = undefined;
+  this.setStyle(options.style);
+  /**
+   * @type {boolean}
+   * @private
+   */
+
+  this.updateWhileAnimating_ = options.updateWhileAnimating !== undefined ? options.updateWhileAnimating : false;
+  /**
+   * @type {boolean}
+   * @private
+   */
+
+  this.updateWhileInteracting_ = options.updateWhileInteracting !== undefined ? options.updateWhileInteracting : false;
+  /**
+   * @private
+   * @type {ol.layer.VectorTileRenderType|string}
+   */
+
+  this.renderMode_ = options.renderMode || _vectorrendertype2.default.VECTOR;
+  /**
+   * The layer type.
+   * @protected
+   * @type {ol.LayerType}
+   */
+
+  this.type = _layertype2.default.VECTOR;
+};
+
+_index2.default.inherits(_ol_layer_Vector_, _layer2.default);
+/**
+ * @return {boolean} Declutter.
+ */
+
+
+_ol_layer_Vector_.prototype.getDeclutter = function () {
+  return this.declutter_;
+};
+/**
+ * @param {boolean} declutter Declutter.
+ */
+
+
+_ol_layer_Vector_.prototype.setDeclutter = function (declutter) {
+  this.declutter_ = declutter;
+};
+/**
+ * @return {number|undefined} Render buffer.
+ */
+
+
+_ol_layer_Vector_.prototype.getRenderBuffer = function () {
+  return this.renderBuffer_;
+};
+/**
+ * @return {function(ol.Feature, ol.Feature): number|null|undefined} Render
+ *     order.
+ */
+
+
+_ol_layer_Vector_.prototype.getRenderOrder = function () {
+  return (
+    /** @type {ol.RenderOrderFunction|null|undefined} */
+    this.get(_ol_layer_Vector_.Property_.RENDER_ORDER)
+  );
+};
+/**
+ * Return the associated {@link ol.source.Vector vectorsource} of the layer.
+ * @function
+ * @return {ol.source.Vector} Source.
+ * @api
+ */
+
+
+_ol_layer_Vector_.prototype.getSource;
+/**
+ * Get the style for features.  This returns whatever was passed to the `style`
+ * option at construction or to the `setStyle` method.
+ * @return {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction}
+ *     Layer style.
+ * @api
+ */
+
+_ol_layer_Vector_.prototype.getStyle = function () {
+  return this.style_;
+};
+/**
+ * Get the style function.
+ * @return {ol.StyleFunction|undefined} Layer style function.
+ * @api
+ */
+
+
+_ol_layer_Vector_.prototype.getStyleFunction = function () {
+  return this.styleFunction_;
+};
+/**
+ * @return {boolean} Whether the rendered layer should be updated while
+ *     animating.
+ */
+
+
+_ol_layer_Vector_.prototype.getUpdateWhileAnimating = function () {
+  return this.updateWhileAnimating_;
+};
+/**
+ * @return {boolean} Whether the rendered layer should be updated while
+ *     interacting.
+ */
+
+
+_ol_layer_Vector_.prototype.getUpdateWhileInteracting = function () {
+  return this.updateWhileInteracting_;
+};
+/**
+ * @param {ol.RenderOrderFunction|null|undefined} renderOrder
+ *     Render order.
+ */
+
+
+_ol_layer_Vector_.prototype.setRenderOrder = function (renderOrder) {
+  this.set(_ol_layer_Vector_.Property_.RENDER_ORDER, renderOrder);
+};
+/**
+ * Set the style for features.  This can be a single style object, an array
+ * of styles, or a function that takes a feature and resolution and returns
+ * an array of styles. If it is `undefined` the default style is used. If
+ * it is `null` the layer has no style (a `null` style), so only features
+ * that have their own styles will be rendered in the layer. See
+ * {@link ol.style} for information on the default style.
+ * @param {ol.style.Style|Array.<ol.style.Style>|ol.StyleFunction|null|undefined}
+ *     style Layer style.
+ * @api
+ */
+
+
+_ol_layer_Vector_.prototype.setStyle = function (style) {
+  this.style_ = style !== undefined ? style : _style2.default.defaultFunction;
+  this.styleFunction_ = style === null ? undefined : _style2.default.createFunction(this.style_);
+  this.changed();
+};
+/**
+ * @return {ol.layer.VectorRenderType|string} The render mode.
+ */
+
+
+_ol_layer_Vector_.prototype.getRenderMode = function () {
+  return this.renderMode_;
+};
+/**
+ * @enum {string}
+ * @private
+ */
+
+
+_ol_layer_Vector_.Property_ = {
+  RENDER_ORDER: 'renderOrder'
+};
+exports.default = _ol_layer_Vector_;
+
+},{"../index.js":63,"../layer/layer.js":82,"../layer/vectorrendertype.js":85,"../layertype.js":87,"../obj.js":98,"../style/style.js":208}],85:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14744,7 +14002,7 @@ var _ol_layer_VectorRenderType_ = {
 };
 exports.default = _ol_layer_VectorRenderType_;
 
-},{}],88:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14771,7 +14029,7 @@ var _ol_layer_VectorTileRenderType_ = {
 };
 exports.default = _ol_layer_VectorTileRenderType_;
 
-},{}],89:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14790,7 +14048,7 @@ var _ol_LayerType_ = {
 };
 exports.default = _ol_LayerType_;
 
-},{}],90:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14859,7 +14117,163 @@ _ol_loadingstrategy_.tile = function (tileGrid) {
 
 exports.default = _ol_loadingstrategy_;
 
-},{}],91:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("./index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _pluggablemap = require("./pluggablemap.js");
+
+var _pluggablemap2 = _interopRequireDefault(_pluggablemap);
+
+var _plugintype = require("./plugintype.js");
+
+var _plugintype2 = _interopRequireDefault(_plugintype);
+
+var _control = require("./control.js");
+
+var _control2 = _interopRequireDefault(_control);
+
+var _interaction = require("./interaction.js");
+
+var _interaction2 = _interopRequireDefault(_interaction);
+
+var _obj = require("./obj.js");
+
+var _obj2 = _interopRequireDefault(_obj);
+
+var _plugins = require("./plugins.js");
+
+var _plugins2 = _interopRequireDefault(_plugins);
+
+var _imagelayer = require("./renderer/canvas/imagelayer.js");
+
+var _imagelayer2 = _interopRequireDefault(_imagelayer);
+
+var _map = require("./renderer/canvas/map.js");
+
+var _map2 = _interopRequireDefault(_map);
+
+var _tilelayer = require("./renderer/canvas/tilelayer.js");
+
+var _tilelayer2 = _interopRequireDefault(_tilelayer);
+
+var _vectorlayer = require("./renderer/canvas/vectorlayer.js");
+
+var _vectorlayer2 = _interopRequireDefault(_vectorlayer);
+
+var _vectortilelayer = require("./renderer/canvas/vectortilelayer.js");
+
+var _vectortilelayer2 = _interopRequireDefault(_vectortilelayer);
+
+var _imagelayer3 = require("./renderer/webgl/imagelayer.js");
+
+var _imagelayer4 = _interopRequireDefault(_imagelayer3);
+
+var _map3 = require("./renderer/webgl/map.js");
+
+var _map4 = _interopRequireDefault(_map3);
+
+var _tilelayer3 = require("./renderer/webgl/tilelayer.js");
+
+var _tilelayer4 = _interopRequireDefault(_tilelayer3);
+
+var _vectorlayer3 = require("./renderer/webgl/vectorlayer.js");
+
+var _vectorlayer4 = _interopRequireDefault(_vectorlayer3);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+
+if (_index2.default.ENABLE_CANVAS) {
+  _plugins2.default.register(_plugintype2.default.MAP_RENDERER, _map2.default);
+
+  _plugins2.default.registerMultiple(_plugintype2.default.LAYER_RENDERER, [_imagelayer2.default, _tilelayer2.default, _vectorlayer2.default, _vectortilelayer2.default]);
+}
+
+if (_index2.default.ENABLE_WEBGL) {
+  _plugins2.default.register(_plugintype2.default.MAP_RENDERER, _map4.default);
+
+  _plugins2.default.registerMultiple(_plugintype2.default.LAYER_RENDERER, [_imagelayer4.default, _tilelayer4.default, _vectorlayer4.default]);
+}
+/**
+ * @classdesc
+ * The map is the core component of OpenLayers. For a map to render, a view,
+ * one or more layers, and a target container are needed:
+ *
+ *     var map = new ol.Map({
+ *       view: new ol.View({
+ *         center: [0, 0],
+ *         zoom: 1
+ *       }),
+ *       layers: [
+ *         new ol.layer.Tile({
+ *           source: new ol.source.OSM()
+ *         })
+ *       ],
+ *       target: 'map'
+ *     });
+ *
+ * The above snippet creates a map using a {@link ol.layer.Tile} to display
+ * {@link ol.source.OSM} OSM data and render it to a DOM element with the
+ * id `map`.
+ *
+ * The constructor places a viewport container (with CSS class name
+ * `ol-viewport`) in the target element (see `getViewport()`), and then two
+ * further elements within the viewport: one with CSS class name
+ * `ol-overlaycontainer-stopevent` for controls and some overlays, and one with
+ * CSS class name `ol-overlaycontainer` for other overlays (see the `stopEvent`
+ * option of {@link ol.Overlay} for the difference). The map itself is placed in
+ * a further element within the viewport.
+ *
+ * Layers are stored as a `ol.Collection` in layerGroups. A top-level group is
+ * provided by the library. This is what is accessed by `getLayerGroup` and
+ * `setLayerGroup`. Layers entered in the options are added to this group, and
+ * `addLayer` and `removeLayer` change the layer collection in the group.
+ * `getLayers` is a convenience function for `getLayerGroup().getLayers()`.
+ * Note that `ol.layer.Group` is a subclass of `ol.layer.Base`, so layers
+ * entered in the options or added with `addLayer` can be groups, which can
+ * contain further groups, and so on.
+ *
+ * @constructor
+ * @extends {ol.PluggableMap}
+ * @param {olx.MapOptions} options Map options.
+ * @fires ol.MapBrowserEvent
+ * @fires ol.MapEvent
+ * @fires ol.render.Event#postcompose
+ * @fires ol.render.Event#precompose
+ * @api
+ */
+
+
+var _ol_Map_ = function _ol_Map_(options) {
+  options = _obj2.default.assign({}, options);
+
+  if (!options.controls) {
+    options.controls = _control2.default.defaults();
+  }
+
+  if (!options.interactions) {
+    options.interactions = _interaction2.default.defaults();
+  }
+
+  _pluggablemap2.default.call(this, options);
+};
+
+_index2.default.inherits(_ol_Map_, _pluggablemap2.default);
+
+exports.default = _ol_Map_;
+
+},{"./control.js":12,"./index.js":63,"./interaction.js":64,"./obj.js":98,"./pluggablemap.js":104,"./plugins.js":105,"./plugintype.js":106,"./renderer/canvas/imagelayer.js":157,"./renderer/canvas/map.js":160,"./renderer/canvas/tilelayer.js":161,"./renderer/canvas/vectorlayer.js":162,"./renderer/canvas/vectortilelayer.js":163,"./renderer/webgl/imagelayer.js":170,"./renderer/webgl/map.js":172,"./renderer/webgl/tilelayer.js":173,"./renderer/webgl/vectorlayer.js":176}],90:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -14961,7 +14375,7 @@ _ol_MapBrowserEvent_.prototype.stopPropagation = function () {
 
 exports.default = _ol_MapBrowserEvent_;
 
-},{"./index.js":65,"./mapevent.js":95}],92:[function(require,module,exports){
+},{"./index.js":63,"./mapevent.js":94}],91:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15299,7 +14713,7 @@ _ol_MapBrowserEventHandler_.prototype.disposeInternal = function () {
 
 exports.default = _ol_MapBrowserEventHandler_;
 
-},{"./events.js":25,"./events/eventtarget.js":28,"./has.js":60,"./index.js":65,"./mapbrowsereventtype.js":93,"./mapbrowserpointerevent.js":94,"./pointer/eventtype.js":108,"./pointer/pointereventhandler.js":113}],93:[function(require,module,exports){
+},{"./events.js":22,"./events/eventtarget.js":25,"./has.js":58,"./index.js":63,"./mapbrowsereventtype.js":92,"./mapbrowserpointerevent.js":93,"./pointer/eventtype.js":108,"./pointer/pointereventhandler.js":113}],92:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15368,7 +14782,7 @@ var _ol_MapBrowserEventType_ = {
 };
 exports.default = _ol_MapBrowserEventType_;
 
-},{"./events/eventtype.js":29}],94:[function(require,module,exports){
+},{"./events/eventtype.js":26}],93:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15414,7 +14828,7 @@ _index2.default.inherits(_ol_MapBrowserPointerEvent_, _mapbrowserevent2.default)
 
 exports.default = _ol_MapBrowserPointerEvent_;
 
-},{"./index.js":65,"./mapbrowserevent.js":91}],95:[function(require,module,exports){
+},{"./index.js":63,"./mapbrowserevent.js":90}],94:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15471,7 +14885,7 @@ _index2.default.inherits(_ol_MapEvent_, _event2.default);
 
 exports.default = _ol_MapEvent_;
 
-},{"./events/event.js":27,"./index.js":65}],96:[function(require,module,exports){
+},{"./events/event.js":24,"./index.js":63}],95:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15505,7 +14919,7 @@ var _ol_MapEventType_ = {
 };
 exports.default = _ol_MapEventType_;
 
-},{}],97:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15523,7 +14937,7 @@ var _ol_MapProperty_ = {
 };
 exports.default = _ol_MapProperty_;
 
-},{}],98:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15752,7 +15166,7 @@ _ol_math_.lerp = function (a, b, x) {
 
 exports.default = _ol_math_;
 
-},{"./asserts.js":8}],99:[function(require,module,exports){
+},{"./asserts.js":5}],98:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -15836,7 +15250,7 @@ _ol_obj_.isEmpty = function (object) {
 
 exports.default = _ol_obj_;
 
-},{}],100:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16094,7 +15508,7 @@ _index2.default.inherits(_ol_Object_.Event, _event2.default);
 
 exports.default = _ol_Object_;
 
-},{"./events/event.js":27,"./index.js":65,"./obj.js":99,"./objecteventtype.js":101,"./observable.js":102}],101:[function(require,module,exports){
+},{"./events/event.js":24,"./index.js":63,"./obj.js":98,"./objecteventtype.js":100,"./observable.js":101}],100:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16114,7 +15528,7 @@ var _ol_ObjectEventType_ = {
 };
 exports.default = _ol_ObjectEventType_;
 
-},{}],102:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -16305,7 +15719,593 @@ _ol_Observable_.prototype.un = function (type, listener, opt_this) {
 
 exports.default = _ol_Observable_;
 
-},{"./events.js":25,"./events/eventtarget.js":28,"./events/eventtype.js":29,"./index.js":65}],103:[function(require,module,exports){
+},{"./events.js":22,"./events/eventtarget.js":25,"./events/eventtype.js":26,"./index.js":63}],102:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("./index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _mapeventtype = require("./mapeventtype.js");
+
+var _mapeventtype2 = _interopRequireDefault(_mapeventtype);
+
+var _object = require("./object.js");
+
+var _object2 = _interopRequireDefault(_object);
+
+var _overlaypositioning = require("./overlaypositioning.js");
+
+var _overlaypositioning2 = _interopRequireDefault(_overlaypositioning);
+
+var _css = require("./css.js");
+
+var _css2 = _interopRequireDefault(_css);
+
+var _dom = require("./dom.js");
+
+var _dom2 = _interopRequireDefault(_dom);
+
+var _events = require("./events.js");
+
+var _events2 = _interopRequireDefault(_events);
+
+var _extent = require("./extent.js");
+
+var _extent2 = _interopRequireDefault(_extent);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * An element to be displayed over the map and attached to a single map
+ * location.  Like {@link ol.control.Control}, Overlays are visible widgets.
+ * Unlike Controls, they are not in a fixed position on the screen, but are tied
+ * to a geographical coordinate, so panning the map will move an Overlay but not
+ * a Control.
+ *
+ * Example:
+ *
+ *     var popup = new ol.Overlay({
+ *       element: document.getElementById('popup')
+ *     });
+ *     popup.setPosition(coordinate);
+ *     map.addOverlay(popup);
+ *
+ * @constructor
+ * @extends {ol.Object}
+ * @param {olx.OverlayOptions} options Overlay options.
+ * @api
+ */
+
+
+var _ol_Overlay_ = function _ol_Overlay_(options) {
+  _object2.default.call(this);
+  /**
+   * @protected
+   * @type {olx.OverlayOptions}
+   */
+
+
+  this.options = options;
+  /**
+   * @protected
+   * @type {number|string|undefined}
+   */
+
+  this.id = options.id;
+  /**
+   * @protected
+   * @type {boolean}
+   */
+
+  this.insertFirst = options.insertFirst !== undefined ? options.insertFirst : true;
+  /**
+   * @protected
+   * @type {boolean}
+   */
+
+  this.stopEvent = options.stopEvent !== undefined ? options.stopEvent : true;
+  /**
+   * @protected
+   * @type {Element}
+   */
+
+  this.element = document.createElement('DIV');
+  this.element.className = options.className !== undefined ? options.className : 'ol-overlay-container ' + _css2.default.CLASS_SELECTABLE;
+  this.element.style.position = 'absolute';
+  /**
+   * @protected
+   * @type {boolean}
+   */
+
+  this.autoPan = options.autoPan !== undefined ? options.autoPan : false;
+  /**
+   * @protected
+   * @type {olx.OverlayPanOptions}
+   */
+
+  this.autoPanAnimation = options.autoPanAnimation ||
+  /** @type {olx.OverlayPanOptions} */
+  {};
+  /**
+   * @protected
+   * @type {number}
+   */
+
+  this.autoPanMargin = options.autoPanMargin !== undefined ? options.autoPanMargin : 20;
+  /**
+   * @protected
+   * @type {{bottom_: string,
+   *         left_: string,
+   *         right_: string,
+   *         top_: string,
+   *         visible: boolean}}
+   */
+
+  this.rendered = {
+    bottom_: '',
+    left_: '',
+    right_: '',
+    top_: '',
+    visible: true
+  };
+  /**
+   * @protected
+   * @type {?ol.EventsKey}
+   */
+
+  this.mapPostrenderListenerKey = null;
+
+  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.ELEMENT), this.handleElementChanged, this);
+
+  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.MAP), this.handleMapChanged, this);
+
+  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.OFFSET), this.handleOffsetChanged, this);
+
+  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.POSITION), this.handlePositionChanged, this);
+
+  _events2.default.listen(this, _object2.default.getChangeEventType(_ol_Overlay_.Property.POSITIONING), this.handlePositioningChanged, this);
+
+  if (options.element !== undefined) {
+    this.setElement(options.element);
+  }
+
+  this.setOffset(options.offset !== undefined ? options.offset : [0, 0]);
+  this.setPositioning(options.positioning !== undefined ?
+  /** @type {ol.OverlayPositioning} */
+  options.positioning : _overlaypositioning2.default.TOP_LEFT);
+
+  if (options.position !== undefined) {
+    this.setPosition(options.position);
+  }
+};
+
+_index2.default.inherits(_ol_Overlay_, _object2.default);
+/**
+ * Get the DOM element of this overlay.
+ * @return {Element|undefined} The Element containing the overlay.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.getElement = function () {
+  return (
+    /** @type {Element|undefined} */
+    this.get(_ol_Overlay_.Property.ELEMENT)
+  );
+};
+/**
+ * Get the overlay identifier which is set on constructor.
+ * @return {number|string|undefined} Id.
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.getId = function () {
+  return this.id;
+};
+/**
+ * Get the map associated with this overlay.
+ * @return {ol.PluggableMap|undefined} The map that the overlay is part of.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.getMap = function () {
+  return (
+    /** @type {ol.PluggableMap|undefined} */
+    this.get(_ol_Overlay_.Property.MAP)
+  );
+};
+/**
+ * Get the offset of this overlay.
+ * @return {Array.<number>} The offset.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.getOffset = function () {
+  return (
+    /** @type {Array.<number>} */
+    this.get(_ol_Overlay_.Property.OFFSET)
+  );
+};
+/**
+ * Get the current position of this overlay.
+ * @return {ol.Coordinate|undefined} The spatial point that the overlay is
+ *     anchored at.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.getPosition = function () {
+  return (
+    /** @type {ol.Coordinate|undefined} */
+    this.get(_ol_Overlay_.Property.POSITION)
+  );
+};
+/**
+ * Get the current positioning of this overlay.
+ * @return {ol.OverlayPositioning} How the overlay is positioned
+ *     relative to its point on the map.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.getPositioning = function () {
+  return (
+    /** @type {ol.OverlayPositioning} */
+    this.get(_ol_Overlay_.Property.POSITIONING)
+  );
+};
+/**
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.handleElementChanged = function () {
+  _dom2.default.removeChildren(this.element);
+
+  var element = this.getElement();
+
+  if (element) {
+    this.element.appendChild(element);
+  }
+};
+/**
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.handleMapChanged = function () {
+  if (this.mapPostrenderListenerKey) {
+    _dom2.default.removeNode(this.element);
+
+    _events2.default.unlistenByKey(this.mapPostrenderListenerKey);
+
+    this.mapPostrenderListenerKey = null;
+  }
+
+  var map = this.getMap();
+
+  if (map) {
+    this.mapPostrenderListenerKey = _events2.default.listen(map, _mapeventtype2.default.POSTRENDER, this.render, this);
+    this.updatePixelPosition();
+    var container = this.stopEvent ? map.getOverlayContainerStopEvent() : map.getOverlayContainer();
+
+    if (this.insertFirst) {
+      container.insertBefore(this.element, container.childNodes[0] || null);
+    } else {
+      container.appendChild(this.element);
+    }
+  }
+};
+/**
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.render = function () {
+  this.updatePixelPosition();
+};
+/**
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.handleOffsetChanged = function () {
+  this.updatePixelPosition();
+};
+/**
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.handlePositionChanged = function () {
+  this.updatePixelPosition();
+
+  if (this.get(_ol_Overlay_.Property.POSITION) && this.autoPan) {
+    this.panIntoView();
+  }
+};
+/**
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.handlePositioningChanged = function () {
+  this.updatePixelPosition();
+};
+/**
+ * Set the DOM element to be associated with this overlay.
+ * @param {Element|undefined} element The Element containing the overlay.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.setElement = function (element) {
+  this.set(_ol_Overlay_.Property.ELEMENT, element);
+};
+/**
+ * Set the map to be associated with this overlay.
+ * @param {ol.PluggableMap|undefined} map The map that the overlay is part of.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.setMap = function (map) {
+  this.set(_ol_Overlay_.Property.MAP, map);
+};
+/**
+ * Set the offset for this overlay.
+ * @param {Array.<number>} offset Offset.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.setOffset = function (offset) {
+  this.set(_ol_Overlay_.Property.OFFSET, offset);
+};
+/**
+ * Set the position for this overlay. If the position is `undefined` the
+ * overlay is hidden.
+ * @param {ol.Coordinate|undefined} position The spatial point that the overlay
+ *     is anchored at.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.setPosition = function (position) {
+  this.set(_ol_Overlay_.Property.POSITION, position);
+};
+/**
+ * Pan the map so that the overlay is entirely visible in the current viewport
+ * (if necessary).
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.panIntoView = function () {
+  var map = this.getMap();
+
+  if (!map || !map.getTargetElement()) {
+    return;
+  }
+
+  var mapRect = this.getRect(map.getTargetElement(), map.getSize());
+  var element =
+  /** @type {!Element} */
+  this.getElement();
+  var overlayRect = this.getRect(element, [_dom2.default.outerWidth(element), _dom2.default.outerHeight(element)]);
+  var margin = this.autoPanMargin;
+
+  if (!_extent2.default.containsExtent(mapRect, overlayRect)) {
+    // the overlay is not completely inside the viewport, so pan the map
+    var offsetLeft = overlayRect[0] - mapRect[0];
+    var offsetRight = mapRect[2] - overlayRect[2];
+    var offsetTop = overlayRect[1] - mapRect[1];
+    var offsetBottom = mapRect[3] - overlayRect[3];
+    var delta = [0, 0];
+
+    if (offsetLeft < 0) {
+      // move map to the left
+      delta[0] = offsetLeft - margin;
+    } else if (offsetRight < 0) {
+      // move map to the right
+      delta[0] = Math.abs(offsetRight) + margin;
+    }
+
+    if (offsetTop < 0) {
+      // move map up
+      delta[1] = offsetTop - margin;
+    } else if (offsetBottom < 0) {
+      // move map down
+      delta[1] = Math.abs(offsetBottom) + margin;
+    }
+
+    if (delta[0] !== 0 || delta[1] !== 0) {
+      var center =
+      /** @type {ol.Coordinate} */
+      map.getView().getCenter();
+      var centerPx = map.getPixelFromCoordinate(center);
+      var newCenterPx = [centerPx[0] + delta[0], centerPx[1] + delta[1]];
+      map.getView().animate({
+        center: map.getCoordinateFromPixel(newCenterPx),
+        duration: this.autoPanAnimation.duration,
+        easing: this.autoPanAnimation.easing
+      });
+    }
+  }
+};
+/**
+ * Get the extent of an element relative to the document
+ * @param {Element|undefined} element The element.
+ * @param {ol.Size|undefined} size The size of the element.
+ * @return {ol.Extent} The extent.
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.getRect = function (element, size) {
+  var box = element.getBoundingClientRect();
+  var offsetX = box.left + window.pageXOffset;
+  var offsetY = box.top + window.pageYOffset;
+  return [offsetX, offsetY, offsetX + size[0], offsetY + size[1]];
+};
+/**
+ * Set the positioning for this overlay.
+ * @param {ol.OverlayPositioning} positioning how the overlay is
+ *     positioned relative to its point on the map.
+ * @observable
+ * @api
+ */
+
+
+_ol_Overlay_.prototype.setPositioning = function (positioning) {
+  this.set(_ol_Overlay_.Property.POSITIONING, positioning);
+};
+/**
+ * Modify the visibility of the element.
+ * @param {boolean} visible Element visibility.
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.setVisible = function (visible) {
+  if (this.rendered.visible !== visible) {
+    this.element.style.display = visible ? '' : 'none';
+    this.rendered.visible = visible;
+  }
+};
+/**
+ * Update pixel position.
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.updatePixelPosition = function () {
+  var map = this.getMap();
+  var position = this.getPosition();
+
+  if (!map || !map.isRendered() || !position) {
+    this.setVisible(false);
+    return;
+  }
+
+  var pixel = map.getPixelFromCoordinate(position);
+  var mapSize = map.getSize();
+  this.updateRenderedPosition(pixel, mapSize);
+};
+/**
+ * @param {ol.Pixel} pixel The pixel location.
+ * @param {ol.Size|undefined} mapSize The map size.
+ * @protected
+ */
+
+
+_ol_Overlay_.prototype.updateRenderedPosition = function (pixel, mapSize) {
+  var style = this.element.style;
+  var offset = this.getOffset();
+  var positioning = this.getPositioning();
+  this.setVisible(true);
+  var offsetX = offset[0];
+  var offsetY = offset[1];
+
+  if (positioning == _overlaypositioning2.default.BOTTOM_RIGHT || positioning == _overlaypositioning2.default.CENTER_RIGHT || positioning == _overlaypositioning2.default.TOP_RIGHT) {
+    if (this.rendered.left_ !== '') {
+      this.rendered.left_ = style.left = '';
+    }
+
+    var right = Math.round(mapSize[0] - pixel[0] - offsetX) + 'px';
+
+    if (this.rendered.right_ != right) {
+      this.rendered.right_ = style.right = right;
+    }
+  } else {
+    if (this.rendered.right_ !== '') {
+      this.rendered.right_ = style.right = '';
+    }
+
+    if (positioning == _overlaypositioning2.default.BOTTOM_CENTER || positioning == _overlaypositioning2.default.CENTER_CENTER || positioning == _overlaypositioning2.default.TOP_CENTER) {
+      offsetX -= this.element.offsetWidth / 2;
+    }
+
+    var left = Math.round(pixel[0] + offsetX) + 'px';
+
+    if (this.rendered.left_ != left) {
+      this.rendered.left_ = style.left = left;
+    }
+  }
+
+  if (positioning == _overlaypositioning2.default.BOTTOM_LEFT || positioning == _overlaypositioning2.default.BOTTOM_CENTER || positioning == _overlaypositioning2.default.BOTTOM_RIGHT) {
+    if (this.rendered.top_ !== '') {
+      this.rendered.top_ = style.top = '';
+    }
+
+    var bottom = Math.round(mapSize[1] - pixel[1] - offsetY) + 'px';
+
+    if (this.rendered.bottom_ != bottom) {
+      this.rendered.bottom_ = style.bottom = bottom;
+    }
+  } else {
+    if (this.rendered.bottom_ !== '') {
+      this.rendered.bottom_ = style.bottom = '';
+    }
+
+    if (positioning == _overlaypositioning2.default.CENTER_LEFT || positioning == _overlaypositioning2.default.CENTER_CENTER || positioning == _overlaypositioning2.default.CENTER_RIGHT) {
+      offsetY -= this.element.offsetHeight / 2;
+    }
+
+    var top = Math.round(pixel[1] + offsetY) + 'px';
+
+    if (this.rendered.top_ != top) {
+      this.rendered.top_ = style.top = top;
+    }
+  }
+};
+/**
+ * returns the options this Overlay has been created with
+ * @public
+ * @return {olx.OverlayOptions} overlay options
+ */
+
+
+_ol_Overlay_.prototype.getOptions = function () {
+  return this.options;
+};
+/**
+ * @enum {string}
+ * @protected
+ */
+
+
+_ol_Overlay_.Property = {
+  ELEMENT: 'element',
+  MAP: 'map',
+  OFFSET: 'offset',
+  POSITION: 'position',
+  POSITIONING: 'positioning'
+};
+exports.default = _ol_Overlay_;
+
+},{"./css.js":18,"./dom.js":20,"./events.js":22,"./extent.js":28,"./index.js":63,"./mapeventtype.js":95,"./object.js":99,"./overlaypositioning.js":103}],103:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17890,7 +17890,7 @@ _ol_PluggableMap_.createOptionsInternal = function (options) {
 
 exports.default = _ol_PluggableMap_;
 
-},{"./asserts.js":8,"./collection.js":11,"./collectioneventtype.js":12,"./dom.js":23,"./events.js":25,"./events/event.js":27,"./events/eventtype.js":29,"./extent.js":31,"./functions.js":36,"./has.js":60,"./index.js":65,"./layer/group.js":84,"./mapbrowserevent.js":91,"./mapbrowsereventhandler.js":92,"./mapbrowsereventtype.js":93,"./mapevent.js":95,"./mapeventtype.js":96,"./mapproperty.js":97,"./obj.js":99,"./object.js":100,"./objecteventtype.js":101,"./plugins.js":105,"./renderer/type.js":166,"./size.js":182,"./structs/priorityqueue.js":193,"./tilequeue.js":214,"./transform.js":217,"./view.js":219,"./viewhint.js":220}],105:[function(require,module,exports){
+},{"./asserts.js":5,"./collection.js":8,"./collectioneventtype.js":9,"./dom.js":20,"./events.js":22,"./events/event.js":24,"./events/eventtype.js":26,"./extent.js":28,"./functions.js":34,"./has.js":58,"./index.js":63,"./layer/group.js":80,"./mapbrowserevent.js":90,"./mapbrowsereventhandler.js":91,"./mapbrowsereventtype.js":92,"./mapevent.js":94,"./mapeventtype.js":95,"./mapproperty.js":96,"./obj.js":98,"./object.js":99,"./objecteventtype.js":100,"./plugins.js":105,"./renderer/type.js":166,"./size.js":182,"./structs/priorityqueue.js":193,"./tilequeue.js":214,"./transform.js":217,"./view.js":219,"./viewhint.js":220}],105:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18353,7 +18353,7 @@ _ol_pointer_MouseSource_.prototype.cleanupMouse = function () {
 
 exports.default = _ol_pointer_MouseSource_;
 
-},{"../index.js":65,"../pointer/eventsource.js":107}],110:[function(require,module,exports){
+},{"../index.js":63,"../pointer/eventsource.js":107}],110:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18560,7 +18560,7 @@ _ol_pointer_MsSource_.prototype.msGotPointerCapture = function (inEvent) {
 
 exports.default = _ol_pointer_MsSource_;
 
-},{"../index.js":65,"../pointer/eventsource.js":107}],111:[function(require,module,exports){
+},{"../index.js":63,"../pointer/eventsource.js":107}],111:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -18714,7 +18714,7 @@ _ol_pointer_NativeSource_.prototype.gotPointerCapture = function (inEvent) {
 
 exports.default = _ol_pointer_NativeSource_;
 
-},{"../index.js":65,"../pointer/eventsource.js":107}],112:[function(require,module,exports){
+},{"../index.js":63,"../pointer/eventsource.js":107}],112:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19017,7 +19017,7 @@ _ol_pointer_PointerEvent_.HAS_BUTTONS = false;
 
 exports.default = _ol_pointer_PointerEvent_;
 
-},{"../events/event.js":27,"../index.js":65}],113:[function(require,module,exports){
+},{"../events/event.js":24,"../index.js":63}],113:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19476,7 +19476,7 @@ _ol_pointer_PointerEventHandler_.CLONE_PROPS = [// MouseEvent
 ['type', ''], ['target', null], ['currentTarget', null], ['which', 0]];
 exports.default = _ol_pointer_PointerEventHandler_;
 
-},{"../events.js":25,"../events/eventtarget.js":28,"../has.js":60,"../index.js":65,"../pointer/eventtype.js":108,"../pointer/mousesource.js":109,"../pointer/mssource.js":110,"../pointer/nativesource.js":111,"../pointer/pointerevent.js":112,"../pointer/touchsource.js":114}],114:[function(require,module,exports){
+},{"../events.js":22,"../events/eventtarget.js":25,"../has.js":58,"../index.js":63,"../pointer/eventtype.js":108,"../pointer/mousesource.js":109,"../pointer/mssource.js":110,"../pointer/nativesource.js":111,"../pointer/pointerevent.js":112,"../pointer/touchsource.js":114}],114:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -19953,7 +19953,7 @@ _ol_pointer_TouchSource_.prototype.dedupSynthMouse_ = function (inEvent) {
 
 exports.default = _ol_pointer_TouchSource_;
 
-},{"../array.js":6,"../index.js":65,"../pointer/eventsource.js":107,"../pointer/mousesource.js":109}],115:[function(require,module,exports){
+},{"../array.js":3,"../index.js":63,"../pointer/eventsource.js":107,"../pointer/mousesource.js":109}],115:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20544,7 +20544,7 @@ _ol_proj_.addCommon();
 
 exports.default = _ol_proj_;
 
-},{"./extent.js":31,"./index.js":65,"./math.js":98,"./proj/epsg3857.js":116,"./proj/epsg4326.js":117,"./proj/proj4.js":118,"./proj/projection.js":119,"./proj/projections.js":120,"./proj/transforms.js":121,"./proj/units.js":122,"./sphere.js":189}],116:[function(require,module,exports){
+},{"./extent.js":28,"./index.js":63,"./math.js":97,"./proj/epsg3857.js":116,"./proj/epsg4326.js":117,"./proj/proj4.js":118,"./proj/projection.js":119,"./proj/projections.js":120,"./proj/transforms.js":121,"./proj/units.js":122,"./sphere.js":189}],116:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20707,7 +20707,7 @@ _ol_proj_EPSG3857_.toEPSG4326 = function (input, opt_output, opt_dimension) {
 
 exports.default = _ol_proj_EPSG3857_;
 
-},{"../index.js":65,"../math.js":98,"../proj/projection.js":119,"../proj/units.js":122}],117:[function(require,module,exports){
+},{"../index.js":63,"../math.js":97,"../proj/projection.js":119,"../proj/units.js":122}],117:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -20794,7 +20794,7 @@ _ol_proj_EPSG4326_.METERS_PER_UNIT = Math.PI * _ol_proj_EPSG4326_.RADIUS / 180;
 _ol_proj_EPSG4326_.PROJECTIONS = [new _ol_proj_EPSG4326_.Projection_('CRS:84'), new _ol_proj_EPSG4326_.Projection_('EPSG:4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:EPSG::4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:EPSG:6.6:4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:OGC:1.3:CRS84'), new _ol_proj_EPSG4326_.Projection_('urn:ogc:def:crs:OGC:2:84'), new _ol_proj_EPSG4326_.Projection_('http://www.opengis.net/gml/srs/epsg.xml#4326', 'neu'), new _ol_proj_EPSG4326_.Projection_('urn:x-ogc:def:crs:EPSG:4326', 'neu')];
 exports.default = _ol_proj_EPSG4326_;
 
-},{"../index.js":65,"../proj/projection.js":119,"../proj/units.js":122}],118:[function(require,module,exports){
+},{"../index.js":63,"../proj/projection.js":119,"../proj/units.js":122}],118:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21137,7 +21137,7 @@ _ol_proj_Projection_.prototype.getPointResolutionFunc = function () {
 
 exports.default = _ol_proj_Projection_;
 
-},{"../index.js":65,"../proj/proj4.js":118,"../proj/units.js":122}],120:[function(require,module,exports){
+},{"../index.js":63,"../proj/proj4.js":118,"../proj/units.js":122}],120:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21279,7 +21279,7 @@ _ol_proj_transforms_.get = function (sourceCode, destinationCode) {
 
 exports.default = _ol_proj_transforms_;
 
-},{"../obj.js":99}],122:[function(require,module,exports){
+},{"../obj.js":98}],122:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21466,7 +21466,7 @@ _ol_render_Box_.prototype.getGeometry = function () {
 
 exports.default = _ol_render_Box_;
 
-},{"../disposable.js":22,"../geom/polygon.js":58,"../index.js":65}],124:[function(require,module,exports){
+},{"../disposable.js":19,"../geom/polygon.js":56,"../index.js":63}],124:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21790,7 +21790,7 @@ _ol_render_canvas_.drawImage = function (context, transform, opacity, image, ori
 
 exports.default = _ol_render_canvas_;
 
-},{"../css.js":21,"../dom.js":23,"../obj.js":99,"../structs/lrucache.js":192,"../transform.js":217}],125:[function(require,module,exports){
+},{"../css.js":18,"../dom.js":20,"../obj.js":98,"../structs/lrucache.js":192,"../transform.js":217}],125:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22025,7 +22025,7 @@ _ol_render_canvas_ImageReplay_.prototype.setImageStyle = function (imageStyle, d
 
 exports.default = _ol_render_canvas_ImageReplay_;
 
-},{"../../index.js":65,"../canvas/instruction.js":127,"../canvas/replay.js":130}],126:[function(require,module,exports){
+},{"../../index.js":63,"../canvas/instruction.js":127,"../canvas/replay.js":130}],126:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23105,7 +23105,7 @@ _ol_render_canvas_Immediate_.prototype.setTextStyle = function (textStyle) {
 
 exports.default = _ol_render_canvas_Immediate_;
 
-},{"../../array.js":6,"../../colorlike.js":14,"../../extent.js":31,"../../geom/flat/transform.js":52,"../../geom/geometrytype.js":55,"../../geom/simplegeometry.js":59,"../../has.js":60,"../../index.js":65,"../../transform.js":217,"../canvas.js":124,"../vectorcontext.js":138}],127:[function(require,module,exports){
+},{"../../array.js":3,"../../colorlike.js":11,"../../extent.js":28,"../../geom/flat/transform.js":50,"../../geom/geometrytype.js":53,"../../geom/simplegeometry.js":57,"../../has.js":58,"../../index.js":63,"../../transform.js":217,"../canvas.js":124,"../vectorcontext.js":138}],127:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23280,7 +23280,7 @@ _ol_render_canvas_LineStringReplay_.prototype.applyStroke = function (state) {
 
 exports.default = _ol_render_canvas_LineStringReplay_;
 
-},{"../../index.js":65,"../canvas/instruction.js":127,"../canvas/replay.js":130}],129:[function(require,module,exports){
+},{"../../index.js":63,"../canvas/instruction.js":127,"../canvas/replay.js":130}],129:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23534,7 +23534,7 @@ _ol_render_canvas_PolygonReplay_.prototype.setFillStrokeStyles_ = function (geom
 
 exports.default = _ol_render_canvas_PolygonReplay_;
 
-},{"../../color.js":13,"../../geom/flat/simplify.js":48,"../../index.js":65,"../canvas.js":124,"../canvas/instruction.js":127,"../canvas/replay.js":130}],130:[function(require,module,exports){
+},{"../../color.js":10,"../../geom/flat/simplify.js":46,"../../index.js":63,"../canvas.js":124,"../canvas/instruction.js":127,"../canvas/replay.js":130}],130:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24870,7 +24870,7 @@ _ol_render_canvas_Replay_.prototype.getBufferedMaxExtent = function () {
 
 exports.default = _ol_render_canvas_Replay_;
 
-},{"../../array.js":6,"../../colorlike.js":14,"../../extent.js":31,"../../extent/relationship.js":33,"../../geom/flat/inflate.js":41,"../../geom/flat/length.js":44,"../../geom/flat/textpath.js":50,"../../geom/flat/transform.js":52,"../../geom/geometrytype.js":55,"../../has.js":60,"../../index.js":65,"../../obj.js":99,"../../transform.js":217,"../canvas.js":124,"../canvas/instruction.js":127,"../replay.js":135,"../vectorcontext.js":138}],131:[function(require,module,exports){
+},{"../../array.js":3,"../../colorlike.js":11,"../../extent.js":28,"../../extent/relationship.js":30,"../../geom/flat/inflate.js":39,"../../geom/flat/length.js":42,"../../geom/flat/textpath.js":48,"../../geom/flat/transform.js":50,"../../geom/geometrytype.js":53,"../../has.js":58,"../../index.js":63,"../../obj.js":98,"../../transform.js":217,"../canvas.js":124,"../canvas/instruction.js":127,"../replay.js":135,"../vectorcontext.js":138}],131:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25483,7 +25483,7 @@ _ol_render_canvas_ReplayGroup_.BATCH_CONSTRUCTORS_ = {
 };
 exports.default = _ol_render_canvas_ReplayGroup_;
 
-},{"../../array.js":6,"../../dom.js":23,"../../extent.js":31,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../transform.js":217,"../canvas/imagereplay.js":125,"../canvas/linestringreplay.js":128,"../canvas/polygonreplay.js":129,"../canvas/replay.js":130,"../canvas/textreplay.js":132,"../replay.js":135,"../replaygroup.js":136,"../replaytype.js":137}],132:[function(require,module,exports){
+},{"../../array.js":3,"../../dom.js":20,"../../extent.js":28,"../../geom/flat/transform.js":50,"../../index.js":63,"../../obj.js":98,"../../transform.js":217,"../canvas/imagereplay.js":125,"../canvas/linestringreplay.js":128,"../canvas/polygonreplay.js":129,"../canvas/replay.js":130,"../canvas/textreplay.js":132,"../replay.js":135,"../replaygroup.js":136,"../replaytype.js":137}],132:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26116,7 +26116,7 @@ _ol_render_canvas_TextReplay_.prototype.setTextStyle = function (textStyle, decl
 
 exports.default = _ol_render_canvas_TextReplay_;
 
-},{"../../colorlike.js":14,"../../dom.js":23,"../../extent.js":31,"../../geom/flat/straightchunk.js":49,"../../geom/geometrytype.js":55,"../../has.js":60,"../../index.js":65,"../../style/textplacement.js":210,"../canvas.js":124,"../canvas/instruction.js":127,"../canvas/replay.js":130,"../replay.js":135}],133:[function(require,module,exports){
+},{"../../colorlike.js":11,"../../dom.js":20,"../../extent.js":28,"../../geom/flat/straightchunk.js":47,"../../geom/geometrytype.js":53,"../../has.js":58,"../../index.js":63,"../../style/textplacement.js":210,"../canvas.js":124,"../canvas/instruction.js":127,"../canvas/replay.js":130,"../replay.js":135}],133:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26187,7 +26187,7 @@ _index2.default.inherits(_ol_render_Event_, _event2.default);
 
 exports.default = _ol_render_Event_;
 
-},{"../events/event.js":27,"../index.js":65}],134:[function(require,module,exports){
+},{"../events/event.js":24,"../index.js":63}],134:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27028,7 +27028,7 @@ _ol_render_webgl_CircleReplay_.prototype.setFillStrokeStyle = function (fillStyl
 
 exports.default = _ol_render_webgl_CircleReplay_;
 
-},{"../../array.js":6,"../../color.js":13,"../../extent.js":31,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/circlereplay/defaultshader.js":141,"../webgl/circlereplay/defaultshader/locations.js":142,"../webgl/replay.js":151}],141:[function(require,module,exports){
+},{"../../array.js":3,"../../color.js":10,"../../extent.js":28,"../../geom/flat/transform.js":50,"../../index.js":63,"../../obj.js":98,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/circlereplay/defaultshader.js":141,"../webgl/circlereplay/defaultshader/locations.js":142,"../webgl/replay.js":151}],141:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27059,7 +27059,7 @@ _ol_render_webgl_circlereplay_defaultshader_.fragment = new _fragment2.default(_
 _ol_render_webgl_circlereplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_center;\nvarying vec2 v_offset;\nvarying float v_halfWidth;\nvarying float v_pixelRatio;\n\n\nattribute vec2 a_position;\nattribute float a_instruction;\nattribute float a_radius;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\nuniform float u_lineWidth;\nuniform float u_pixelRatio;\n\nvoid main(void) {\n  mat4 offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  v_center = vec4(u_projectionMatrix * vec4(a_position, 0.0, 1.0)).xy;\n  v_pixelRatio = u_pixelRatio;\n  float lineWidth = u_lineWidth * u_pixelRatio;\n  v_halfWidth = lineWidth / 2.0;\n  if (lineWidth == 0.0) {\n    lineWidth = 2.0 * u_pixelRatio;\n  }\n  vec2 offset;\n  // Radius with anitaliasing (roughly).\n  float radius = a_radius + 3.0 * u_pixelRatio;\n  // Until we get gl_VertexID in WebGL, we store an instruction.\n  if (a_instruction == 0.0) {\n    // Offsetting the edges of the triangle by lineWidth / 2 is necessary, however\n    // we should also leave some space for the antialiasing, thus we offset by lineWidth.\n    offset = vec2(-1.0, 1.0);\n  } else if (a_instruction == 1.0) {\n    offset = vec2(-1.0, -1.0);\n  } else if (a_instruction == 2.0) {\n    offset = vec2(1.0, -1.0);\n  } else {\n    offset = vec2(1.0, 1.0);\n  }\n\n  gl_Position = u_projectionMatrix * vec4(a_position + offset * radius, 0.0, 1.0) +\n      offsetMatrix * vec4(offset * lineWidth, 0.0, 0.0);\n  v_offset = vec4(u_projectionMatrix * vec4(a_position.x + a_radius, a_position.y,\n      0.0, 1.0)).xy;\n\n  if (distance(v_center, v_offset) > 20000.0) {\n    gl_Position = vec4(v_center, 0.0, 1.0);\n  }\n}\n\n\n' : 'varying vec2 a;varying vec2 b;varying float c;varying float d;attribute vec2 e;attribute float f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;uniform float k;uniform float l;void main(void){mat4 offsetMatrix=i*j;a=vec4(h*vec4(e,0.0,1.0)).xy;d=l;float lineWidth=k*l;c=lineWidth/2.0;if(lineWidth==0.0){lineWidth=2.0*l;}vec2 offset;float radius=g+3.0*l;//Until we get gl_VertexID in WebGL,we store an instruction.if(f==0.0){//Offsetting the edges of the triangle by lineWidth/2 is necessary,however//we should also leave some space for the antialiasing,thus we offset by lineWidth.offset=vec2(-1.0,1.0);}else if(f==1.0){offset=vec2(-1.0,-1.0);}else if(f==2.0){offset=vec2(1.0,-1.0);}else{offset=vec2(1.0,1.0);}gl_Position=h*vec4(e+offset*radius,0.0,1.0)+offsetMatrix*vec4(offset*lineWidth,0.0,0.0);b=vec4(h*vec4(e.x+g,e.y,0.0,1.0)).xy;if(distance(a,b)>20000.0){gl_Position=vec4(a,0.0,1.0);}}');
 exports.default = _ol_render_webgl_circlereplay_defaultshader_;
 
-},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],142:[function(require,module,exports){
+},{"../../../index.js":63,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],142:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27148,7 +27148,7 @@ var _ol_render_webgl_circlereplay_defaultshader_Locations_ = function _ol_render
 
 exports.default = _ol_render_webgl_circlereplay_defaultshader_Locations_;
 
-},{"../../../../index.js":65}],143:[function(require,module,exports){
+},{"../../../../index.js":63}],143:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27332,7 +27332,7 @@ _ol_render_webgl_ImageReplay_.prototype.getHitDetectionTextures = function () {
 
 exports.default = _ol_render_webgl_ImageReplay_;
 
-},{"../../index.js":65,"../../webgl/buffer.js":223,"../webgl/texturereplay.js":154}],144:[function(require,module,exports){
+},{"../../index.js":63,"../../webgl/buffer.js":223,"../webgl/texturereplay.js":154}],144:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27784,7 +27784,7 @@ _ol_render_webgl_Immediate_.prototype.setTextStyle = function (textStyle) {
 
 exports.default = _ol_render_webgl_Immediate_;
 
-},{"../../extent.js":31,"../../geom/geometrytype.js":55,"../../index.js":65,"../replaytype.js":137,"../vectorcontext.js":138,"../webgl/replaygroup.js":152}],145:[function(require,module,exports){
+},{"../../extent.js":28,"../../geom/geometrytype.js":53,"../../index.js":63,"../replaytype.js":137,"../vectorcontext.js":138,"../webgl/replaygroup.js":152}],145:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28474,7 +28474,7 @@ _ol_render_webgl_LineStringReplay_.Instruction_ = {
 };
 exports.default = _ol_render_webgl_LineStringReplay_;
 
-},{"../../array.js":6,"../../color.js":13,"../../extent.js":31,"../../geom/flat/orient.js":45,"../../geom/flat/topology.js":51,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/linestringreplay/defaultshader.js":146,"../webgl/linestringreplay/defaultshader/locations.js":147,"../webgl/replay.js":151}],146:[function(require,module,exports){
+},{"../../array.js":3,"../../color.js":10,"../../extent.js":28,"../../geom/flat/orient.js":43,"../../geom/flat/topology.js":49,"../../geom/flat/transform.js":50,"../../index.js":63,"../../obj.js":98,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/linestringreplay/defaultshader.js":146,"../webgl/linestringreplay/defaultshader/locations.js":147,"../webgl/replay.js":151}],146:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28505,7 +28505,7 @@ _ol_render_webgl_linestringreplay_defaultshader_.fragment = new _fragment2.defau
 _ol_render_webgl_linestringreplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying float v_round;\nvarying vec2 v_roundVertex;\nvarying float v_halfWidth;\n\n\nattribute vec2 a_lastPos;\nattribute vec2 a_position;\nattribute vec2 a_nextPos;\nattribute float a_direction;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\nuniform float u_lineWidth;\nuniform float u_miterLimit;\n\nbool nearlyEquals(in float value, in float ref) {\n  float epsilon = 0.000000000001;\n  return value >= ref - epsilon && value <= ref + epsilon;\n}\n\nvoid alongNormal(out vec2 offset, in vec2 nextP, in float turnDir, in float direction) {\n  vec2 dirVect = nextP - a_position;\n  vec2 normal = normalize(vec2(-turnDir * dirVect.y, turnDir * dirVect.x));\n  offset = u_lineWidth / 2.0 * normal * direction;\n}\n\nvoid miterUp(out vec2 offset, out float round, in bool isRound, in float direction) {\n  float halfWidth = u_lineWidth / 2.0;\n  vec2 tangent = normalize(normalize(a_nextPos - a_position) + normalize(a_position - a_lastPos));\n  vec2 normal = vec2(-tangent.y, tangent.x);\n  vec2 dirVect = a_nextPos - a_position;\n  vec2 tmpNormal = normalize(vec2(-dirVect.y, dirVect.x));\n  float miterLength = abs(halfWidth / dot(normal, tmpNormal));\n  offset = normal * direction * miterLength;\n  round = 0.0;\n  if (isRound) {\n    round = 1.0;\n  } else if (miterLength > u_miterLimit + u_lineWidth) {\n    offset = halfWidth * tmpNormal * direction;\n  }\n}\n\nbool miterDown(out vec2 offset, in vec4 projPos, in mat4 offsetMatrix, in float direction) {\n  bool degenerate = false;\n  vec2 tangent = normalize(normalize(a_nextPos - a_position) + normalize(a_position - a_lastPos));\n  vec2 normal = vec2(-tangent.y, tangent.x);\n  vec2 dirVect = a_lastPos - a_position;\n  vec2 tmpNormal = normalize(vec2(-dirVect.y, dirVect.x));\n  vec2 longOffset, shortOffset, longVertex;\n  vec4 shortProjVertex;\n  float halfWidth = u_lineWidth / 2.0;\n  if (length(a_nextPos - a_position) > length(a_lastPos - a_position)) {\n    longOffset = tmpNormal * direction * halfWidth;\n    shortOffset = normalize(vec2(dirVect.y, -dirVect.x)) * direction * halfWidth;\n    longVertex = a_nextPos;\n    shortProjVertex = u_projectionMatrix * vec4(a_lastPos, 0.0, 1.0);\n  } else {\n    shortOffset = tmpNormal * direction * halfWidth;\n    longOffset = normalize(vec2(dirVect.y, -dirVect.x)) * direction * halfWidth;\n    longVertex = a_lastPos;\n    shortProjVertex = u_projectionMatrix * vec4(a_nextPos, 0.0, 1.0);\n  }\n  //Intersection algorithm based on theory by Paul Bourke (http://paulbourke.net/geometry/pointlineplane/).\n  vec4 p1 = u_projectionMatrix * vec4(longVertex, 0.0, 1.0) + offsetMatrix * vec4(longOffset, 0.0, 0.0);\n  vec4 p2 = projPos + offsetMatrix * vec4(longOffset, 0.0, 0.0);\n  vec4 p3 = shortProjVertex + offsetMatrix * vec4(-shortOffset, 0.0, 0.0);\n  vec4 p4 = shortProjVertex + offsetMatrix * vec4(shortOffset, 0.0, 0.0);\n  float denom = (p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y);\n  float firstU = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / denom;\n  float secondU = ((p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x)) / denom;\n  float epsilon = 0.000000000001;\n  if (firstU > epsilon && firstU < 1.0 - epsilon && secondU > epsilon && secondU < 1.0 - epsilon) {\n    shortProjVertex.x = p1.x + firstU * (p2.x - p1.x);\n    shortProjVertex.y = p1.y + firstU * (p2.y - p1.y);\n    offset = shortProjVertex.xy;\n    degenerate = true;\n  } else {\n    float miterLength = abs(halfWidth / dot(normal, tmpNormal));\n    offset = normal * direction * miterLength;\n  }\n  return degenerate;\n}\n\nvoid squareCap(out vec2 offset, out float round, in bool isRound, in vec2 nextP,\n    in float turnDir, in float direction) {\n  round = 0.0;\n  vec2 dirVect = a_position - nextP;\n  vec2 firstNormal = normalize(dirVect);\n  vec2 secondNormal = vec2(turnDir * firstNormal.y * direction, -turnDir * firstNormal.x * direction);\n  vec2 hypotenuse = normalize(firstNormal - secondNormal);\n  vec2 normal = vec2(turnDir * hypotenuse.y * direction, -turnDir * hypotenuse.x * direction);\n  float length = sqrt(v_halfWidth * v_halfWidth * 2.0);\n  offset = normal * length;\n  if (isRound) {\n    round = 1.0;\n  }\n}\n\nvoid main(void) {\n  bool degenerate = false;\n  float direction = float(sign(a_direction));\n  mat4 offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  vec2 offset;\n  vec4 projPos = u_projectionMatrix * vec4(a_position, 0.0, 1.0);\n  bool round = nearlyEquals(mod(a_direction, 2.0), 0.0);\n\n  v_round = 0.0;\n  v_halfWidth = u_lineWidth / 2.0;\n  v_roundVertex = projPos.xy;\n\n  if (nearlyEquals(mod(a_direction, 3.0), 0.0) || nearlyEquals(mod(a_direction, 17.0), 0.0)) {\n    alongNormal(offset, a_nextPos, 1.0, direction);\n  } else if (nearlyEquals(mod(a_direction, 5.0), 0.0) || nearlyEquals(mod(a_direction, 13.0), 0.0)) {\n    alongNormal(offset, a_lastPos, -1.0, direction);\n  } else if (nearlyEquals(mod(a_direction, 23.0), 0.0)) {\n    miterUp(offset, v_round, round, direction);\n  } else if (nearlyEquals(mod(a_direction, 19.0), 0.0)) {\n    degenerate = miterDown(offset, projPos, offsetMatrix, direction);\n  } else if (nearlyEquals(mod(a_direction, 7.0), 0.0)) {\n    squareCap(offset, v_round, round, a_nextPos, 1.0, direction);\n  } else if (nearlyEquals(mod(a_direction, 11.0), 0.0)) {\n    squareCap(offset, v_round, round, a_lastPos, -1.0, direction);\n  }\n  if (!degenerate) {\n    vec4 offsets = offsetMatrix * vec4(offset, 0.0, 0.0);\n    gl_Position = projPos + offsets;\n  } else {\n    gl_Position = vec4(offset, 0.0, 1.0);\n  }\n}\n\n\n' : 'varying float a;varying vec2 aVertex;varying float c;attribute vec2 d;attribute vec2 e;attribute vec2 f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;uniform float k;uniform float l;bool nearlyEquals(in float value,in float ref){float epsilon=0.000000000001;return value>=ref-epsilon&&value<=ref+epsilon;}void alongNormal(out vec2 offset,in vec2 nextP,in float turnDir,in float direction){vec2 dirVect=nextP-e;vec2 normal=normalize(vec2(-turnDir*dirVect.y,turnDir*dirVect.x));offset=k/2.0*normal*direction;}void miterUp(out vec2 offset,out float round,in bool isRound,in float direction){float halfWidth=k/2.0;vec2 tangent=normalize(normalize(f-e)+normalize(e-d));vec2 normal=vec2(-tangent.y,tangent.x);vec2 dirVect=f-e;vec2 tmpNormal=normalize(vec2(-dirVect.y,dirVect.x));float miterLength=abs(halfWidth/dot(normal,tmpNormal));offset=normal*direction*miterLength;round=0.0;if(isRound){round=1.0;}else if(miterLength>l+k){offset=halfWidth*tmpNormal*direction;}} bool miterDown(out vec2 offset,in vec4 projPos,in mat4 offsetMatrix,in float direction){bool degenerate=false;vec2 tangent=normalize(normalize(f-e)+normalize(e-d));vec2 normal=vec2(-tangent.y,tangent.x);vec2 dirVect=d-e;vec2 tmpNormal=normalize(vec2(-dirVect.y,dirVect.x));vec2 longOffset,shortOffset,longVertex;vec4 shortProjVertex;float halfWidth=k/2.0;if(length(f-e)>length(d-e)){longOffset=tmpNormal*direction*halfWidth;shortOffset=normalize(vec2(dirVect.y,-dirVect.x))*direction*halfWidth;longVertex=f;shortProjVertex=h*vec4(d,0.0,1.0);}else{shortOffset=tmpNormal*direction*halfWidth;longOffset=normalize(vec2(dirVect.y,-dirVect.x))*direction*halfWidth;longVertex=d;shortProjVertex=h*vec4(f,0.0,1.0);}vec4 p1=h*vec4(longVertex,0.0,1.0)+offsetMatrix*vec4(longOffset,0.0,0.0);vec4 p2=projPos+offsetMatrix*vec4(longOffset,0.0,0.0);vec4 p3=shortProjVertex+offsetMatrix*vec4(-shortOffset,0.0,0.0);vec4 p4=shortProjVertex+offsetMatrix*vec4(shortOffset,0.0,0.0);float denom=(p4.y-p3.y)*(p2.x-p1.x)-(p4.x-p3.x)*(p2.y-p1.y);float firstU=((p4.x-p3.x)*(p1.y-p3.y)-(p4.y-p3.y)*(p1.x-p3.x))/denom;float secondU=((p2.x-p1.x)*(p1.y-p3.y)-(p2.y-p1.y)*(p1.x-p3.x))/denom;float epsilon=0.000000000001;if(firstU>epsilon&&firstU<1.0-epsilon&&secondU>epsilon&&secondU<1.0-epsilon){shortProjVertex.x=p1.x+firstU*(p2.x-p1.x);shortProjVertex.y=p1.y+firstU*(p2.y-p1.y);offset=shortProjVertex.xy;degenerate=true;}else{float miterLength=abs(halfWidth/dot(normal,tmpNormal));offset=normal*direction*miterLength;}return degenerate;}void squareCap(out vec2 offset,out float round,in bool isRound,in vec2 nextP,in float turnDir,in float direction){round=0.0;vec2 dirVect=e-nextP;vec2 firstNormal=normalize(dirVect);vec2 secondNormal=vec2(turnDir*firstNormal.y*direction,-turnDir*firstNormal.x*direction);vec2 hypotenuse=normalize(firstNormal-secondNormal);vec2 normal=vec2(turnDir*hypotenuse.y*direction,-turnDir*hypotenuse.x*direction);float length=sqrt(c*c*2.0);offset=normal*length;if(isRound){round=1.0;}} void main(void){bool degenerate=false;float direction=float(sign(g));mat4 offsetMatrix=i*j;vec2 offset;vec4 projPos=h*vec4(e,0.0,1.0);bool round=nearlyEquals(mod(g,2.0),0.0);a=0.0;c=k/2.0;aVertex=projPos.xy;if(nearlyEquals(mod(g,3.0),0.0)||nearlyEquals(mod(g,17.0),0.0)){alongNormal(offset,f,1.0,direction);}else if(nearlyEquals(mod(g,5.0),0.0)||nearlyEquals(mod(g,13.0),0.0)){alongNormal(offset,d,-1.0,direction);}else if(nearlyEquals(mod(g,23.0),0.0)){miterUp(offset,a,round,direction);}else if(nearlyEquals(mod(g,19.0),0.0)){degenerate=miterDown(offset,projPos,offsetMatrix,direction);}else if(nearlyEquals(mod(g,7.0),0.0)){squareCap(offset,a,round,f,1.0,direction);}else if(nearlyEquals(mod(g,11.0),0.0)){squareCap(offset,a,round,d,-1.0,direction);}if(!degenerate){vec4 offsets=offsetMatrix*vec4(offset,0.0,0.0);gl_Position=projPos+offsets;}else{gl_Position=vec4(offset,0.0,1.0);}}');
 exports.default = _ol_render_webgl_linestringreplay_defaultshader_;
 
-},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],147:[function(require,module,exports){
+},{"../../../index.js":63,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],147:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28599,7 +28599,7 @@ var _ol_render_webgl_linestringreplay_defaultshader_Locations_ = function _ol_re
 
 exports.default = _ol_render_webgl_linestringreplay_defaultshader_Locations_;
 
-},{"../../../../index.js":65}],148:[function(require,module,exports){
+},{"../../../../index.js":63}],148:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -29801,7 +29801,7 @@ _ol_render_webgl_PolygonReplay_.prototype.setFillStrokeStyle = function (fillSty
 
 exports.default = _ol_render_webgl_PolygonReplay_;
 
-},{"../../array.js":6,"../../color.js":13,"../../extent.js":31,"../../geom/flat/contains.js":39,"../../geom/flat/orient.js":45,"../../geom/flat/transform.js":52,"../../index.js":65,"../../obj.js":99,"../../structs/linkedlist.js":191,"../../structs/rbush.js":194,"../../style/stroke.js":208,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/linestringreplay.js":145,"../webgl/polygonreplay/defaultshader.js":149,"../webgl/polygonreplay/defaultshader/locations.js":150,"../webgl/replay.js":151}],149:[function(require,module,exports){
+},{"../../array.js":3,"../../color.js":10,"../../extent.js":28,"../../geom/flat/contains.js":37,"../../geom/flat/orient.js":43,"../../geom/flat/transform.js":50,"../../index.js":63,"../../obj.js":98,"../../structs/linkedlist.js":191,"../../structs/rbush.js":194,"../../style/stroke.js":207,"../../webgl.js":222,"../../webgl/buffer.js":223,"../webgl.js":139,"../webgl/linestringreplay.js":145,"../webgl/polygonreplay/defaultshader.js":149,"../webgl/polygonreplay/defaultshader/locations.js":150,"../webgl/replay.js":151}],149:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29832,7 +29832,7 @@ _ol_render_webgl_polygonreplay_defaultshader_.fragment = new _fragment2.default(
 _ol_render_webgl_polygonreplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? '\n\nattribute vec2 a_position;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\n\nvoid main(void) {\n  gl_Position = u_projectionMatrix * vec4(a_position, 0.0, 1.0);\n}\n\n\n' : 'attribute vec2 a;uniform mat4 b;uniform mat4 c;uniform mat4 d;void main(void){gl_Position=b*vec4(a,0.0,1.0);}');
 exports.default = _ol_render_webgl_polygonreplay_defaultshader_;
 
-},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],150:[function(require,module,exports){
+},{"../../../index.js":63,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],150:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29891,7 +29891,7 @@ var _ol_render_webgl_polygonreplay_defaultshader_Locations_ = function _ol_rende
 
 exports.default = _ol_render_webgl_polygonreplay_defaultshader_Locations_;
 
-},{"../../../../index.js":65}],151:[function(require,module,exports){
+},{"../../../../index.js":63}],151:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30279,7 +30279,7 @@ _ol_render_webgl_Replay_.prototype.drawElements = function (gl, context, start, 
 
 exports.default = _ol_render_webgl_Replay_;
 
-},{"../../extent.js":31,"../../index.js":65,"../../transform.js":217,"../../vec/mat4.js":218,"../../webgl.js":222,"../vectorcontext.js":138}],152:[function(require,module,exports){
+},{"../../extent.js":28,"../../index.js":63,"../../transform.js":217,"../../vec/mat4.js":218,"../../webgl.js":222,"../vectorcontext.js":138}],152:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30647,7 +30647,7 @@ _ol_render_webgl_ReplayGroup_.BATCH_CONSTRUCTORS_ = {
 };
 exports.default = _ol_render_webgl_ReplayGroup_;
 
-},{"../../array.js":6,"../../extent.js":31,"../../index.js":65,"../../obj.js":99,"../replay.js":135,"../replaygroup.js":136,"../webgl/circlereplay.js":140,"../webgl/imagereplay.js":143,"../webgl/linestringreplay.js":145,"../webgl/polygonreplay.js":148,"../webgl/textreplay.js":153}],153:[function(require,module,exports){
+},{"../../array.js":3,"../../extent.js":28,"../../index.js":63,"../../obj.js":98,"../replay.js":135,"../replaygroup.js":136,"../webgl/circlereplay.js":140,"../webgl/imagereplay.js":143,"../webgl/linestringreplay.js":145,"../webgl/polygonreplay.js":148,"../webgl/textreplay.js":153}],153:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31189,7 +31189,7 @@ _ol_render_webgl_TextReplay_.prototype.getHitDetectionTextures = function () {
 
 exports.default = _ol_render_webgl_TextReplay_;
 
-},{"../../colorlike.js":14,"../../dom.js":23,"../../geom/geometrytype.js":55,"../../has.js":60,"../../index.js":65,"../../style/atlasmanager.js":199,"../../webgl/buffer.js":223,"../replay.js":135,"../webgl.js":139,"../webgl/texturereplay.js":154}],154:[function(require,module,exports){
+},{"../../colorlike.js":11,"../../dom.js":20,"../../geom/geometrytype.js":53,"../../has.js":58,"../../index.js":63,"../../style/atlasmanager.js":197,"../../webgl/buffer.js":223,"../replay.js":135,"../webgl.js":139,"../webgl/texturereplay.js":154}],154:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31727,7 +31727,7 @@ _ol_render_webgl_TextureReplay_.prototype.getHitDetectionTextures = function () 
 
 exports.default = _ol_render_webgl_TextureReplay_;
 
-},{"../../extent.js":31,"../../index.js":65,"../../obj.js":99,"../../webgl.js":222,"../../webgl/context.js":224,"../webgl/replay.js":151,"../webgl/texturereplay/defaultshader.js":155,"../webgl/texturereplay/defaultshader/locations.js":156}],155:[function(require,module,exports){
+},{"../../extent.js":28,"../../index.js":63,"../../obj.js":98,"../../webgl.js":222,"../../webgl/context.js":224,"../webgl/replay.js":151,"../webgl/texturereplay/defaultshader.js":155,"../webgl/texturereplay/defaultshader/locations.js":156}],155:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31758,7 +31758,7 @@ _ol_render_webgl_texturereplay_defaultshader_.fragment = new _fragment2.default(
 _ol_render_webgl_texturereplay_defaultshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_texCoord;\nvarying float v_opacity;\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\nattribute vec2 a_offsets;\nattribute float a_opacity;\nattribute float a_rotateWithView;\n\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_offsetScaleMatrix;\nuniform mat4 u_offsetRotateMatrix;\n\nvoid main(void) {\n  mat4 offsetMatrix = u_offsetScaleMatrix;\n  if (a_rotateWithView == 1.0) {\n    offsetMatrix = u_offsetScaleMatrix * u_offsetRotateMatrix;\n  }\n  vec4 offsets = offsetMatrix * vec4(a_offsets, 0.0, 0.0);\n  gl_Position = u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;\n  v_texCoord = a_texCoord;\n  v_opacity = a_opacity;\n}\n\n\n' : 'varying vec2 a;varying float b;attribute vec2 c;attribute vec2 d;attribute vec2 e;attribute float f;attribute float g;uniform mat4 h;uniform mat4 i;uniform mat4 j;void main(void){mat4 offsetMatrix=i;if(g==1.0){offsetMatrix=i*j;}vec4 offsets=offsetMatrix*vec4(e,0.0,0.0);gl_Position=h*vec4(c,0.0,1.0)+offsets;a=d;b=f;}');
 exports.default = _ol_render_webgl_texturereplay_defaultshader_;
 
-},{"../../../index.js":65,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],156:[function(require,module,exports){
+},{"../../../index.js":63,"../../../webgl/fragment.js":226,"../../../webgl/vertex.js":228}],156:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31837,7 +31837,7 @@ var _ol_render_webgl_texturereplay_defaultshader_Locations_ = function _ol_rende
 
 exports.default = _ol_render_webgl_texturereplay_defaultshader_Locations_;
 
-},{"../../../../index.js":65}],157:[function(require,module,exports){
+},{"../../../../index.js":63}],157:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32104,7 +32104,7 @@ _ol_renderer_canvas_ImageLayer_.prototype.setVectorRenderer = function (renderer
 
 exports.default = _ol_renderer_canvas_ImageLayer_;
 
-},{"../../array.js":6,"../../extent.js":31,"../../imagecanvas.js":63,"../../index.js":65,"../../layer/vectorrendertype.js":87,"../../layertype.js":89,"../../obj.js":99,"../../plugins.js":105,"../../transform.js":217,"../../viewhint.js":220,"../canvas/intermediatecanvas.js":158,"../type.js":166}],158:[function(require,module,exports){
+},{"../../array.js":3,"../../extent.js":28,"../../imagecanvas.js":61,"../../index.js":63,"../../layer/vectorrendertype.js":85,"../../layertype.js":87,"../../obj.js":98,"../../plugins.js":105,"../../transform.js":217,"../../viewhint.js":220,"../canvas/intermediatecanvas.js":158,"../type.js":166}],158:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32280,7 +32280,7 @@ _ol_renderer_canvas_IntermediateCanvas_.prototype.forEachLayerAtCoordinate = fun
 
 exports.default = _ol_renderer_canvas_IntermediateCanvas_;
 
-},{"../../coordinate.js":20,"../../dom.js":23,"../../extent.js":31,"../../index.js":65,"../../transform.js":217,"../canvas/layer.js":159}],159:[function(require,module,exports){
+},{"../../coordinate.js":17,"../../dom.js":20,"../../extent.js":28,"../../index.js":63,"../../transform.js":217,"../canvas/layer.js":159}],159:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32527,7 +32527,7 @@ _ol_renderer_canvas_Layer_.prototype.prepareFrame = function (frameState, layerS
 
 exports.default = _ol_renderer_canvas_Layer_;
 
-},{"../../extent.js":31,"../../functions.js":36,"../../index.js":65,"../../render/canvas.js":124,"../../render/canvas/immediate.js":126,"../../render/event.js":133,"../../render/eventtype.js":134,"../../transform.js":217,"../layer.js":164}],160:[function(require,module,exports){
+},{"../../extent.js":28,"../../functions.js":34,"../../index.js":63,"../../render/canvas.js":124,"../../render/canvas/immediate.js":126,"../../render/event.js":133,"../../render/eventtype.js":134,"../../transform.js":217,"../layer.js":164}],160:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32815,7 +32815,7 @@ _ol_renderer_canvas_Map_.prototype.forEachLayerAtPixel = function (pixel, frameS
 
 exports.default = _ol_renderer_canvas_Map_;
 
-},{"../../array.js":6,"../../css.js":21,"../../dom.js":23,"../../index.js":65,"../../layer/layer.js":85,"../../render/canvas.js":124,"../../render/canvas/immediate.js":126,"../../render/event.js":133,"../../render/eventtype.js":134,"../../source/state.js":187,"../../transform.js":217,"../map.js":165,"../type.js":166}],161:[function(require,module,exports){
+},{"../../array.js":3,"../../css.js":18,"../../dom.js":20,"../../index.js":63,"../../layer/layer.js":82,"../../render/canvas.js":124,"../../render/canvas/immediate.js":126,"../../render/event.js":133,"../../render/eventtype.js":134,"../../source/state.js":186,"../../transform.js":217,"../map.js":165,"../type.js":166}],161:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33219,7 +33219,7 @@ _ol_renderer_canvas_TileLayer_.prototype.getImageTransform = function () {
 
 exports.default = _ol_renderer_canvas_TileLayer_;
 
-},{"../../dom.js":23,"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../tilerange.js":215,"../../tilestate.js":216,"../../transform.js":217,"../../viewhint.js":220,"../canvas/intermediatecanvas.js":158,"../type.js":166}],162:[function(require,module,exports){
+},{"../../dom.js":20,"../../extent.js":28,"../../index.js":63,"../../layertype.js":87,"../../tilerange.js":215,"../../tilestate.js":216,"../../transform.js":217,"../../viewhint.js":220,"../canvas/intermediatecanvas.js":158,"../type.js":166}],162:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -33732,7 +33732,7 @@ _ol_renderer_canvas_VectorLayer_.prototype.renderFeature = function (feature, re
 
 exports.default = _ol_renderer_canvas_VectorLayer_;
 
-},{"../../dom.js":23,"../../events.js":25,"../../events/eventtype.js":29,"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../render/canvas.js":124,"../../render/canvas/replaygroup.js":131,"../../render/eventtype.js":134,"../../viewhint.js":220,"../canvas/layer.js":159,"../type.js":166,"../vector.js":167,"rbush":231}],163:[function(require,module,exports){
+},{"../../dom.js":20,"../../events.js":22,"../../events/eventtype.js":26,"../../extent.js":28,"../../index.js":63,"../../layertype.js":87,"../../render/canvas.js":124,"../../render/canvas/replaygroup.js":131,"../../render/eventtype.js":134,"../../viewhint.js":220,"../canvas/layer.js":159,"../type.js":166,"../vector.js":167,"rbush":231}],163:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34387,7 +34387,7 @@ _ol_renderer_canvas_VectorTileLayer_.prototype.renderTileImage_ = function (tile
 
 exports.default = _ol_renderer_canvas_VectorTileLayer_;
 
-},{"../../dom.js":23,"../../events.js":25,"../../events/eventtype.js":29,"../../extent.js":31,"../../index.js":65,"../../layer/vectortilerendertype.js":88,"../../layertype.js":89,"../../proj.js":115,"../../proj/units.js":122,"../../render/canvas.js":124,"../../render/canvas/replaygroup.js":131,"../../render/replay.js":135,"../../render/replaytype.js":137,"../../tilestate.js":216,"../../transform.js":217,"../canvas/tilelayer.js":161,"../type.js":166,"../vector.js":167,"rbush":231}],164:[function(require,module,exports){
+},{"../../dom.js":20,"../../events.js":22,"../../events/eventtype.js":26,"../../extent.js":28,"../../index.js":63,"../../layer/vectortilerendertype.js":86,"../../layertype.js":87,"../../proj.js":115,"../../proj/units.js":122,"../../render/canvas.js":124,"../../render/canvas/replaygroup.js":131,"../../render/replay.js":135,"../../render/replaytype.js":137,"../../tilestate.js":216,"../../transform.js":217,"../canvas/tilelayer.js":161,"../type.js":166,"../vector.js":167,"rbush":231}],164:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34708,7 +34708,7 @@ _ol_renderer_Layer_.prototype.manageTilePyramid = function (frameState, tileSour
 
 exports.default = _ol_renderer_Layer_;
 
-},{"../asserts.js":8,"../events.js":25,"../events/eventtype.js":29,"../functions.js":36,"../imagestate.js":64,"../index.js":65,"../observable.js":102,"../source/state.js":187,"../tilestate.js":216}],165:[function(require,module,exports){
+},{"../asserts.js":5,"../events.js":22,"../events/eventtype.js":26,"../functions.js":34,"../imagestate.js":62,"../index.js":63,"../observable.js":101,"../source/state.js":186,"../tilestate.js":216}],165:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35102,7 +35102,7 @@ _ol_renderer_Map_.sortByZIndex = function (state1, state2) {
 
 exports.default = _ol_renderer_Map_;
 
-},{"../disposable.js":22,"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../functions.js":36,"../index.js":65,"../layer/layer.js":85,"../plugins.js":105,"../style.js":195,"../transform.js":217}],166:[function(require,module,exports){
+},{"../disposable.js":19,"../events.js":22,"../events/eventtype.js":26,"../extent.js":28,"../functions.js":34,"../index.js":63,"../layer/layer.js":82,"../plugins.js":105,"../style.js":195,"../transform.js":217}],166:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35504,7 +35504,7 @@ _ol_renderer_vector_.GEOMETRY_RENDERERS_ = {
 };
 exports.default = _ol_renderer_vector_;
 
-},{"../geom/geometrytype.js":55,"../imagestate.js":64,"../index.js":65,"../render/replaytype.js":137}],168:[function(require,module,exports){
+},{"../geom/geometrytype.js":53,"../imagestate.js":62,"../index.js":63,"../render/replaytype.js":137}],168:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35535,7 +35535,7 @@ _ol_renderer_webgl_defaultmapshader_.fragment = new _fragment2.default(_index2.d
 _ol_renderer_webgl_defaultmapshader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_texCoord;\n\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\n\nuniform mat4 u_texCoordMatrix;\nuniform mat4 u_projectionMatrix;\n\nvoid main(void) {\n  gl_Position = u_projectionMatrix * vec4(a_position, 0., 1.);\n  v_texCoord = (u_texCoordMatrix * vec4(a_texCoord, 0., 1.)).st;\n}\n\n\n' : 'varying vec2 a;attribute vec2 b;attribute vec2 c;uniform mat4 d;uniform mat4 e;void main(void){gl_Position=e*vec4(b,0.,1.);a=(d*vec4(c,0.,1.)).st;}');
 exports.default = _ol_renderer_webgl_defaultmapshader_;
 
-},{"../../index.js":65,"../../webgl/fragment.js":226,"../../webgl/vertex.js":228}],169:[function(require,module,exports){
+},{"../../index.js":63,"../../webgl/fragment.js":226,"../../webgl/vertex.js":228}],169:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35594,7 +35594,7 @@ var _ol_renderer_webgl_defaultmapshader_Locations_ = function _ol_renderer_webgl
 
 exports.default = _ol_renderer_webgl_defaultmapshader_Locations_;
 
-},{"../../../index.js":65}],170:[function(require,module,exports){
+},{"../../../index.js":63}],170:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35965,7 +35965,7 @@ _ol_renderer_webgl_ImageLayer_.prototype.getHitTransformationMatrix_ = function 
 
 exports.default = _ol_renderer_webgl_ImageLayer_;
 
-},{"../../dom.js":23,"../../extent.js":31,"../../functions.js":36,"../../index.js":65,"../../layertype.js":89,"../../transform.js":217,"../../viewhint.js":220,"../../webgl.js":222,"../../webgl/context.js":224,"../type.js":166,"../webgl/layer.js":171}],171:[function(require,module,exports){
+},{"../../dom.js":20,"../../extent.js":28,"../../functions.js":34,"../../index.js":63,"../../layertype.js":87,"../../transform.js":217,"../../viewhint.js":220,"../../webgl.js":222,"../../webgl/context.js":224,"../type.js":166,"../webgl/layer.js":171}],171:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36255,7 +36255,7 @@ _ol_renderer_webgl_Layer_.prototype.forEachLayerAtPixel = function (pixel, frame
 
 exports.default = _ol_renderer_webgl_Layer_;
 
-},{"../../index.js":65,"../../render/event.js":133,"../../render/eventtype.js":134,"../../render/webgl/immediate.js":144,"../../transform.js":217,"../../vec/mat4.js":218,"../../webgl.js":222,"../../webgl/buffer.js":223,"../../webgl/context.js":224,"../layer.js":164,"../webgl/defaultmapshader.js":168,"../webgl/defaultmapshader/locations.js":169}],172:[function(require,module,exports){
+},{"../../index.js":63,"../../render/event.js":133,"../../render/eventtype.js":134,"../../render/webgl/immediate.js":144,"../../transform.js":217,"../../vec/mat4.js":218,"../../webgl.js":222,"../../webgl/buffer.js":223,"../../webgl/context.js":224,"../layer.js":164,"../webgl/defaultmapshader.js":168,"../webgl/defaultmapshader/locations.js":169}],172:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36929,7 +36929,7 @@ _ol_renderer_webgl_Map_.prototype.forEachLayerAtPixel = function (pixel, frameSt
 
 exports.default = _ol_renderer_webgl_Map_;
 
-},{"../../array.js":6,"../../css.js":21,"../../dom.js":23,"../../events.js":25,"../../has.js":60,"../../index.js":65,"../../layer/layer.js":85,"../../render/event.js":133,"../../render/eventtype.js":134,"../../render/webgl/immediate.js":144,"../../source/state.js":187,"../../structs/lrucache.js":192,"../../structs/priorityqueue.js":193,"../../webgl.js":222,"../../webgl/context.js":224,"../../webgl/contexteventtype.js":225,"../map.js":165,"../type.js":166}],173:[function(require,module,exports){
+},{"../../array.js":3,"../../css.js":18,"../../dom.js":20,"../../events.js":22,"../../has.js":58,"../../index.js":63,"../../layer/layer.js":82,"../../render/event.js":133,"../../render/eventtype.js":134,"../../render/webgl/immediate.js":144,"../../source/state.js":186,"../../structs/lrucache.js":192,"../../structs/priorityqueue.js":193,"../../webgl.js":222,"../../webgl/context.js":224,"../../webgl/contexteventtype.js":225,"../map.js":165,"../type.js":166}],173:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37357,7 +37357,7 @@ _ol_renderer_webgl_TileLayer_.prototype.forEachLayerAtPixel = function (pixel, f
 
 exports.default = _ol_renderer_webgl_TileLayer_;
 
-},{"../../array.js":6,"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../math.js":98,"../../size.js":182,"../../tilerange.js":215,"../../tilestate.js":216,"../../transform.js":217,"../../webgl.js":222,"../../webgl/buffer.js":223,"../type.js":166,"../webgl/layer.js":171,"../webgl/tilelayershader.js":174,"../webgl/tilelayershader/locations.js":175}],174:[function(require,module,exports){
+},{"../../array.js":3,"../../extent.js":28,"../../index.js":63,"../../layertype.js":87,"../../math.js":97,"../../size.js":182,"../../tilerange.js":215,"../../tilestate.js":216,"../../transform.js":217,"../../webgl.js":222,"../../webgl/buffer.js":223,"../type.js":166,"../webgl/layer.js":171,"../webgl/tilelayershader.js":174,"../webgl/tilelayershader/locations.js":175}],174:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37388,7 +37388,7 @@ _ol_renderer_webgl_tilelayershader_.fragment = new _fragment2.default(_index2.de
 _ol_renderer_webgl_tilelayershader_.vertex = new _vertex2.default(_index2.default.DEBUG_WEBGL ? 'varying vec2 v_texCoord;\n\n\nattribute vec2 a_position;\nattribute vec2 a_texCoord;\nuniform vec4 u_tileOffset;\n\nvoid main(void) {\n  gl_Position = vec4(a_position * u_tileOffset.xy + u_tileOffset.zw, 0., 1.);\n  v_texCoord = a_texCoord;\n}\n\n\n' : 'varying vec2 a;attribute vec2 b;attribute vec2 c;uniform vec4 d;void main(void){gl_Position=vec4(b*d.xy+d.zw,0.,1.);a=c;}');
 exports.default = _ol_renderer_webgl_tilelayershader_;
 
-},{"../../index.js":65,"../../webgl/fragment.js":226,"../../webgl/vertex.js":228}],175:[function(require,module,exports){
+},{"../../index.js":63,"../../webgl/fragment.js":226,"../../webgl/vertex.js":228}],175:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37437,7 +37437,7 @@ var _ol_renderer_webgl_tilelayershader_Locations_ = function _ol_renderer_webgl_
 
 exports.default = _ol_renderer_webgl_tilelayershader_Locations_;
 
-},{"../../../index.js":65}],176:[function(require,module,exports){
+},{"../../../index.js":63}],176:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37803,7 +37803,7 @@ _ol_renderer_webgl_VectorLayer_.prototype.renderFeature = function (feature, res
 
 exports.default = _ol_renderer_webgl_VectorLayer_;
 
-},{"../../extent.js":31,"../../index.js":65,"../../layertype.js":89,"../../render/webgl/replaygroup.js":152,"../../transform.js":217,"../../viewhint.js":220,"../type.js":166,"../vector.js":167,"../webgl/layer.js":171}],177:[function(require,module,exports){
+},{"../../extent.js":28,"../../index.js":63,"../../layertype.js":87,"../../render/webgl/replaygroup.js":152,"../../transform.js":217,"../../viewhint.js":220,"../type.js":166,"../vector.js":167,"../webgl/layer.js":171}],177:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38056,7 +38056,7 @@ _ol_reproj_.render = function (width, height, pixelRatio, sourceResolution, sour
 
 exports.default = _ol_reproj_;
 
-},{"./dom.js":23,"./extent.js":31,"./math.js":98,"./proj.js":115}],178:[function(require,module,exports){
+},{"./dom.js":20,"./extent.js":28,"./math.js":97,"./proj.js":115}],178:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38279,7 +38279,7 @@ _ol_reproj_Image_.prototype.unlistenSource_ = function () {
 
 exports.default = _ol_reproj_Image_;
 
-},{"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../imagebase.js":62,"../imagestate.js":64,"../index.js":65,"../reproj.js":177,"../reproj/triangulation.js":179}],179:[function(require,module,exports){
+},{"../events.js":22,"../events/eventtype.js":26,"../extent.js":28,"../imagebase.js":60,"../imagestate.js":62,"../index.js":63,"../reproj.js":177,"../reproj/triangulation.js":179}],179:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38613,7 +38613,7 @@ _ol_reproj_Triangulation_.prototype.getTriangles = function () {
 
 exports.default = _ol_reproj_Triangulation_;
 
-},{"../extent.js":31,"../index.js":65,"../math.js":98,"../proj.js":115}],180:[function(require,module,exports){
+},{"../extent.js":28,"../index.js":63,"../math.js":97,"../proj.js":115}],180:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38703,7 +38703,7 @@ _ol_ResolutionConstraint_.createSnapToPower = function (power, maxResolution, op
 
 exports.default = _ol_ResolutionConstraint_;
 
-},{"./array.js":6,"./math.js":98}],181:[function(require,module,exports){
+},{"./array.js":3,"./math.js":97}],181:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38803,7 +38803,7 @@ _ol_RotationConstraint_.createSnapToZero = function (opt_tolerance) {
 
 exports.default = _ol_RotationConstraint_;
 
-},{"./math.js":98}],182:[function(require,module,exports){
+},{"./math.js":97}],182:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38885,6 +38885,262 @@ _ol_size_.toSize = function (size, opt_size) {
 exports.default = _ol_size_;
 
 },{}],183:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("../index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _imagestate = require("../imagestate.js");
+
+var _imagestate2 = _interopRequireDefault(_imagestate);
+
+var _array = require("../array.js");
+
+var _array2 = _interopRequireDefault(_array);
+
+var _event = require("../events/event.js");
+
+var _event2 = _interopRequireDefault(_event);
+
+var _extent = require("../extent.js");
+
+var _extent2 = _interopRequireDefault(_extent);
+
+var _proj = require("../proj.js");
+
+var _proj2 = _interopRequireDefault(_proj);
+
+var _image = require("../reproj/image.js");
+
+var _image2 = _interopRequireDefault(_image);
+
+var _source = require("../source/source.js");
+
+var _source2 = _interopRequireDefault(_source);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for sources providing a single image.
+ *
+ * @constructor
+ * @abstract
+ * @extends {ol.source.Source}
+ * @param {ol.SourceImageOptions} options Single image source options.
+ * @api
+ */
+
+
+var _ol_source_Image_ = function _ol_source_Image_(options) {
+  _source2.default.call(this, {
+    attributions: options.attributions,
+    extent: options.extent,
+    logo: options.logo,
+    projection: options.projection,
+    state: options.state
+  });
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+
+
+  this.resolutions_ = options.resolutions !== undefined ? options.resolutions : null;
+  /**
+   * @private
+   * @type {ol.reproj.Image}
+   */
+
+  this.reprojectedImage_ = null;
+  /**
+   * @private
+   * @type {number}
+   */
+
+  this.reprojectedRevision_ = 0;
+};
+
+_index2.default.inherits(_ol_source_Image_, _source2.default);
+/**
+ * @return {Array.<number>} Resolutions.
+ * @override
+ */
+
+
+_ol_source_Image_.prototype.getResolutions = function () {
+  return this.resolutions_;
+};
+/**
+ * @protected
+ * @param {number} resolution Resolution.
+ * @return {number} Resolution.
+ */
+
+
+_ol_source_Image_.prototype.findNearestResolution = function (resolution) {
+  if (this.resolutions_) {
+    var idx = _array2.default.linearFindNearest(this.resolutions_, resolution, 0);
+
+    resolution = this.resolutions_[idx];
+  }
+
+  return resolution;
+};
+/**
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {ol.ImageBase} Single image.
+ */
+
+
+_ol_source_Image_.prototype.getImage = function (extent, resolution, pixelRatio, projection) {
+  var sourceProjection = this.getProjection();
+
+  if (!_index2.default.ENABLE_RASTER_REPROJECTION || !sourceProjection || !projection || _proj2.default.equivalent(sourceProjection, projection)) {
+    if (sourceProjection) {
+      projection = sourceProjection;
+    }
+
+    return this.getImageInternal(extent, resolution, pixelRatio, projection);
+  } else {
+    if (this.reprojectedImage_) {
+      if (this.reprojectedRevision_ == this.getRevision() && _proj2.default.equivalent(this.reprojectedImage_.getProjection(), projection) && this.reprojectedImage_.getResolution() == resolution && _extent2.default.equals(this.reprojectedImage_.getExtent(), extent)) {
+        return this.reprojectedImage_;
+      }
+
+      this.reprojectedImage_.dispose();
+      this.reprojectedImage_ = null;
+    }
+
+    this.reprojectedImage_ = new _image2.default(sourceProjection, projection, extent, resolution, pixelRatio, function (extent, resolution, pixelRatio) {
+      return this.getImageInternal(extent, resolution, pixelRatio, sourceProjection);
+    }.bind(this));
+    this.reprojectedRevision_ = this.getRevision();
+    return this.reprojectedImage_;
+  }
+};
+/**
+ * @abstract
+ * @param {ol.Extent} extent Extent.
+ * @param {number} resolution Resolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {ol.proj.Projection} projection Projection.
+ * @return {ol.ImageBase} Single image.
+ * @protected
+ */
+
+
+_ol_source_Image_.prototype.getImageInternal = function (extent, resolution, pixelRatio, projection) {};
+/**
+ * Handle image change events.
+ * @param {ol.events.Event} event Event.
+ * @protected
+ */
+
+
+_ol_source_Image_.prototype.handleImageChange = function (event) {
+  var image =
+  /** @type {ol.Image} */
+  event.target;
+
+  switch (image.getState()) {
+    case _imagestate2.default.LOADING:
+      this.dispatchEvent(new _ol_source_Image_.Event(_ol_source_Image_.EventType_.IMAGELOADSTART, image));
+      break;
+
+    case _imagestate2.default.LOADED:
+      this.dispatchEvent(new _ol_source_Image_.Event(_ol_source_Image_.EventType_.IMAGELOADEND, image));
+      break;
+
+    case _imagestate2.default.ERROR:
+      this.dispatchEvent(new _ol_source_Image_.Event(_ol_source_Image_.EventType_.IMAGELOADERROR, image));
+      break;
+
+    default: // pass
+
+  }
+};
+/**
+ * Default image load function for image sources that use ol.Image image
+ * instances.
+ * @param {ol.Image} image Image.
+ * @param {string} src Source.
+ */
+
+
+_ol_source_Image_.defaultImageLoadFunction = function (image, src) {
+  image.getImage().src = src;
+};
+/**
+ * @classdesc
+ * Events emitted by {@link ol.source.Image} instances are instances of this
+ * type.
+ *
+ * @constructor
+ * @extends {ol.events.Event}
+ * @implements {oli.source.ImageEvent}
+ * @param {string} type Type.
+ * @param {ol.Image} image The image.
+ */
+
+
+_ol_source_Image_.Event = function (type, image) {
+  _event2.default.call(this, type);
+  /**
+   * The image related to the event.
+   * @type {ol.Image}
+   * @api
+   */
+
+
+  this.image = image;
+};
+
+_index2.default.inherits(_ol_source_Image_.Event, _event2.default);
+/**
+ * @enum {string}
+ * @private
+ */
+
+
+_ol_source_Image_.EventType_ = {
+  /**
+   * Triggered when an image starts loading.
+   * @event ol.source.Image.Event#imageloadstart
+   * @api
+   */
+  IMAGELOADSTART: 'imageloadstart',
+
+  /**
+   * Triggered when an image finishes loading.
+   * @event ol.source.Image.Event#imageloadend
+   * @api
+   */
+  IMAGELOADEND: 'imageloadend',
+
+  /**
+   * Triggered if image loading results in an error.
+   * @event ol.source.Image.Event#imageloaderror
+   * @api
+   */
+  IMAGELOADERROR: 'imageloaderror'
+};
+exports.default = _ol_source_Image_;
+
+},{"../array.js":3,"../events/event.js":24,"../extent.js":28,"../imagestate.js":62,"../index.js":63,"../proj.js":115,"../reproj/image.js":178,"../source/source.js":185}],184:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39021,7 +39277,294 @@ _ol_source_ImageStatic_.prototype.handleImageChange = function (evt) {
 
 exports.default = _ol_source_ImageStatic_;
 
-},{"../dom.js":23,"../events.js":25,"../events/eventtype.js":29,"../extent.js":31,"../image.js":61,"../imagestate.js":64,"../index.js":65,"../proj.js":115,"../source/image.js":185}],184:[function(require,module,exports){
+},{"../dom.js":20,"../events.js":22,"../events/eventtype.js":26,"../extent.js":28,"../image.js":59,"../imagestate.js":62,"../index.js":63,"../proj.js":115,"../source/image.js":183}],185:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("../index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _attribution = require("../attribution.js");
+
+var _attribution2 = _interopRequireDefault(_attribution);
+
+var _object = require("../object.js");
+
+var _object2 = _interopRequireDefault(_object);
+
+var _proj = require("../proj.js");
+
+var _proj2 = _interopRequireDefault(_proj);
+
+var _state = require("../source/state.js");
+
+var _state2 = _interopRequireDefault(_state);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for {@link ol.layer.Layer} sources.
+ *
+ * A generic `change` event is triggered when the state of the source changes.
+ *
+ * @constructor
+ * @abstract
+ * @extends {ol.Object}
+ * @param {ol.SourceSourceOptions} options Source options.
+ * @api
+ */
+
+
+var _ol_source_Source_ = function _ol_source_Source_(options) {
+  _object2.default.call(this);
+  /**
+   * @private
+   * @type {ol.proj.Projection}
+   */
+
+
+  this.projection_ = _proj2.default.get(options.projection);
+  /**
+   * @private
+   * @type {Array.<ol.Attribution>}
+   */
+
+  this.attributions_ = null;
+  /**
+   * @private
+   * @type {?ol.Attribution2}
+   */
+
+  this.attributions2_ = this.adaptAttributions_(options.attributions);
+  /**
+   * @private
+   * @type {string|olx.LogoOptions|undefined}
+   */
+
+  this.logo_ = options.logo;
+  /**
+   * @private
+   * @type {ol.source.State}
+   */
+
+  this.state_ = options.state !== undefined ? options.state : _state2.default.READY;
+  /**
+   * @private
+   * @type {boolean}
+   */
+
+  this.wrapX_ = options.wrapX !== undefined ? options.wrapX : false;
+};
+
+_index2.default.inherits(_ol_source_Source_, _object2.default);
+/**
+ * Turns the attributions option into an attributions function.
+ * @suppress {deprecated}
+ * @param {ol.AttributionLike|undefined} attributionLike The attribution option.
+ * @return {?ol.Attribution2} An attribution function (or null).
+ */
+
+
+_ol_source_Source_.prototype.adaptAttributions_ = function (attributionLike) {
+  if (!attributionLike) {
+    return null;
+  }
+
+  if (attributionLike instanceof _attribution2.default) {
+    // TODO: remove attributions_ in next major release
+    this.attributions_ = [attributionLike];
+    return function (frameState) {
+      return [attributionLike.getHTML()];
+    };
+  }
+
+  if (Array.isArray(attributionLike)) {
+    if (attributionLike[0] instanceof _attribution2.default) {
+      // TODO: remove attributions_ in next major release
+      this.attributions_ = attributionLike;
+      var attributions = attributionLike.map(function (attribution) {
+        return attribution.getHTML();
+      });
+      return function (frameState) {
+        return attributions;
+      };
+    } // TODO: remove attributions_ in next major release
+
+
+    this.attributions_ = attributionLike.map(function (attribution) {
+      return new _attribution2.default({
+        html: attribution
+      });
+    });
+    return function (frameState) {
+      return attributionLike;
+    };
+  }
+
+  if (typeof attributionLike === 'function') {
+    return attributionLike;
+  } // TODO: remove attributions_ in next major release
+
+
+  this.attributions_ = [new _attribution2.default({
+    html: attributionLike
+  })];
+  return function (frameState) {
+    return [attributionLike];
+  };
+};
+/**
+ * @param {ol.Coordinate} coordinate Coordinate.
+ * @param {number} resolution Resolution.
+ * @param {number} rotation Rotation.
+ * @param {number} hitTolerance Hit tolerance in pixels.
+ * @param {Object.<string, boolean>} skippedFeatureUids Skipped feature uids.
+ * @param {function((ol.Feature|ol.render.Feature)): T} callback Feature
+ *     callback.
+ * @return {T|undefined} Callback result.
+ * @template T
+ */
+
+
+_ol_source_Source_.prototype.forEachFeatureAtCoordinate = _index2.default.nullFunction;
+/**
+ * Get the attributions of the source.
+ * @return {Array.<ol.Attribution>} Attributions.
+ * @api
+ */
+
+_ol_source_Source_.prototype.getAttributions = function () {
+  return this.attributions_;
+};
+/**
+ * Get the attribution function for the source.
+ * @return {?ol.Attribution2} Attribution function.
+ */
+
+
+_ol_source_Source_.prototype.getAttributions2 = function () {
+  return this.attributions2_;
+};
+/**
+ * Get the logo of the source.
+ * @return {string|olx.LogoOptions|undefined} Logo.
+ * @api
+ */
+
+
+_ol_source_Source_.prototype.getLogo = function () {
+  return this.logo_;
+};
+/**
+ * Get the projection of the source.
+ * @return {ol.proj.Projection} Projection.
+ * @api
+ */
+
+
+_ol_source_Source_.prototype.getProjection = function () {
+  return this.projection_;
+};
+/**
+ * @abstract
+ * @return {Array.<number>|undefined} Resolutions.
+ */
+
+
+_ol_source_Source_.prototype.getResolutions = function () {};
+/**
+ * Get the state of the source, see {@link ol.source.State} for possible states.
+ * @return {ol.source.State} State.
+ * @api
+ */
+
+
+_ol_source_Source_.prototype.getState = function () {
+  return this.state_;
+};
+/**
+ * @return {boolean|undefined} Wrap X.
+ */
+
+
+_ol_source_Source_.prototype.getWrapX = function () {
+  return this.wrapX_;
+};
+/**
+ * Refreshes the source and finally dispatches a 'change' event.
+ * @api
+ */
+
+
+_ol_source_Source_.prototype.refresh = function () {
+  this.changed();
+};
+/**
+ * Set the attributions of the source.
+ * @param {ol.AttributionLike|undefined} attributions Attributions.
+ *     Can be passed as `string`, `Array<string>`, `{@link ol.Attribution2}`,
+ *     or `undefined`.
+ * @api
+ */
+
+
+_ol_source_Source_.prototype.setAttributions = function (attributions) {
+  this.attributions2_ = this.adaptAttributions_(attributions);
+  this.changed();
+};
+/**
+ * Set the logo of the source.
+ * @param {string|olx.LogoOptions|undefined} logo Logo.
+ */
+
+
+_ol_source_Source_.prototype.setLogo = function (logo) {
+  this.logo_ = logo;
+};
+/**
+ * Set the state of the source.
+ * @param {ol.source.State} state State.
+ * @protected
+ */
+
+
+_ol_source_Source_.prototype.setState = function (state) {
+  this.state_ = state;
+  this.changed();
+};
+
+exports.default = _ol_source_Source_;
+
+},{"../attribution.js":6,"../index.js":63,"../object.js":99,"../proj.js":115,"../source/state.js":186}],186:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
+ * @enum {string}
+ */
+
+var _ol_source_State_ = {
+  UNDEFINED: 'undefined',
+  LOADING: 'loading',
+  READY: 'ready',
+  ERROR: 'error'
+};
+exports.default = _ol_source_State_;
+
+},{}],187:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40006,550 +40549,7 @@ _index2.default.inherits(_ol_source_Vector_.Event, _event2.default);
 
 exports.default = _ol_source_Vector_;
 
-},{"../array.js":6,"../asserts.js":8,"../collection.js":11,"../collectioneventtype.js":12,"../events.js":25,"../events/event.js":27,"../events/eventtype.js":29,"../extent.js":31,"../featureloader.js":34,"../functions.js":36,"../index.js":65,"../loadingstrategy.js":90,"../obj.js":99,"../objecteventtype.js":101,"../source/source.js":186,"../source/state.js":187,"../source/vectoreventtype.js":188,"../structs/rbush.js":194}],185:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _imagestate = require("../imagestate.js");
-
-var _imagestate2 = _interopRequireDefault(_imagestate);
-
-var _array = require("../array.js");
-
-var _array2 = _interopRequireDefault(_array);
-
-var _event = require("../events/event.js");
-
-var _event2 = _interopRequireDefault(_event);
-
-var _extent = require("../extent.js");
-
-var _extent2 = _interopRequireDefault(_extent);
-
-var _proj = require("../proj.js");
-
-var _proj2 = _interopRequireDefault(_proj);
-
-var _image = require("../reproj/image.js");
-
-var _image2 = _interopRequireDefault(_image);
-
-var _source = require("../source/source.js");
-
-var _source2 = _interopRequireDefault(_source);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for sources providing a single image.
- *
- * @constructor
- * @abstract
- * @extends {ol.source.Source}
- * @param {ol.SourceImageOptions} options Single image source options.
- * @api
- */
-
-
-var _ol_source_Image_ = function _ol_source_Image_(options) {
-  _source2.default.call(this, {
-    attributions: options.attributions,
-    extent: options.extent,
-    logo: options.logo,
-    projection: options.projection,
-    state: options.state
-  });
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-
-
-  this.resolutions_ = options.resolutions !== undefined ? options.resolutions : null;
-  /**
-   * @private
-   * @type {ol.reproj.Image}
-   */
-
-  this.reprojectedImage_ = null;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.reprojectedRevision_ = 0;
-};
-
-_index2.default.inherits(_ol_source_Image_, _source2.default);
-/**
- * @return {Array.<number>} Resolutions.
- * @override
- */
-
-
-_ol_source_Image_.prototype.getResolutions = function () {
-  return this.resolutions_;
-};
-/**
- * @protected
- * @param {number} resolution Resolution.
- * @return {number} Resolution.
- */
-
-
-_ol_source_Image_.prototype.findNearestResolution = function (resolution) {
-  if (this.resolutions_) {
-    var idx = _array2.default.linearFindNearest(this.resolutions_, resolution, 0);
-
-    resolution = this.resolutions_[idx];
-  }
-
-  return resolution;
-};
-/**
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {ol.ImageBase} Single image.
- */
-
-
-_ol_source_Image_.prototype.getImage = function (extent, resolution, pixelRatio, projection) {
-  var sourceProjection = this.getProjection();
-
-  if (!_index2.default.ENABLE_RASTER_REPROJECTION || !sourceProjection || !projection || _proj2.default.equivalent(sourceProjection, projection)) {
-    if (sourceProjection) {
-      projection = sourceProjection;
-    }
-
-    return this.getImageInternal(extent, resolution, pixelRatio, projection);
-  } else {
-    if (this.reprojectedImage_) {
-      if (this.reprojectedRevision_ == this.getRevision() && _proj2.default.equivalent(this.reprojectedImage_.getProjection(), projection) && this.reprojectedImage_.getResolution() == resolution && _extent2.default.equals(this.reprojectedImage_.getExtent(), extent)) {
-        return this.reprojectedImage_;
-      }
-
-      this.reprojectedImage_.dispose();
-      this.reprojectedImage_ = null;
-    }
-
-    this.reprojectedImage_ = new _image2.default(sourceProjection, projection, extent, resolution, pixelRatio, function (extent, resolution, pixelRatio) {
-      return this.getImageInternal(extent, resolution, pixelRatio, sourceProjection);
-    }.bind(this));
-    this.reprojectedRevision_ = this.getRevision();
-    return this.reprojectedImage_;
-  }
-};
-/**
- * @abstract
- * @param {ol.Extent} extent Extent.
- * @param {number} resolution Resolution.
- * @param {number} pixelRatio Pixel ratio.
- * @param {ol.proj.Projection} projection Projection.
- * @return {ol.ImageBase} Single image.
- * @protected
- */
-
-
-_ol_source_Image_.prototype.getImageInternal = function (extent, resolution, pixelRatio, projection) {};
-/**
- * Handle image change events.
- * @param {ol.events.Event} event Event.
- * @protected
- */
-
-
-_ol_source_Image_.prototype.handleImageChange = function (event) {
-  var image =
-  /** @type {ol.Image} */
-  event.target;
-
-  switch (image.getState()) {
-    case _imagestate2.default.LOADING:
-      this.dispatchEvent(new _ol_source_Image_.Event(_ol_source_Image_.EventType_.IMAGELOADSTART, image));
-      break;
-
-    case _imagestate2.default.LOADED:
-      this.dispatchEvent(new _ol_source_Image_.Event(_ol_source_Image_.EventType_.IMAGELOADEND, image));
-      break;
-
-    case _imagestate2.default.ERROR:
-      this.dispatchEvent(new _ol_source_Image_.Event(_ol_source_Image_.EventType_.IMAGELOADERROR, image));
-      break;
-
-    default: // pass
-
-  }
-};
-/**
- * Default image load function for image sources that use ol.Image image
- * instances.
- * @param {ol.Image} image Image.
- * @param {string} src Source.
- */
-
-
-_ol_source_Image_.defaultImageLoadFunction = function (image, src) {
-  image.getImage().src = src;
-};
-/**
- * @classdesc
- * Events emitted by {@link ol.source.Image} instances are instances of this
- * type.
- *
- * @constructor
- * @extends {ol.events.Event}
- * @implements {oli.source.ImageEvent}
- * @param {string} type Type.
- * @param {ol.Image} image The image.
- */
-
-
-_ol_source_Image_.Event = function (type, image) {
-  _event2.default.call(this, type);
-  /**
-   * The image related to the event.
-   * @type {ol.Image}
-   * @api
-   */
-
-
-  this.image = image;
-};
-
-_index2.default.inherits(_ol_source_Image_.Event, _event2.default);
-/**
- * @enum {string}
- * @private
- */
-
-
-_ol_source_Image_.EventType_ = {
-  /**
-   * Triggered when an image starts loading.
-   * @event ol.source.Image.Event#imageloadstart
-   * @api
-   */
-  IMAGELOADSTART: 'imageloadstart',
-
-  /**
-   * Triggered when an image finishes loading.
-   * @event ol.source.Image.Event#imageloadend
-   * @api
-   */
-  IMAGELOADEND: 'imageloadend',
-
-  /**
-   * Triggered if image loading results in an error.
-   * @event ol.source.Image.Event#imageloaderror
-   * @api
-   */
-  IMAGELOADERROR: 'imageloaderror'
-};
-exports.default = _ol_source_Image_;
-
-},{"../array.js":6,"../events/event.js":27,"../extent.js":31,"../imagestate.js":64,"../index.js":65,"../proj.js":115,"../reproj/image.js":178,"../source/source.js":186}],186:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _attribution = require("../attribution.js");
-
-var _attribution2 = _interopRequireDefault(_attribution);
-
-var _object = require("../object.js");
-
-var _object2 = _interopRequireDefault(_object);
-
-var _proj = require("../proj.js");
-
-var _proj2 = _interopRequireDefault(_proj);
-
-var _state = require("../source/state.js");
-
-var _state2 = _interopRequireDefault(_state);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
- * Base class for {@link ol.layer.Layer} sources.
- *
- * A generic `change` event is triggered when the state of the source changes.
- *
- * @constructor
- * @abstract
- * @extends {ol.Object}
- * @param {ol.SourceSourceOptions} options Source options.
- * @api
- */
-
-
-var _ol_source_Source_ = function _ol_source_Source_(options) {
-  _object2.default.call(this);
-  /**
-   * @private
-   * @type {ol.proj.Projection}
-   */
-
-
-  this.projection_ = _proj2.default.get(options.projection);
-  /**
-   * @private
-   * @type {Array.<ol.Attribution>}
-   */
-
-  this.attributions_ = null;
-  /**
-   * @private
-   * @type {?ol.Attribution2}
-   */
-
-  this.attributions2_ = this.adaptAttributions_(options.attributions);
-  /**
-   * @private
-   * @type {string|olx.LogoOptions|undefined}
-   */
-
-  this.logo_ = options.logo;
-  /**
-   * @private
-   * @type {ol.source.State}
-   */
-
-  this.state_ = options.state !== undefined ? options.state : _state2.default.READY;
-  /**
-   * @private
-   * @type {boolean}
-   */
-
-  this.wrapX_ = options.wrapX !== undefined ? options.wrapX : false;
-};
-
-_index2.default.inherits(_ol_source_Source_, _object2.default);
-/**
- * Turns the attributions option into an attributions function.
- * @suppress {deprecated}
- * @param {ol.AttributionLike|undefined} attributionLike The attribution option.
- * @return {?ol.Attribution2} An attribution function (or null).
- */
-
-
-_ol_source_Source_.prototype.adaptAttributions_ = function (attributionLike) {
-  if (!attributionLike) {
-    return null;
-  }
-
-  if (attributionLike instanceof _attribution2.default) {
-    // TODO: remove attributions_ in next major release
-    this.attributions_ = [attributionLike];
-    return function (frameState) {
-      return [attributionLike.getHTML()];
-    };
-  }
-
-  if (Array.isArray(attributionLike)) {
-    if (attributionLike[0] instanceof _attribution2.default) {
-      // TODO: remove attributions_ in next major release
-      this.attributions_ = attributionLike;
-      var attributions = attributionLike.map(function (attribution) {
-        return attribution.getHTML();
-      });
-      return function (frameState) {
-        return attributions;
-      };
-    } // TODO: remove attributions_ in next major release
-
-
-    this.attributions_ = attributionLike.map(function (attribution) {
-      return new _attribution2.default({
-        html: attribution
-      });
-    });
-    return function (frameState) {
-      return attributionLike;
-    };
-  }
-
-  if (typeof attributionLike === 'function') {
-    return attributionLike;
-  } // TODO: remove attributions_ in next major release
-
-
-  this.attributions_ = [new _attribution2.default({
-    html: attributionLike
-  })];
-  return function (frameState) {
-    return [attributionLike];
-  };
-};
-/**
- * @param {ol.Coordinate} coordinate Coordinate.
- * @param {number} resolution Resolution.
- * @param {number} rotation Rotation.
- * @param {number} hitTolerance Hit tolerance in pixels.
- * @param {Object.<string, boolean>} skippedFeatureUids Skipped feature uids.
- * @param {function((ol.Feature|ol.render.Feature)): T} callback Feature
- *     callback.
- * @return {T|undefined} Callback result.
- * @template T
- */
-
-
-_ol_source_Source_.prototype.forEachFeatureAtCoordinate = _index2.default.nullFunction;
-/**
- * Get the attributions of the source.
- * @return {Array.<ol.Attribution>} Attributions.
- * @api
- */
-
-_ol_source_Source_.prototype.getAttributions = function () {
-  return this.attributions_;
-};
-/**
- * Get the attribution function for the source.
- * @return {?ol.Attribution2} Attribution function.
- */
-
-
-_ol_source_Source_.prototype.getAttributions2 = function () {
-  return this.attributions2_;
-};
-/**
- * Get the logo of the source.
- * @return {string|olx.LogoOptions|undefined} Logo.
- * @api
- */
-
-
-_ol_source_Source_.prototype.getLogo = function () {
-  return this.logo_;
-};
-/**
- * Get the projection of the source.
- * @return {ol.proj.Projection} Projection.
- * @api
- */
-
-
-_ol_source_Source_.prototype.getProjection = function () {
-  return this.projection_;
-};
-/**
- * @abstract
- * @return {Array.<number>|undefined} Resolutions.
- */
-
-
-_ol_source_Source_.prototype.getResolutions = function () {};
-/**
- * Get the state of the source, see {@link ol.source.State} for possible states.
- * @return {ol.source.State} State.
- * @api
- */
-
-
-_ol_source_Source_.prototype.getState = function () {
-  return this.state_;
-};
-/**
- * @return {boolean|undefined} Wrap X.
- */
-
-
-_ol_source_Source_.prototype.getWrapX = function () {
-  return this.wrapX_;
-};
-/**
- * Refreshes the source and finally dispatches a 'change' event.
- * @api
- */
-
-
-_ol_source_Source_.prototype.refresh = function () {
-  this.changed();
-};
-/**
- * Set the attributions of the source.
- * @param {ol.AttributionLike|undefined} attributions Attributions.
- *     Can be passed as `string`, `Array<string>`, `{@link ol.Attribution2}`,
- *     or `undefined`.
- * @api
- */
-
-
-_ol_source_Source_.prototype.setAttributions = function (attributions) {
-  this.attributions2_ = this.adaptAttributions_(attributions);
-  this.changed();
-};
-/**
- * Set the logo of the source.
- * @param {string|olx.LogoOptions|undefined} logo Logo.
- */
-
-
-_ol_source_Source_.prototype.setLogo = function (logo) {
-  this.logo_ = logo;
-};
-/**
- * Set the state of the source.
- * @param {ol.source.State} state State.
- * @protected
- */
-
-
-_ol_source_Source_.prototype.setState = function (state) {
-  this.state_ = state;
-  this.changed();
-};
-
-exports.default = _ol_source_Source_;
-
-},{"../attribution.js":9,"../index.js":65,"../object.js":100,"../proj.js":115,"../source/state.js":187}],187:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
- * State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
- * @enum {string}
- */
-
-var _ol_source_State_ = {
-  UNDEFINED: 'undefined',
-  LOADING: 'loading',
-  READY: 'ready',
-  ERROR: 'error'
-};
-exports.default = _ol_source_State_;
-
-},{}],188:[function(require,module,exports){
+},{"../array.js":3,"../asserts.js":5,"../collection.js":8,"../collectioneventtype.js":9,"../events.js":22,"../events/event.js":24,"../events/eventtype.js":26,"../extent.js":28,"../featureloader.js":32,"../functions.js":34,"../index.js":63,"../loadingstrategy.js":88,"../obj.js":98,"../objecteventtype.js":100,"../source/source.js":185,"../source/state.js":186,"../source/vectoreventtype.js":188,"../structs/rbush.js":194}],188:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40949,7 +40949,7 @@ _ol_Sphere_.getArea_ = function (coordinates, radius) {
 
 exports.default = _ol_Sphere_;
 
-},{"./geom/geometrytype.js":55,"./math.js":98}],190:[function(require,module,exports){
+},{"./geom/geometrytype.js":53,"./math.js":97}],190:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41614,7 +41614,7 @@ _ol_structs_LRUCache_.prototype.prune = function () {
 
 exports.default = _ol_structs_LRUCache_;
 
-},{"../asserts.js":8,"../events/eventtarget.js":28,"../events/eventtype.js":29,"../index.js":65}],193:[function(require,module,exports){
+},{"../asserts.js":5,"../events/eventtarget.js":25,"../events/eventtype.js":26,"../index.js":63}],193:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -41913,7 +41913,7 @@ _ol_structs_PriorityQueue_.prototype.reprioritize = function () {
 
 exports.default = _ol_structs_PriorityQueue_;
 
-},{"../asserts.js":8,"../obj.js":99}],194:[function(require,module,exports){
+},{"../asserts.js":5,"../obj.js":98}],194:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42171,7 +42171,7 @@ _ol_structs_RBush_.prototype.concat = function (rbush) {
 
 exports.default = _ol_structs_RBush_;
 
-},{"../extent.js":31,"../index.js":65,"../obj.js":99,"rbush":231}],195:[function(require,module,exports){
+},{"../extent.js":28,"../index.js":63,"../obj.js":98,"rbush":231}],195:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42197,7 +42197,627 @@ var _ol_style_ = {};
 _ol_style_.iconImageCache = new _iconimagecache2.default();
 exports.default = _ol_style_;
 
-},{"./style/iconimagecache.js":204}],196:[function(require,module,exports){
+},{"./style/iconimagecache.js":203}],196:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _dom = require("../dom.js");
+
+var _dom2 = _interopRequireDefault(_dom);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * This class facilitates the creation of image atlases.
+ *
+ * Images added to an atlas will be rendered onto a single
+ * atlas canvas. The distribution of images on the canvas is
+ * managed with the bin packing algorithm described in:
+ * http://www.blackpawn.com/texts/lightmaps/
+ *
+ * @constructor
+ * @struct
+ * @param {number} size The size in pixels of the sprite image.
+ * @param {number} space The space in pixels between images.
+ *    Because texture coordinates are float values, the edges of
+ *    images might not be completely correct (in a way that the
+ *    edges overlap when being rendered). To avoid this we add a
+ *    padding around each image.
+ */
+
+
+var _ol_style_Atlas_ = function _ol_style_Atlas_(size, space) {
+  /**
+   * @private
+   * @type {number}
+   */
+  this.space_ = space;
+  /**
+   * @private
+   * @type {Array.<ol.AtlasBlock>}
+   */
+
+  this.emptyBlocks_ = [{
+    x: 0,
+    y: 0,
+    width: size,
+    height: size
+  }];
+  /**
+   * @private
+   * @type {Object.<string, ol.AtlasInfo>}
+   */
+
+  this.entries_ = {};
+  /**
+   * @private
+   * @type {CanvasRenderingContext2D}
+   */
+
+  this.context_ = _dom2.default.createCanvasContext2D(size, size);
+  /**
+   * @private
+   * @type {HTMLCanvasElement}
+   */
+
+  this.canvas_ = this.context_.canvas;
+};
+/**
+ * @param {string} id The identifier of the entry to check.
+ * @return {?ol.AtlasInfo} The atlas info.
+ */
+
+
+_ol_style_Atlas_.prototype.get = function (id) {
+  return this.entries_[id] || null;
+};
+/**
+ * @param {string} id The identifier of the entry to add.
+ * @param {number} width The width.
+ * @param {number} height The height.
+ * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
+ *    Called to render the new image onto an atlas image.
+ * @param {Object=} opt_this Value to use as `this` when executing
+ *    `renderCallback`.
+ * @return {?ol.AtlasInfo} The position and atlas image for the entry.
+ */
+
+
+_ol_style_Atlas_.prototype.add = function (id, width, height, renderCallback, opt_this) {
+  var block, i, ii;
+
+  for (i = 0, ii = this.emptyBlocks_.length; i < ii; ++i) {
+    block = this.emptyBlocks_[i];
+
+    if (block.width >= width + this.space_ && block.height >= height + this.space_) {
+      // we found a block that is big enough for our entry
+      var entry = {
+        offsetX: block.x + this.space_,
+        offsetY: block.y + this.space_,
+        image: this.canvas_
+      };
+      this.entries_[id] = entry; // render the image on the atlas image
+
+      renderCallback.call(opt_this, this.context_, block.x + this.space_, block.y + this.space_); // split the block after the insertion, either horizontally or vertically
+
+      this.split_(i, block, width + this.space_, height + this.space_);
+      return entry;
+    }
+  } // there is no space for the new entry in this atlas
+
+
+  return null;
+};
+/**
+ * @private
+ * @param {number} index The index of the block.
+ * @param {ol.AtlasBlock} block The block to split.
+ * @param {number} width The width of the entry to insert.
+ * @param {number} height The height of the entry to insert.
+ */
+
+
+_ol_style_Atlas_.prototype.split_ = function (index, block, width, height) {
+  var deltaWidth = block.width - width;
+  var deltaHeight = block.height - height;
+  /** @type {ol.AtlasBlock} */
+
+  var newBlock1;
+  /** @type {ol.AtlasBlock} */
+
+  var newBlock2;
+
+  if (deltaWidth > deltaHeight) {
+    // split vertically
+    // block right of the inserted entry
+    newBlock1 = {
+      x: block.x + width,
+      y: block.y,
+      width: block.width - width,
+      height: block.height
+    }; // block below the inserted entry
+
+    newBlock2 = {
+      x: block.x,
+      y: block.y + height,
+      width: width,
+      height: block.height - height
+    };
+    this.updateBlocks_(index, newBlock1, newBlock2);
+  } else {
+    // split horizontally
+    // block right of the inserted entry
+    newBlock1 = {
+      x: block.x + width,
+      y: block.y,
+      width: block.width - width,
+      height: height
+    }; // block below the inserted entry
+
+    newBlock2 = {
+      x: block.x,
+      y: block.y + height,
+      width: block.width,
+      height: block.height - height
+    };
+    this.updateBlocks_(index, newBlock1, newBlock2);
+  }
+};
+/**
+ * Remove the old block and insert new blocks at the same array position.
+ * The new blocks are inserted at the same position, so that splitted
+ * blocks (that are potentially smaller) are filled first.
+ * @private
+ * @param {number} index The index of the block to remove.
+ * @param {ol.AtlasBlock} newBlock1 The 1st block to add.
+ * @param {ol.AtlasBlock} newBlock2 The 2nd block to add.
+ */
+
+
+_ol_style_Atlas_.prototype.updateBlocks_ = function (index, newBlock1, newBlock2) {
+  var args = [index, 1];
+
+  if (newBlock1.width > 0 && newBlock1.height > 0) {
+    args.push(newBlock1);
+  }
+
+  if (newBlock2.width > 0 && newBlock2.height > 0) {
+    args.push(newBlock2);
+  }
+
+  this.emptyBlocks_.splice.apply(this.emptyBlocks_, args);
+};
+
+exports.default = _ol_style_Atlas_;
+
+},{"../dom.js":20}],197:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("../index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _atlas = require("../style/atlas.js");
+
+var _atlas2 = _interopRequireDefault(_atlas);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * Manages the creation of image atlases.
+ *
+ * Images added to this manager will be inserted into an atlas, which
+ * will be used for rendering.
+ * The `size` given in the constructor is the size for the first
+ * atlas. After that, when new atlases are created, they will have
+ * twice the size as the latest atlas (until `maxSize` is reached).
+ *
+ * If an application uses many images or very large images, it is recommended
+ * to set a higher `size` value to avoid the creation of too many atlases.
+ *
+ * @constructor
+ * @struct
+ * @api
+ * @param {olx.style.AtlasManagerOptions=} opt_options Options.
+ */
+
+
+var _ol_style_AtlasManager_ = function _ol_style_AtlasManager_(opt_options) {
+  var options = opt_options || {};
+  /**
+   * The size in pixels of the latest atlas image.
+   * @private
+   * @type {number}
+   */
+
+  this.currentSize_ = options.initialSize !== undefined ? options.initialSize : _index2.default.INITIAL_ATLAS_SIZE;
+  /**
+   * The maximum size in pixels of atlas images.
+   * @private
+   * @type {number}
+   */
+
+  this.maxSize_ = options.maxSize !== undefined ? options.maxSize : _index2.default.MAX_ATLAS_SIZE != -1 ? _index2.default.MAX_ATLAS_SIZE : _index2.default.WEBGL_MAX_TEXTURE_SIZE !== undefined ? _index2.default.WEBGL_MAX_TEXTURE_SIZE : 2048;
+  /**
+   * The size in pixels between images.
+   * @private
+   * @type {number}
+   */
+
+  this.space_ = options.space !== undefined ? options.space : 1;
+  /**
+   * @private
+   * @type {Array.<ol.style.Atlas>}
+   */
+
+  this.atlases_ = [new _atlas2.default(this.currentSize_, this.space_)];
+  /**
+   * The size in pixels of the latest atlas image for hit-detection images.
+   * @private
+   * @type {number}
+   */
+
+  this.currentHitSize_ = this.currentSize_;
+  /**
+   * @private
+   * @type {Array.<ol.style.Atlas>}
+   */
+
+  this.hitAtlases_ = [new _atlas2.default(this.currentHitSize_, this.space_)];
+};
+/**
+ * @param {string} id The identifier of the entry to check.
+ * @return {?ol.AtlasManagerInfo} The position and atlas image for the
+ *    entry, or `null` if the entry is not part of the atlas manager.
+ */
+
+
+_ol_style_AtlasManager_.prototype.getInfo = function (id) {
+  /** @type {?ol.AtlasInfo} */
+  var info = this.getInfo_(this.atlases_, id);
+
+  if (!info) {
+    return null;
+  }
+
+  var hitInfo =
+  /** @type {ol.AtlasInfo} */
+  this.getInfo_(this.hitAtlases_, id);
+  return this.mergeInfos_(info, hitInfo);
+};
+/**
+ * @private
+ * @param {Array.<ol.style.Atlas>} atlases The atlases to search.
+ * @param {string} id The identifier of the entry to check.
+ * @return {?ol.AtlasInfo} The position and atlas image for the entry,
+ *    or `null` if the entry is not part of the atlases.
+ */
+
+
+_ol_style_AtlasManager_.prototype.getInfo_ = function (atlases, id) {
+  var atlas, info, i, ii;
+
+  for (i = 0, ii = atlases.length; i < ii; ++i) {
+    atlas = atlases[i];
+    info = atlas.get(id);
+
+    if (info) {
+      return info;
+    }
+  }
+
+  return null;
+};
+/**
+ * @private
+ * @param {ol.AtlasInfo} info The info for the real image.
+ * @param {ol.AtlasInfo} hitInfo The info for the hit-detection
+ *    image.
+ * @return {?ol.AtlasManagerInfo} The position and atlas image for the
+ *    entry, or `null` if the entry is not part of the atlases.
+ */
+
+
+_ol_style_AtlasManager_.prototype.mergeInfos_ = function (info, hitInfo) {
+  return (
+    /** @type {ol.AtlasManagerInfo} */
+    {
+      offsetX: info.offsetX,
+      offsetY: info.offsetY,
+      image: info.image,
+      hitImage: hitInfo.image
+    }
+  );
+};
+/**
+ * Add an image to the atlas manager.
+ *
+ * If an entry for the given id already exists, the entry will
+ * be overridden (but the space on the atlas graphic will not be freed).
+ *
+ * If `renderHitCallback` is provided, the image (or the hit-detection version
+ * of the image) will be rendered into a separate hit-detection atlas image.
+ *
+ * @param {string} id The identifier of the entry to add.
+ * @param {number} width The width.
+ * @param {number} height The height.
+ * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
+ *    Called to render the new image onto an atlas image.
+ * @param {function(CanvasRenderingContext2D, number, number)=}
+ *    opt_renderHitCallback Called to render a hit-detection image onto a hit
+ *    detection atlas image.
+ * @param {Object=} opt_this Value to use as `this` when executing
+ *    `renderCallback` and `renderHitCallback`.
+ * @return {?ol.AtlasManagerInfo}  The position and atlas image for the
+ *    entry, or `null` if the image is too big.
+ */
+
+
+_ol_style_AtlasManager_.prototype.add = function (id, width, height, renderCallback, opt_renderHitCallback, opt_this) {
+  if (width + this.space_ > this.maxSize_ || height + this.space_ > this.maxSize_) {
+    return null;
+  }
+  /** @type {?ol.AtlasInfo} */
+
+
+  var info = this.add_(false, id, width, height, renderCallback, opt_this);
+
+  if (!info) {
+    return null;
+  } // even if no hit-detection entry is requested, we insert a fake entry into
+  // the hit-detection atlas, to make sure that the offset is the same for
+  // the original image and the hit-detection image.
+
+
+  var renderHitCallback = opt_renderHitCallback !== undefined ? opt_renderHitCallback : _index2.default.nullFunction;
+  var hitInfo =
+  /** @type {ol.AtlasInfo} */
+  this.add_(true, id, width, height, renderHitCallback, opt_this);
+  return this.mergeInfos_(info, hitInfo);
+};
+/**
+ * @private
+ * @param {boolean} isHitAtlas If the hit-detection atlases are used.
+ * @param {string} id The identifier of the entry to add.
+ * @param {number} width The width.
+ * @param {number} height The height.
+ * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
+ *    Called to render the new image onto an atlas image.
+ * @param {Object=} opt_this Value to use as `this` when executing
+ *    `renderCallback` and `renderHitCallback`.
+ * @return {?ol.AtlasInfo}  The position and atlas image for the entry,
+ *    or `null` if the image is too big.
+ */
+
+
+_ol_style_AtlasManager_.prototype.add_ = function (isHitAtlas, id, width, height, renderCallback, opt_this) {
+  var atlases = isHitAtlas ? this.hitAtlases_ : this.atlases_;
+  var atlas, info, i, ii;
+
+  for (i = 0, ii = atlases.length; i < ii; ++i) {
+    atlas = atlases[i];
+    info = atlas.add(id, width, height, renderCallback, opt_this);
+
+    if (info) {
+      return info;
+    } else if (!info && i === ii - 1) {
+      // the entry could not be added to one of the existing atlases,
+      // create a new atlas that is twice as big and try to add to this one.
+      var size;
+
+      if (isHitAtlas) {
+        size = Math.min(this.currentHitSize_ * 2, this.maxSize_);
+        this.currentHitSize_ = size;
+      } else {
+        size = Math.min(this.currentSize_ * 2, this.maxSize_);
+        this.currentSize_ = size;
+      }
+
+      atlas = new _atlas2.default(size, this.space_);
+      atlases.push(atlas); // run the loop another time
+
+      ++ii;
+    }
+  }
+
+  return null;
+};
+
+exports.default = _ol_style_AtlasManager_;
+
+},{"../index.js":63,"../style/atlas.js":196}],198:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("../index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _regularshape = require("../style/regularshape.js");
+
+var _regularshape2 = _interopRequireDefault(_regularshape);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * Set circle style for vector features.
+ *
+ * @constructor
+ * @param {olx.style.CircleOptions=} opt_options Options.
+ * @extends {ol.style.RegularShape}
+ * @api
+ */
+
+
+var _ol_style_Circle_ = function _ol_style_Circle_(opt_options) {
+  var options = opt_options || {};
+
+  _regularshape2.default.call(this, {
+    points: Infinity,
+    fill: options.fill,
+    radius: options.radius,
+    snapToPixel: options.snapToPixel,
+    stroke: options.stroke,
+    atlasManager: options.atlasManager
+  });
+};
+
+_index2.default.inherits(_ol_style_Circle_, _regularshape2.default);
+/**
+ * Clones the style.  If an atlasmanager was provided to the original style it will be used in the cloned style, too.
+ * @return {ol.style.Circle} The cloned style.
+ * @override
+ * @api
+ */
+
+
+_ol_style_Circle_.prototype.clone = function () {
+  var style = new _ol_style_Circle_({
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
+    radius: this.getRadius(),
+    snapToPixel: this.getSnapToPixel(),
+    atlasManager: this.atlasManager_
+  });
+  style.setOpacity(this.getOpacity());
+  style.setScale(this.getScale());
+  return style;
+};
+/**
+ * Set the circle radius.
+ *
+ * @param {number} radius Circle radius.
+ * @api
+ */
+
+
+_ol_style_Circle_.prototype.setRadius = function (radius) {
+  this.radius_ = radius;
+  this.render_(this.atlasManager_);
+};
+
+exports.default = _ol_style_Circle_;
+
+},{"../index.js":63,"../style/regularshape.js":206}],199:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _index = require("../index.js");
+
+var _index2 = _interopRequireDefault(_index);
+
+var _color = require("../color.js");
+
+var _color2 = _interopRequireDefault(_color);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * Set fill style for vector features.
+ *
+ * @constructor
+ * @param {olx.style.FillOptions=} opt_options Options.
+ * @api
+ */
+
+
+var _ol_style_Fill_ = function _ol_style_Fill_(opt_options) {
+  var options = opt_options || {};
+  /**
+   * @private
+   * @type {ol.Color|ol.ColorLike}
+   */
+
+  this.color_ = options.color !== undefined ? options.color : null;
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+
+  this.checksum_ = undefined;
+};
+/**
+ * Clones the style. The color is not cloned if it is an {@link ol.ColorLike}.
+ * @return {ol.style.Fill} The cloned style.
+ * @api
+ */
+
+
+_ol_style_Fill_.prototype.clone = function () {
+  var color = this.getColor();
+  return new _ol_style_Fill_({
+    color: color && color.slice ? color.slice() : color || undefined
+  });
+};
+/**
+ * Get the fill color.
+ * @return {ol.Color|ol.ColorLike} Color.
+ * @api
+ */
+
+
+_ol_style_Fill_.prototype.getColor = function () {
+  return this.color_;
+};
+/**
+ * Set the color.
+ *
+ * @param {ol.Color|ol.ColorLike} color Color.
+ * @api
+ */
+
+
+_ol_style_Fill_.prototype.setColor = function (color) {
+  this.color_ = color;
+  this.checksum_ = undefined;
+};
+/**
+ * @return {string} The checksum.
+ */
+
+
+_ol_style_Fill_.prototype.getChecksum = function () {
+  if (this.checksum_ === undefined) {
+    if (this.color_ instanceof CanvasPattern || this.color_ instanceof CanvasGradient) {
+      this.checksum_ = _index2.default.getUid(this.color_).toString();
+    } else {
+      this.checksum_ = 'f' + (this.color_ ? _color2.default.asString(this.color_) : '-');
+    }
+  }
+
+  return this.checksum_;
+};
+
+exports.default = _ol_style_Fill_;
+
+},{"../color.js":10,"../index.js":63}],200:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42623,1149 +43243,7 @@ _ol_style_Icon_.prototype.unlistenImageChange = function (listener, thisArg) {
 
 exports.default = _ol_style_Icon_;
 
-},{"../asserts.js":8,"../color.js":13,"../events.js":25,"../events/eventtype.js":29,"../imagestate.js":64,"../index.js":65,"../style/iconanchorunits.js":202,"../style/iconimage.js":203,"../style/iconorigin.js":205,"../style/image.js":206}],197:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _fill = require("../style/fill.js");
-
-var _fill2 = _interopRequireDefault(_fill);
-
-var _textplacement = require("../style/textplacement.js");
-
-var _textplacement2 = _interopRequireDefault(_textplacement);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Set text style for vector features.
- *
- * @constructor
- * @param {olx.style.TextOptions=} opt_options Options.
- * @api
- */
-
-
-var _ol_style_Text_ = function _ol_style_Text_(opt_options) {
-  var options = opt_options || {};
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.font_ = options.font;
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.rotation_ = options.rotation;
-  /**
-   * @private
-   * @type {boolean|undefined}
-   */
-
-  this.rotateWithView_ = options.rotateWithView;
-  /**
-   * @private
-   * @type {number|undefined}
-   */
-
-  this.scale_ = options.scale;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.text_ = options.text;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.textAlign_ = options.textAlign;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.textBaseline_ = options.textBaseline;
-  /**
-   * @private
-   * @type {ol.style.Fill}
-   */
-
-  this.fill_ = options.fill !== undefined ? options.fill : new _fill2.default({
-    color: _ol_style_Text_.DEFAULT_FILL_COLOR_
-  });
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.maxAngle_ = options.maxAngle !== undefined ? options.maxAngle : Math.PI / 4;
-  /**
-   * @private
-   * @type {ol.style.TextPlacement|string}
-   */
-
-  this.placement_ = options.placement !== undefined ? options.placement : _textplacement2.default.POINT; //TODO Use options.overflow directly after removing @deprecated exceedLength
-
-  var overflow = options.overflow === undefined ? options.exceedLength : options.overflow;
-  /**
-   * @private
-   * @type {boolean}
-   */
-
-  this.overflow_ = overflow !== undefined ? overflow : false;
-  /**
-   * @private
-   * @type {ol.style.Stroke}
-   */
-
-  this.stroke_ = options.stroke !== undefined ? options.stroke : null;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.offsetX_ = options.offsetX !== undefined ? options.offsetX : 0;
-  /**
-   * @private
-   * @type {number}
-   */
-
-  this.offsetY_ = options.offsetY !== undefined ? options.offsetY : 0;
-  /**
-   * @private
-   * @type {ol.style.Fill}
-   */
-
-  this.backgroundFill_ = options.backgroundFill ? options.backgroundFill : null;
-  /**
-   * @private
-   * @type {ol.style.Stroke}
-   */
-
-  this.backgroundStroke_ = options.backgroundStroke ? options.backgroundStroke : null;
-  /**
-   * @private
-   * @type {Array.<number>}
-   */
-
-  this.padding_ = options.padding === undefined ? null : options.padding;
-};
-/**
- * The default fill color to use if no fill was set at construction time; a
- * blackish `#333`.
- *
- * @const {string}
- * @private
- */
-
-
-_ol_style_Text_.DEFAULT_FILL_COLOR_ = '#333';
-/**
- * Clones the style.
- * @return {ol.style.Text} The cloned style.
- * @api
- */
-
-_ol_style_Text_.prototype.clone = function () {
-  return new _ol_style_Text_({
-    font: this.getFont(),
-    placement: this.getPlacement(),
-    maxAngle: this.getMaxAngle(),
-    overflow: this.getOverflow(),
-    rotation: this.getRotation(),
-    rotateWithView: this.getRotateWithView(),
-    scale: this.getScale(),
-    text: this.getText(),
-    textAlign: this.getTextAlign(),
-    textBaseline: this.getTextBaseline(),
-    fill: this.getFill() ? this.getFill().clone() : undefined,
-    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
-    offsetX: this.getOffsetX(),
-    offsetY: this.getOffsetY()
-  });
-};
-/**
- * Get the `overflow` configuration.
- * @return {boolean} Let text overflow the length of the path they follow.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getOverflow = function () {
-  return this.overflow_;
-};
-/**
- * Get the font name.
- * @return {string|undefined} Font.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getFont = function () {
-  return this.font_;
-};
-/**
- * Get the maximum angle between adjacent characters.
- * @return {number} Angle in radians.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getMaxAngle = function () {
-  return this.maxAngle_;
-};
-/**
- * Get the label placement.
- * @return {ol.style.TextPlacement|string} Text placement.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getPlacement = function () {
-  return this.placement_;
-};
-/**
- * Get the x-offset for the text.
- * @return {number} Horizontal text offset.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getOffsetX = function () {
-  return this.offsetX_;
-};
-/**
- * Get the y-offset for the text.
- * @return {number} Vertical text offset.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getOffsetY = function () {
-  return this.offsetY_;
-};
-/**
- * Get the fill style for the text.
- * @return {ol.style.Fill} Fill style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getFill = function () {
-  return this.fill_;
-};
-/**
- * Determine whether the text rotates with the map.
- * @return {boolean|undefined} Rotate with map.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getRotateWithView = function () {
-  return this.rotateWithView_;
-};
-/**
- * Get the text rotation.
- * @return {number|undefined} Rotation.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getRotation = function () {
-  return this.rotation_;
-};
-/**
- * Get the text scale.
- * @return {number|undefined} Scale.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getScale = function () {
-  return this.scale_;
-};
-/**
- * Get the stroke style for the text.
- * @return {ol.style.Stroke} Stroke style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getStroke = function () {
-  return this.stroke_;
-};
-/**
- * Get the text to be rendered.
- * @return {string|undefined} Text.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getText = function () {
-  return this.text_;
-};
-/**
- * Get the text alignment.
- * @return {string|undefined} Text align.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getTextAlign = function () {
-  return this.textAlign_;
-};
-/**
- * Get the text baseline.
- * @return {string|undefined} Text baseline.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getTextBaseline = function () {
-  return this.textBaseline_;
-};
-/**
- * Get the background fill style for the text.
- * @return {ol.style.Fill} Fill style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getBackgroundFill = function () {
-  return this.backgroundFill_;
-};
-/**
- * Get the background stroke style for the text.
- * @return {ol.style.Stroke} Stroke style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getBackgroundStroke = function () {
-  return this.backgroundStroke_;
-};
-/**
- * Get the padding for the text.
- * @return {Array.<number>} Padding.
- * @api
- */
-
-
-_ol_style_Text_.prototype.getPadding = function () {
-  return this.padding_;
-};
-/**
- * Set the `overflow` property.
- *
- * @param {boolean} overflow Let text overflow the path that it follows.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setOverflow = function (overflow) {
-  this.overflow_ = overflow;
-};
-/**
- * Set the font.
- *
- * @param {string|undefined} font Font.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setFont = function (font) {
-  this.font_ = font;
-};
-/**
- * Set the maximum angle between adjacent characters.
- *
- * @param {number} maxAngle Angle in radians.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setMaxAngle = function (maxAngle) {
-  this.maxAngle_ = maxAngle;
-};
-/**
- * Set the x offset.
- *
- * @param {number} offsetX Horizontal text offset.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setOffsetX = function (offsetX) {
-  this.offsetX_ = offsetX;
-};
-/**
- * Set the y offset.
- *
- * @param {number} offsetY Vertical text offset.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setOffsetY = function (offsetY) {
-  this.offsetY_ = offsetY;
-};
-/**
- * Set the text placement.
- *
- * @param {ol.style.TextPlacement|string} placement Placement.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setPlacement = function (placement) {
-  this.placement_ = placement;
-};
-/**
- * Set the fill.
- *
- * @param {ol.style.Fill} fill Fill style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setFill = function (fill) {
-  this.fill_ = fill;
-};
-/**
- * Set the rotation.
- *
- * @param {number|undefined} rotation Rotation.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setRotation = function (rotation) {
-  this.rotation_ = rotation;
-};
-/**
- * Set the scale.
- *
- * @param {number|undefined} scale Scale.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setScale = function (scale) {
-  this.scale_ = scale;
-};
-/**
- * Set the stroke.
- *
- * @param {ol.style.Stroke} stroke Stroke style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setStroke = function (stroke) {
-  this.stroke_ = stroke;
-};
-/**
- * Set the text.
- *
- * @param {string|undefined} text Text.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setText = function (text) {
-  this.text_ = text;
-};
-/**
- * Set the text alignment.
- *
- * @param {string|undefined} textAlign Text align.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setTextAlign = function (textAlign) {
-  this.textAlign_ = textAlign;
-};
-/**
- * Set the text baseline.
- *
- * @param {string|undefined} textBaseline Text baseline.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setTextBaseline = function (textBaseline) {
-  this.textBaseline_ = textBaseline;
-};
-/**
- * Set the background fill.
- *
- * @param {ol.style.Fill} fill Fill style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setBackgroundFill = function (fill) {
-  this.backgroundFill_ = fill;
-};
-/**
- * Set the background stroke.
- *
- * @param {ol.style.Stroke} stroke Stroke style.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setBackgroundStroke = function (stroke) {
-  this.backgroundStroke_ = stroke;
-};
-/**
- * Set the padding (`[top, right, bottom, left]`).
- *
- * @param {!Array.<number>} padding Padding.
- * @api
- */
-
-
-_ol_style_Text_.prototype.setPadding = function (padding) {
-  this.padding_ = padding;
-};
-
-exports.default = _ol_style_Text_;
-
-},{"../style/fill.js":201,"../style/textplacement.js":210}],198:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _dom = require("../dom.js");
-
-var _dom2 = _interopRequireDefault(_dom);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * This class facilitates the creation of image atlases.
- *
- * Images added to an atlas will be rendered onto a single
- * atlas canvas. The distribution of images on the canvas is
- * managed with the bin packing algorithm described in:
- * http://www.blackpawn.com/texts/lightmaps/
- *
- * @constructor
- * @struct
- * @param {number} size The size in pixels of the sprite image.
- * @param {number} space The space in pixels between images.
- *    Because texture coordinates are float values, the edges of
- *    images might not be completely correct (in a way that the
- *    edges overlap when being rendered). To avoid this we add a
- *    padding around each image.
- */
-
-
-var _ol_style_Atlas_ = function _ol_style_Atlas_(size, space) {
-  /**
-   * @private
-   * @type {number}
-   */
-  this.space_ = space;
-  /**
-   * @private
-   * @type {Array.<ol.AtlasBlock>}
-   */
-
-  this.emptyBlocks_ = [{
-    x: 0,
-    y: 0,
-    width: size,
-    height: size
-  }];
-  /**
-   * @private
-   * @type {Object.<string, ol.AtlasInfo>}
-   */
-
-  this.entries_ = {};
-  /**
-   * @private
-   * @type {CanvasRenderingContext2D}
-   */
-
-  this.context_ = _dom2.default.createCanvasContext2D(size, size);
-  /**
-   * @private
-   * @type {HTMLCanvasElement}
-   */
-
-  this.canvas_ = this.context_.canvas;
-};
-/**
- * @param {string} id The identifier of the entry to check.
- * @return {?ol.AtlasInfo} The atlas info.
- */
-
-
-_ol_style_Atlas_.prototype.get = function (id) {
-  return this.entries_[id] || null;
-};
-/**
- * @param {string} id The identifier of the entry to add.
- * @param {number} width The width.
- * @param {number} height The height.
- * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
- *    Called to render the new image onto an atlas image.
- * @param {Object=} opt_this Value to use as `this` when executing
- *    `renderCallback`.
- * @return {?ol.AtlasInfo} The position and atlas image for the entry.
- */
-
-
-_ol_style_Atlas_.prototype.add = function (id, width, height, renderCallback, opt_this) {
-  var block, i, ii;
-
-  for (i = 0, ii = this.emptyBlocks_.length; i < ii; ++i) {
-    block = this.emptyBlocks_[i];
-
-    if (block.width >= width + this.space_ && block.height >= height + this.space_) {
-      // we found a block that is big enough for our entry
-      var entry = {
-        offsetX: block.x + this.space_,
-        offsetY: block.y + this.space_,
-        image: this.canvas_
-      };
-      this.entries_[id] = entry; // render the image on the atlas image
-
-      renderCallback.call(opt_this, this.context_, block.x + this.space_, block.y + this.space_); // split the block after the insertion, either horizontally or vertically
-
-      this.split_(i, block, width + this.space_, height + this.space_);
-      return entry;
-    }
-  } // there is no space for the new entry in this atlas
-
-
-  return null;
-};
-/**
- * @private
- * @param {number} index The index of the block.
- * @param {ol.AtlasBlock} block The block to split.
- * @param {number} width The width of the entry to insert.
- * @param {number} height The height of the entry to insert.
- */
-
-
-_ol_style_Atlas_.prototype.split_ = function (index, block, width, height) {
-  var deltaWidth = block.width - width;
-  var deltaHeight = block.height - height;
-  /** @type {ol.AtlasBlock} */
-
-  var newBlock1;
-  /** @type {ol.AtlasBlock} */
-
-  var newBlock2;
-
-  if (deltaWidth > deltaHeight) {
-    // split vertically
-    // block right of the inserted entry
-    newBlock1 = {
-      x: block.x + width,
-      y: block.y,
-      width: block.width - width,
-      height: block.height
-    }; // block below the inserted entry
-
-    newBlock2 = {
-      x: block.x,
-      y: block.y + height,
-      width: width,
-      height: block.height - height
-    };
-    this.updateBlocks_(index, newBlock1, newBlock2);
-  } else {
-    // split horizontally
-    // block right of the inserted entry
-    newBlock1 = {
-      x: block.x + width,
-      y: block.y,
-      width: block.width - width,
-      height: height
-    }; // block below the inserted entry
-
-    newBlock2 = {
-      x: block.x,
-      y: block.y + height,
-      width: block.width,
-      height: block.height - height
-    };
-    this.updateBlocks_(index, newBlock1, newBlock2);
-  }
-};
-/**
- * Remove the old block and insert new blocks at the same array position.
- * The new blocks are inserted at the same position, so that splitted
- * blocks (that are potentially smaller) are filled first.
- * @private
- * @param {number} index The index of the block to remove.
- * @param {ol.AtlasBlock} newBlock1 The 1st block to add.
- * @param {ol.AtlasBlock} newBlock2 The 2nd block to add.
- */
-
-
-_ol_style_Atlas_.prototype.updateBlocks_ = function (index, newBlock1, newBlock2) {
-  var args = [index, 1];
-
-  if (newBlock1.width > 0 && newBlock1.height > 0) {
-    args.push(newBlock1);
-  }
-
-  if (newBlock2.width > 0 && newBlock2.height > 0) {
-    args.push(newBlock2);
-  }
-
-  this.emptyBlocks_.splice.apply(this.emptyBlocks_, args);
-};
-
-exports.default = _ol_style_Atlas_;
-
-},{"../dom.js":23}],199:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _atlas = require("../style/atlas.js");
-
-var _atlas2 = _interopRequireDefault(_atlas);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * Manages the creation of image atlases.
- *
- * Images added to this manager will be inserted into an atlas, which
- * will be used for rendering.
- * The `size` given in the constructor is the size for the first
- * atlas. After that, when new atlases are created, they will have
- * twice the size as the latest atlas (until `maxSize` is reached).
- *
- * If an application uses many images or very large images, it is recommended
- * to set a higher `size` value to avoid the creation of too many atlases.
- *
- * @constructor
- * @struct
- * @api
- * @param {olx.style.AtlasManagerOptions=} opt_options Options.
- */
-
-
-var _ol_style_AtlasManager_ = function _ol_style_AtlasManager_(opt_options) {
-  var options = opt_options || {};
-  /**
-   * The size in pixels of the latest atlas image.
-   * @private
-   * @type {number}
-   */
-
-  this.currentSize_ = options.initialSize !== undefined ? options.initialSize : _index2.default.INITIAL_ATLAS_SIZE;
-  /**
-   * The maximum size in pixels of atlas images.
-   * @private
-   * @type {number}
-   */
-
-  this.maxSize_ = options.maxSize !== undefined ? options.maxSize : _index2.default.MAX_ATLAS_SIZE != -1 ? _index2.default.MAX_ATLAS_SIZE : _index2.default.WEBGL_MAX_TEXTURE_SIZE !== undefined ? _index2.default.WEBGL_MAX_TEXTURE_SIZE : 2048;
-  /**
-   * The size in pixels between images.
-   * @private
-   * @type {number}
-   */
-
-  this.space_ = options.space !== undefined ? options.space : 1;
-  /**
-   * @private
-   * @type {Array.<ol.style.Atlas>}
-   */
-
-  this.atlases_ = [new _atlas2.default(this.currentSize_, this.space_)];
-  /**
-   * The size in pixels of the latest atlas image for hit-detection images.
-   * @private
-   * @type {number}
-   */
-
-  this.currentHitSize_ = this.currentSize_;
-  /**
-   * @private
-   * @type {Array.<ol.style.Atlas>}
-   */
-
-  this.hitAtlases_ = [new _atlas2.default(this.currentHitSize_, this.space_)];
-};
-/**
- * @param {string} id The identifier of the entry to check.
- * @return {?ol.AtlasManagerInfo} The position and atlas image for the
- *    entry, or `null` if the entry is not part of the atlas manager.
- */
-
-
-_ol_style_AtlasManager_.prototype.getInfo = function (id) {
-  /** @type {?ol.AtlasInfo} */
-  var info = this.getInfo_(this.atlases_, id);
-
-  if (!info) {
-    return null;
-  }
-
-  var hitInfo =
-  /** @type {ol.AtlasInfo} */
-  this.getInfo_(this.hitAtlases_, id);
-  return this.mergeInfos_(info, hitInfo);
-};
-/**
- * @private
- * @param {Array.<ol.style.Atlas>} atlases The atlases to search.
- * @param {string} id The identifier of the entry to check.
- * @return {?ol.AtlasInfo} The position and atlas image for the entry,
- *    or `null` if the entry is not part of the atlases.
- */
-
-
-_ol_style_AtlasManager_.prototype.getInfo_ = function (atlases, id) {
-  var atlas, info, i, ii;
-
-  for (i = 0, ii = atlases.length; i < ii; ++i) {
-    atlas = atlases[i];
-    info = atlas.get(id);
-
-    if (info) {
-      return info;
-    }
-  }
-
-  return null;
-};
-/**
- * @private
- * @param {ol.AtlasInfo} info The info for the real image.
- * @param {ol.AtlasInfo} hitInfo The info for the hit-detection
- *    image.
- * @return {?ol.AtlasManagerInfo} The position and atlas image for the
- *    entry, or `null` if the entry is not part of the atlases.
- */
-
-
-_ol_style_AtlasManager_.prototype.mergeInfos_ = function (info, hitInfo) {
-  return (
-    /** @type {ol.AtlasManagerInfo} */
-    {
-      offsetX: info.offsetX,
-      offsetY: info.offsetY,
-      image: info.image,
-      hitImage: hitInfo.image
-    }
-  );
-};
-/**
- * Add an image to the atlas manager.
- *
- * If an entry for the given id already exists, the entry will
- * be overridden (but the space on the atlas graphic will not be freed).
- *
- * If `renderHitCallback` is provided, the image (or the hit-detection version
- * of the image) will be rendered into a separate hit-detection atlas image.
- *
- * @param {string} id The identifier of the entry to add.
- * @param {number} width The width.
- * @param {number} height The height.
- * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
- *    Called to render the new image onto an atlas image.
- * @param {function(CanvasRenderingContext2D, number, number)=}
- *    opt_renderHitCallback Called to render a hit-detection image onto a hit
- *    detection atlas image.
- * @param {Object=} opt_this Value to use as `this` when executing
- *    `renderCallback` and `renderHitCallback`.
- * @return {?ol.AtlasManagerInfo}  The position and atlas image for the
- *    entry, or `null` if the image is too big.
- */
-
-
-_ol_style_AtlasManager_.prototype.add = function (id, width, height, renderCallback, opt_renderHitCallback, opt_this) {
-  if (width + this.space_ > this.maxSize_ || height + this.space_ > this.maxSize_) {
-    return null;
-  }
-  /** @type {?ol.AtlasInfo} */
-
-
-  var info = this.add_(false, id, width, height, renderCallback, opt_this);
-
-  if (!info) {
-    return null;
-  } // even if no hit-detection entry is requested, we insert a fake entry into
-  // the hit-detection atlas, to make sure that the offset is the same for
-  // the original image and the hit-detection image.
-
-
-  var renderHitCallback = opt_renderHitCallback !== undefined ? opt_renderHitCallback : _index2.default.nullFunction;
-  var hitInfo =
-  /** @type {ol.AtlasInfo} */
-  this.add_(true, id, width, height, renderHitCallback, opt_this);
-  return this.mergeInfos_(info, hitInfo);
-};
-/**
- * @private
- * @param {boolean} isHitAtlas If the hit-detection atlases are used.
- * @param {string} id The identifier of the entry to add.
- * @param {number} width The width.
- * @param {number} height The height.
- * @param {function(CanvasRenderingContext2D, number, number)} renderCallback
- *    Called to render the new image onto an atlas image.
- * @param {Object=} opt_this Value to use as `this` when executing
- *    `renderCallback` and `renderHitCallback`.
- * @return {?ol.AtlasInfo}  The position and atlas image for the entry,
- *    or `null` if the image is too big.
- */
-
-
-_ol_style_AtlasManager_.prototype.add_ = function (isHitAtlas, id, width, height, renderCallback, opt_this) {
-  var atlases = isHitAtlas ? this.hitAtlases_ : this.atlases_;
-  var atlas, info, i, ii;
-
-  for (i = 0, ii = atlases.length; i < ii; ++i) {
-    atlas = atlases[i];
-    info = atlas.add(id, width, height, renderCallback, opt_this);
-
-    if (info) {
-      return info;
-    } else if (!info && i === ii - 1) {
-      // the entry could not be added to one of the existing atlases,
-      // create a new atlas that is twice as big and try to add to this one.
-      var size;
-
-      if (isHitAtlas) {
-        size = Math.min(this.currentHitSize_ * 2, this.maxSize_);
-        this.currentHitSize_ = size;
-      } else {
-        size = Math.min(this.currentSize_ * 2, this.maxSize_);
-        this.currentSize_ = size;
-      }
-
-      atlas = new _atlas2.default(size, this.space_);
-      atlases.push(atlas); // run the loop another time
-
-      ++ii;
-    }
-  }
-
-  return null;
-};
-
-exports.default = _ol_style_AtlasManager_;
-
-},{"../index.js":65,"../style/atlas.js":198}],200:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _regularshape = require("../style/regularshape.js");
-
-var _regularshape2 = _interopRequireDefault(_regularshape);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Set circle style for vector features.
- *
- * @constructor
- * @param {olx.style.CircleOptions=} opt_options Options.
- * @extends {ol.style.RegularShape}
- * @api
- */
-
-
-var _ol_style_Circle_ = function _ol_style_Circle_(opt_options) {
-  var options = opt_options || {};
-
-  _regularshape2.default.call(this, {
-    points: Infinity,
-    fill: options.fill,
-    radius: options.radius,
-    snapToPixel: options.snapToPixel,
-    stroke: options.stroke,
-    atlasManager: options.atlasManager
-  });
-};
-
-_index2.default.inherits(_ol_style_Circle_, _regularshape2.default);
-/**
- * Clones the style.  If an atlasmanager was provided to the original style it will be used in the cloned style, too.
- * @return {ol.style.Circle} The cloned style.
- * @override
- * @api
- */
-
-
-_ol_style_Circle_.prototype.clone = function () {
-  var style = new _ol_style_Circle_({
-    fill: this.getFill() ? this.getFill().clone() : undefined,
-    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
-    radius: this.getRadius(),
-    snapToPixel: this.getSnapToPixel(),
-    atlasManager: this.atlasManager_
-  });
-  style.setOpacity(this.getOpacity());
-  style.setScale(this.getScale());
-  return style;
-};
-/**
- * Set the circle radius.
- *
- * @param {number} radius Circle radius.
- * @api
- */
-
-
-_ol_style_Circle_.prototype.setRadius = function (radius) {
-  this.radius_ = radius;
-  this.render_(this.atlasManager_);
-};
-
-exports.default = _ol_style_Circle_;
-
-},{"../index.js":65,"../style/regularshape.js":207}],201:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _index = require("../index.js");
-
-var _index2 = _interopRequireDefault(_index);
-
-var _color = require("../color.js");
-
-var _color2 = _interopRequireDefault(_color);
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-/**
- * @classdesc
- * Set fill style for vector features.
- *
- * @constructor
- * @param {olx.style.FillOptions=} opt_options Options.
- * @api
- */
-
-
-var _ol_style_Fill_ = function _ol_style_Fill_(opt_options) {
-  var options = opt_options || {};
-  /**
-   * @private
-   * @type {ol.Color|ol.ColorLike}
-   */
-
-  this.color_ = options.color !== undefined ? options.color : null;
-  /**
-   * @private
-   * @type {string|undefined}
-   */
-
-  this.checksum_ = undefined;
-};
-/**
- * Clones the style. The color is not cloned if it is an {@link ol.ColorLike}.
- * @return {ol.style.Fill} The cloned style.
- * @api
- */
-
-
-_ol_style_Fill_.prototype.clone = function () {
-  var color = this.getColor();
-  return new _ol_style_Fill_({
-    color: color && color.slice ? color.slice() : color || undefined
-  });
-};
-/**
- * Get the fill color.
- * @return {ol.Color|ol.ColorLike} Color.
- * @api
- */
-
-
-_ol_style_Fill_.prototype.getColor = function () {
-  return this.color_;
-};
-/**
- * Set the color.
- *
- * @param {ol.Color|ol.ColorLike} color Color.
- * @api
- */
-
-
-_ol_style_Fill_.prototype.setColor = function (color) {
-  this.color_ = color;
-  this.checksum_ = undefined;
-};
-/**
- * @return {string} The checksum.
- */
-
-
-_ol_style_Fill_.prototype.getChecksum = function () {
-  if (this.checksum_ === undefined) {
-    if (this.color_ instanceof CanvasPattern || this.color_ instanceof CanvasGradient) {
-      this.checksum_ = _index2.default.getUid(this.color_).toString();
-    } else {
-      this.checksum_ = 'f' + (this.color_ ? _color2.default.asString(this.color_) : '-');
-    }
-  }
-
-  return this.checksum_;
-};
-
-exports.default = _ol_style_Fill_;
-
-},{"../color.js":13,"../index.js":65}],202:[function(require,module,exports){
+},{"../asserts.js":5,"../color.js":10,"../events.js":22,"../events/eventtype.js":26,"../imagestate.js":62,"../index.js":63,"../style/iconanchorunits.js":201,"../style/iconimage.js":202,"../style/iconorigin.js":204,"../style/image.js":205}],201:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43782,7 +43260,7 @@ var _ol_style_IconAnchorUnits_ = {
 };
 exports.default = _ol_style_IconAnchorUnits_;
 
-},{}],203:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44094,7 +43572,7 @@ _ol_style_IconImage_.prototype.unlistenImage_ = function () {
 
 exports.default = _ol_style_IconImage_;
 
-},{"../dom.js":23,"../events.js":25,"../events/eventtarget.js":28,"../events/eventtype.js":29,"../imagestate.js":64,"../index.js":65,"../style.js":195}],204:[function(require,module,exports){
+},{"../dom.js":20,"../events.js":22,"../events/eventtarget.js":25,"../events/eventtype.js":26,"../imagestate.js":62,"../index.js":63,"../style.js":195}],203:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44219,7 +43697,7 @@ _ol_style_IconImageCache_.prototype.setSize = function (maxCacheSize) {
 
 exports.default = _ol_style_IconImageCache_;
 
-},{"../color.js":13}],205:[function(require,module,exports){
+},{"../color.js":10}],204:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44238,7 +43716,7 @@ var _ol_style_IconOrigin_ = {
 };
 exports.default = _ol_style_IconOrigin_;
 
-},{}],206:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -44482,7 +43960,7 @@ _ol_style_Image_.prototype.unlistenImageChange = function (listener, thisArg) {}
 
 exports.default = _ol_style_Image_;
 
-},{}],207:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45085,7 +44563,7 @@ _ol_style_RegularShape_.prototype.getChecksum = function () {
 
 exports.default = _ol_style_RegularShape_;
 
-},{"../colorlike.js":14,"../dom.js":23,"../has.js":60,"../imagestate.js":64,"../index.js":65,"../render/canvas.js":124,"../style/image.js":206}],208:[function(require,module,exports){
+},{"../colorlike.js":11,"../dom.js":20,"../has.js":58,"../imagestate.js":62,"../index.js":63,"../render/canvas.js":124,"../style/image.js":205}],207:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45371,7 +44849,7 @@ _ol_style_Stroke_.prototype.getChecksum = function () {
 
 exports.default = _ol_style_Stroke_;
 
-},{"../index.js":65}],209:[function(require,module,exports){
+},{"../index.js":63}],208:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45813,7 +45291,529 @@ _ol_style_Style_.defaultGeometryFunction = function (feature) {
 
 exports.default = _ol_style_Style_;
 
-},{"../asserts.js":8,"../geom/geometrytype.js":55,"../style/circle.js":200,"../style/fill.js":201,"../style/stroke.js":208}],210:[function(require,module,exports){
+},{"../asserts.js":5,"../geom/geometrytype.js":53,"../style/circle.js":198,"../style/fill.js":199,"../style/stroke.js":207}],209:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _fill = require("../style/fill.js");
+
+var _fill2 = _interopRequireDefault(_fill);
+
+var _textplacement = require("../style/textplacement.js");
+
+var _textplacement2 = _interopRequireDefault(_textplacement);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
+  };
+}
+/**
+ * @classdesc
+ * Set text style for vector features.
+ *
+ * @constructor
+ * @param {olx.style.TextOptions=} opt_options Options.
+ * @api
+ */
+
+
+var _ol_style_Text_ = function _ol_style_Text_(opt_options) {
+  var options = opt_options || {};
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+
+  this.font_ = options.font;
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+
+  this.rotation_ = options.rotation;
+  /**
+   * @private
+   * @type {boolean|undefined}
+   */
+
+  this.rotateWithView_ = options.rotateWithView;
+  /**
+   * @private
+   * @type {number|undefined}
+   */
+
+  this.scale_ = options.scale;
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+
+  this.text_ = options.text;
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+
+  this.textAlign_ = options.textAlign;
+  /**
+   * @private
+   * @type {string|undefined}
+   */
+
+  this.textBaseline_ = options.textBaseline;
+  /**
+   * @private
+   * @type {ol.style.Fill}
+   */
+
+  this.fill_ = options.fill !== undefined ? options.fill : new _fill2.default({
+    color: _ol_style_Text_.DEFAULT_FILL_COLOR_
+  });
+  /**
+   * @private
+   * @type {number}
+   */
+
+  this.maxAngle_ = options.maxAngle !== undefined ? options.maxAngle : Math.PI / 4;
+  /**
+   * @private
+   * @type {ol.style.TextPlacement|string}
+   */
+
+  this.placement_ = options.placement !== undefined ? options.placement : _textplacement2.default.POINT; //TODO Use options.overflow directly after removing @deprecated exceedLength
+
+  var overflow = options.overflow === undefined ? options.exceedLength : options.overflow;
+  /**
+   * @private
+   * @type {boolean}
+   */
+
+  this.overflow_ = overflow !== undefined ? overflow : false;
+  /**
+   * @private
+   * @type {ol.style.Stroke}
+   */
+
+  this.stroke_ = options.stroke !== undefined ? options.stroke : null;
+  /**
+   * @private
+   * @type {number}
+   */
+
+  this.offsetX_ = options.offsetX !== undefined ? options.offsetX : 0;
+  /**
+   * @private
+   * @type {number}
+   */
+
+  this.offsetY_ = options.offsetY !== undefined ? options.offsetY : 0;
+  /**
+   * @private
+   * @type {ol.style.Fill}
+   */
+
+  this.backgroundFill_ = options.backgroundFill ? options.backgroundFill : null;
+  /**
+   * @private
+   * @type {ol.style.Stroke}
+   */
+
+  this.backgroundStroke_ = options.backgroundStroke ? options.backgroundStroke : null;
+  /**
+   * @private
+   * @type {Array.<number>}
+   */
+
+  this.padding_ = options.padding === undefined ? null : options.padding;
+};
+/**
+ * The default fill color to use if no fill was set at construction time; a
+ * blackish `#333`.
+ *
+ * @const {string}
+ * @private
+ */
+
+
+_ol_style_Text_.DEFAULT_FILL_COLOR_ = '#333';
+/**
+ * Clones the style.
+ * @return {ol.style.Text} The cloned style.
+ * @api
+ */
+
+_ol_style_Text_.prototype.clone = function () {
+  return new _ol_style_Text_({
+    font: this.getFont(),
+    placement: this.getPlacement(),
+    maxAngle: this.getMaxAngle(),
+    overflow: this.getOverflow(),
+    rotation: this.getRotation(),
+    rotateWithView: this.getRotateWithView(),
+    scale: this.getScale(),
+    text: this.getText(),
+    textAlign: this.getTextAlign(),
+    textBaseline: this.getTextBaseline(),
+    fill: this.getFill() ? this.getFill().clone() : undefined,
+    stroke: this.getStroke() ? this.getStroke().clone() : undefined,
+    offsetX: this.getOffsetX(),
+    offsetY: this.getOffsetY()
+  });
+};
+/**
+ * Get the `overflow` configuration.
+ * @return {boolean} Let text overflow the length of the path they follow.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getOverflow = function () {
+  return this.overflow_;
+};
+/**
+ * Get the font name.
+ * @return {string|undefined} Font.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getFont = function () {
+  return this.font_;
+};
+/**
+ * Get the maximum angle between adjacent characters.
+ * @return {number} Angle in radians.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getMaxAngle = function () {
+  return this.maxAngle_;
+};
+/**
+ * Get the label placement.
+ * @return {ol.style.TextPlacement|string} Text placement.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getPlacement = function () {
+  return this.placement_;
+};
+/**
+ * Get the x-offset for the text.
+ * @return {number} Horizontal text offset.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getOffsetX = function () {
+  return this.offsetX_;
+};
+/**
+ * Get the y-offset for the text.
+ * @return {number} Vertical text offset.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getOffsetY = function () {
+  return this.offsetY_;
+};
+/**
+ * Get the fill style for the text.
+ * @return {ol.style.Fill} Fill style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getFill = function () {
+  return this.fill_;
+};
+/**
+ * Determine whether the text rotates with the map.
+ * @return {boolean|undefined} Rotate with map.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getRotateWithView = function () {
+  return this.rotateWithView_;
+};
+/**
+ * Get the text rotation.
+ * @return {number|undefined} Rotation.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getRotation = function () {
+  return this.rotation_;
+};
+/**
+ * Get the text scale.
+ * @return {number|undefined} Scale.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getScale = function () {
+  return this.scale_;
+};
+/**
+ * Get the stroke style for the text.
+ * @return {ol.style.Stroke} Stroke style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getStroke = function () {
+  return this.stroke_;
+};
+/**
+ * Get the text to be rendered.
+ * @return {string|undefined} Text.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getText = function () {
+  return this.text_;
+};
+/**
+ * Get the text alignment.
+ * @return {string|undefined} Text align.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getTextAlign = function () {
+  return this.textAlign_;
+};
+/**
+ * Get the text baseline.
+ * @return {string|undefined} Text baseline.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getTextBaseline = function () {
+  return this.textBaseline_;
+};
+/**
+ * Get the background fill style for the text.
+ * @return {ol.style.Fill} Fill style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getBackgroundFill = function () {
+  return this.backgroundFill_;
+};
+/**
+ * Get the background stroke style for the text.
+ * @return {ol.style.Stroke} Stroke style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getBackgroundStroke = function () {
+  return this.backgroundStroke_;
+};
+/**
+ * Get the padding for the text.
+ * @return {Array.<number>} Padding.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.getPadding = function () {
+  return this.padding_;
+};
+/**
+ * Set the `overflow` property.
+ *
+ * @param {boolean} overflow Let text overflow the path that it follows.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setOverflow = function (overflow) {
+  this.overflow_ = overflow;
+};
+/**
+ * Set the font.
+ *
+ * @param {string|undefined} font Font.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setFont = function (font) {
+  this.font_ = font;
+};
+/**
+ * Set the maximum angle between adjacent characters.
+ *
+ * @param {number} maxAngle Angle in radians.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setMaxAngle = function (maxAngle) {
+  this.maxAngle_ = maxAngle;
+};
+/**
+ * Set the x offset.
+ *
+ * @param {number} offsetX Horizontal text offset.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setOffsetX = function (offsetX) {
+  this.offsetX_ = offsetX;
+};
+/**
+ * Set the y offset.
+ *
+ * @param {number} offsetY Vertical text offset.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setOffsetY = function (offsetY) {
+  this.offsetY_ = offsetY;
+};
+/**
+ * Set the text placement.
+ *
+ * @param {ol.style.TextPlacement|string} placement Placement.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setPlacement = function (placement) {
+  this.placement_ = placement;
+};
+/**
+ * Set the fill.
+ *
+ * @param {ol.style.Fill} fill Fill style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setFill = function (fill) {
+  this.fill_ = fill;
+};
+/**
+ * Set the rotation.
+ *
+ * @param {number|undefined} rotation Rotation.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setRotation = function (rotation) {
+  this.rotation_ = rotation;
+};
+/**
+ * Set the scale.
+ *
+ * @param {number|undefined} scale Scale.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setScale = function (scale) {
+  this.scale_ = scale;
+};
+/**
+ * Set the stroke.
+ *
+ * @param {ol.style.Stroke} stroke Stroke style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setStroke = function (stroke) {
+  this.stroke_ = stroke;
+};
+/**
+ * Set the text.
+ *
+ * @param {string|undefined} text Text.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setText = function (text) {
+  this.text_ = text;
+};
+/**
+ * Set the text alignment.
+ *
+ * @param {string|undefined} textAlign Text align.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setTextAlign = function (textAlign) {
+  this.textAlign_ = textAlign;
+};
+/**
+ * Set the text baseline.
+ *
+ * @param {string|undefined} textBaseline Text baseline.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setTextBaseline = function (textBaseline) {
+  this.textBaseline_ = textBaseline;
+};
+/**
+ * Set the background fill.
+ *
+ * @param {ol.style.Fill} fill Fill style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setBackgroundFill = function (fill) {
+  this.backgroundFill_ = fill;
+};
+/**
+ * Set the background stroke.
+ *
+ * @param {ol.style.Stroke} stroke Stroke style.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setBackgroundStroke = function (stroke) {
+  this.backgroundStroke_ = stroke;
+};
+/**
+ * Set the padding (`[top, right, bottom, left]`).
+ *
+ * @param {!Array.<number>} padding Padding.
+ * @api
+ */
+
+
+_ol_style_Text_.prototype.setPadding = function (padding) {
+  this.padding_ = padding;
+};
+
+exports.default = _ol_style_Text_;
+
+},{"../style/fill.js":199,"../style/textplacement.js":210}],210:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46165,7 +46165,7 @@ _ol_tilegrid_.extentFromProjection = function (projection) {
 
 exports.default = _ol_tilegrid_;
 
-},{"./extent.js":31,"./extent/corner.js":32,"./index.js":65,"./obj.js":99,"./proj.js":115,"./proj/units.js":122,"./size.js":182,"./tilegrid/tilegrid.js":213}],213:[function(require,module,exports){
+},{"./extent.js":28,"./extent/corner.js":29,"./index.js":63,"./obj.js":98,"./proj.js":115,"./proj/units.js":122,"./size.js":182,"./tilegrid/tilegrid.js":213}],213:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46756,7 +46756,7 @@ _ol_tilegrid_TileGrid_.prototype.calculateTileRanges_ = function (extent) {
 
 exports.default = _ol_tilegrid_TileGrid_;
 
-},{"../array.js":6,"../asserts.js":8,"../extent.js":31,"../index.js":65,"../math.js":98,"../size.js":182,"../tilecoord.js":211,"../tilerange.js":215}],214:[function(require,module,exports){
+},{"../array.js":3,"../asserts.js":5,"../extent.js":28,"../index.js":63,"../math.js":97,"../size.js":182,"../tilecoord.js":211,"../tilerange.js":215}],214:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46926,7 +46926,7 @@ _ol_TileQueue_.prototype.loadMoreTiles = function (maxTotalLoading, maxNewLoads)
 
 exports.default = _ol_TileQueue_;
 
-},{"./events.js":25,"./events/eventtype.js":29,"./index.js":65,"./structs/priorityqueue.js":193,"./tilestate.js":216}],215:[function(require,module,exports){
+},{"./events.js":22,"./events/eventtype.js":26,"./index.js":63,"./structs/priorityqueue.js":193,"./tilestate.js":216}],215:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -47345,7 +47345,7 @@ _ol_transform_.determinant = function (mat) {
 
 exports.default = _ol_transform_;
 
-},{"./asserts.js":8}],218:[function(require,module,exports){
+},{"./asserts.js":5}],218:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48741,7 +48741,7 @@ _ol_View_.isNoopAnimation = function (animation) {
 
 exports.default = _ol_View_;
 
-},{"./array.js":6,"./asserts.js":8,"./centerconstraint.js":10,"./coordinate.js":20,"./easing.js":24,"./extent.js":31,"./geom/geometrytype.js":55,"./geom/polygon.js":58,"./geom/simplegeometry.js":59,"./index.js":65,"./math.js":98,"./obj.js":99,"./object.js":100,"./proj.js":115,"./proj/units.js":122,"./resolutionconstraint.js":180,"./rotationconstraint.js":181,"./viewhint.js":220,"./viewproperty.js":221}],220:[function(require,module,exports){
+},{"./array.js":3,"./asserts.js":5,"./centerconstraint.js":7,"./coordinate.js":17,"./easing.js":21,"./extent.js":28,"./geom/geometrytype.js":53,"./geom/polygon.js":56,"./geom/simplegeometry.js":57,"./index.js":63,"./math.js":97,"./obj.js":98,"./object.js":99,"./proj.js":115,"./proj/units.js":122,"./resolutionconstraint.js":180,"./rotationconstraint.js":181,"./viewhint.js":220,"./viewproperty.js":221}],220:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49509,7 +49509,7 @@ _ol_webgl_Context_.createTexture = function (gl, image, opt_wrapS, opt_wrapT) {
 
 exports.default = _ol_webgl_Context_;
 
-},{"../array.js":6,"../disposable.js":22,"../events.js":25,"../index.js":65,"../obj.js":99,"../webgl.js":222,"../webgl/contexteventtype.js":225}],225:[function(require,module,exports){
+},{"../array.js":3,"../disposable.js":19,"../events.js":22,"../index.js":63,"../obj.js":98,"../webgl.js":222,"../webgl/contexteventtype.js":225}],225:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49573,7 +49573,7 @@ _ol_webgl_Fragment_.prototype.getType = function () {
 
 exports.default = _ol_webgl_Fragment_;
 
-},{"../index.js":65,"../webgl.js":222,"../webgl/shader.js":227}],227:[function(require,module,exports){
+},{"../index.js":63,"../webgl.js":222,"../webgl/shader.js":227}],227:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49627,7 +49627,7 @@ _ol_webgl_Shader_.prototype.getSource = function () {
 _ol_webgl_Shader_.prototype.isAnimated = _functions2.default.FALSE;
 exports.default = _ol_webgl_Shader_;
 
-},{"../functions.js":36}],228:[function(require,module,exports){
+},{"../functions.js":34}],228:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49675,7 +49675,7 @@ _ol_webgl_Vertex_.prototype.getType = function () {
 
 exports.default = _ol_webgl_Vertex_;
 
-},{"../index.js":65,"../webgl.js":222,"../webgl/shader.js":227}],229:[function(require,module,exports){
+},{"../index.js":63,"../webgl.js":222,"../webgl/shader.js":227}],229:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -50223,7 +50223,7 @@ _ol_xml_.pushSerializeAndPop = function (object, serializersNS, nodeFactory, val
 
 exports.default = _ol_xml_;
 
-},{"./array.js":6}],230:[function(require,module,exports){
+},{"./array.js":3}],230:[function(require,module,exports){
 "use strict";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }

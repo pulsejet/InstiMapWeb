@@ -102,7 +102,8 @@ const MAP_WEIGHTS_Y = [
 export function getMap(
   config: InstiMapConfig,
   locations: ILocation[],
-  locationSelectCallback: (location?: ILocation) => void
+  locationSelectCallback: (location?: ILocation) => void,
+  mapLoadedCallback: () => void
 ): OlMap {
 
   _config = config;
@@ -213,7 +214,7 @@ export function getMap(
       const img: any = image.getImage();
       img.src = src;
       img.onload = () => {
-        loadHighRes();
+        loadHighRes(mapLoadedCallback);
       };
     }
   });
@@ -332,7 +333,7 @@ export function setResidencesVisible(visible: boolean) {
 }
 
 /** Load the high resolution map */
-function loadHighRes(): void {
+function loadHighRes(callback: () => void): void {
   /* High res source */
   const highResSource = new OlSourceImageStatic({
     url: _config.mapPath,
@@ -346,6 +347,7 @@ function loadHighRes(): void {
   highRes.src = _config.mapPath;
   highRes.onload = () => {
     imlayer.setSource(highResSource);
+    callback();
   };
 }
 

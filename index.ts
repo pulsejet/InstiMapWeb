@@ -409,17 +409,17 @@ export function getMapXY(position: Position): { pixel_x: number, pixel_y: number
   /* Apply the model */
   let A = MAP_WEIGHTS_X;
   const px = Math.round(
-      MAP_Zn + A[0] + A[1] * x + A[2] * y +
-      A[3] * x * x + A[4] * x * x * y +
-      A[5] * x * x * y * y + A[6] * y * y +
-      A[7] * x * y * y + A[8] * x * y);
+    MAP_Zn + A[0] + A[1] * x + A[2] * y +
+    A[3] * x * x + A[4] * x * x * y +
+    A[5] * x * x * y * y + A[6] * y * y +
+    A[7] * x * y * y + A[8] * x * y);
 
   A = MAP_WEIGHTS_Y;
   const py = Math.round(
-      MAP_Zyn + A[0] + A[1] * x + A[2] * y +
-      A[3] * x * x + A[4] * x * x * y +
-     A[5] * x * x * y * y + A[6] * y * y +
-     A[7] * x * y * y + A[8] * x * y);
+    MAP_Zyn + A[0] + A[1] * x + A[2] * y +
+    A[3] * x * x + A[4] * x * x * y +
+    A[5] * x * x * y * y + A[6] * y * y +
+    A[7] * x * y * y + A[8] * x * y);
 
  return {pixel_x : px, pixel_y: py};
 }

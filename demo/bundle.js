@@ -326,16 +326,29 @@ function moveMarker(x, y, center, markerid) {
   }
 
   var pos = [Number(x), 3575 - Number(y)];
-  var element = document.getElementById(markerid);
-  var marker = new overlay_1.default({
-    position: pos,
-    positioning: 'bottom-center',
-    element: element,
-    stopEvent: false,
-    offset: [0, 0]
-  });
-  map.addOverlay(marker);
+  /* Check for existing overlay */
+
+  var overlay = map.getOverlayById(markerid);
+  /* Check for invalid coordinates */
+
+  if (overlay !== null) {
+    /* Overlay exists */
+    overlay.setPosition(pos);
+  } else {
+    /* Create a new overlay */
+    var element = document.getElementById(markerid);
+    var marker = new overlay_1.default({
+      id: markerid,
+      position: pos,
+      positioning: 'bottom-center',
+      element: element,
+      stopEvent: false,
+      offset: [0, 0]
+    });
+    map.addOverlay(marker);
+  }
   /* Animate */
+
 
   if (center) {
     view.animate({

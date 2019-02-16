@@ -310,15 +310,27 @@ export function moveToLocation(loc: ILocation) {
 /** Move the marker to location */
 export function moveMarker(x: number, y: number, center = true, markerid = _config.marker_id) {
   const pos: [number, number] = [Number(x), 3575 - Number(y)];
-  const element: any = document.getElementById(markerid);
-  const marker = new OlOverlay({
-    position: pos,
-    positioning: 'bottom-center',
-    element: element,
-    stopEvent: false,
-    offset: [0, 0]
-  });
-  map.addOverlay(marker);
+
+  /* Check for existing overlay */
+  const overlay = map.getOverlayById(markerid);
+
+  /* Check for invalid coordinates */
+  if (overlay !== null) {
+    /* Overlay exists */
+    overlay.setPosition(pos);
+  } else {
+    /* Create a new overlay */
+    const element: any = document.getElementById(markerid);
+    const marker = new OlOverlay({
+      id: markerid,
+      position: pos,
+      positioning: 'bottom-center',
+      element: element,
+      stopEvent: false,
+      offset: [0, 0]
+    });
+    map.addOverlay(marker);
+  }
 
   /* Animate */
   if (center) {

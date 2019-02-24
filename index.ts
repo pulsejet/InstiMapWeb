@@ -58,6 +58,7 @@ let attributions: string;
 
 /** GPS following */
 let followingUser = false;
+let followingUserCallback: any = null;
 
 /** Geolocation id of watch */
 let geoLocationId: number;
@@ -296,7 +297,7 @@ export function getMap(
 
   /* Stop following the user on drag */
   map.on('pointerdrag', () => {
-    followingUser = false;
+    setFollowingUser(false);
   });
 
   return map;
@@ -372,7 +373,7 @@ export function hasGeolocation(): boolean {
 export function getGPS(failedCallback?: () => void): void {
   if (hasGeolocation()) {
     /* Start following the user */
-    followingUser = true;
+    setFollowingUser(true);
 
     /* If we already have permission */
     if (geoLocationId != null) {
@@ -438,6 +439,15 @@ export function isFollowingUser(): boolean {
   return followingUser;
 }
 
+/** Setter for followingUser */
+export function setFollowingUser(val: boolean): void {
+  if (followingUser === val) { return; }
+  followingUser = val;
+  if (followingUserCallback != undefined && followingUserCallback != null) {
+    followingUserCallback(followingUser);
+  }
+}
+
 /** Last known geolocation */
 export function getGeolocationLast(): any {
   return geoLocationLast;
@@ -448,4 +458,9 @@ export function cleanup() {
   if (geoLocationId != null && geoLocationId != undefined) {
     navigator.geolocation.clearWatch(geoLocationId);
   }
+}
+
+/** Add event listener for followinguser change */
+export function addOnUserFollowingChangeListener(callback: (val: boolean) => void) {
+  followingUserCallback = callback;
 }

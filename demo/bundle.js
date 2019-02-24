@@ -19,6 +19,10 @@ fetch('locations.json').then(function (response) {
   }, function () {
     console.log('map loaded');
   });
+  InstiMap.addOnUserFollowingChangeListener(function (val) {
+    console.log("Following user ".concat(val));
+  });
+  InstiMap.getGPS();
 });
 
 },{"../dist/index.js":2}],2:[function(require,module,exports){
@@ -86,6 +90,7 @@ var attributions;
 /** GPS following */
 
 var followingUser = false;
+var followingUserCallback = null;
 /** Geolocation id of watch */
 
 var geoLocationId;
@@ -301,7 +306,7 @@ function getMap(config, locations, locationSelectCallback, mapLoadedCallback) {
   /* Stop following the user on drag */
 
   map.on('pointerdrag', function () {
-    followingUser = false;
+    setFollowingUser(false);
   });
   return map;
 }
@@ -401,7 +406,7 @@ exports.hasGeolocation = hasGeolocation;
 function getGPS(failedCallback) {
   if (hasGeolocation()) {
     /* Start following the user */
-    followingUser = true;
+    setFollowingUser(true);
     /* If we already have permission */
 
     if (geoLocationId != null) {
@@ -466,6 +471,21 @@ function isFollowingUser() {
 }
 
 exports.isFollowingUser = isFollowingUser;
+/** Setter for followingUser */
+
+function setFollowingUser(val) {
+  if (followingUser === val) {
+    return;
+  }
+
+  followingUser = val;
+
+  if (followingUserCallback != undefined && followingUserCallback != null) {
+    followingUserCallback(followingUser);
+  }
+}
+
+exports.setFollowingUser = setFollowingUser;
 /** Last known geolocation */
 
 function getGeolocationLast() {
@@ -482,6 +502,13 @@ function cleanup() {
 }
 
 exports.cleanup = cleanup;
+/** Add event listener for followinguser change */
+
+function addOnUserFollowingChangeListener(callback) {
+  followingUserCallback = callback;
+}
+
+exports.addOnUserFollowingChangeListener = addOnUserFollowingChangeListener;
 
 },{"ol/extent":28,"ol/feature":31,"ol/geom/point":55,"ol/geom/polygon":56,"ol/interaction":64,"ol/layer/image":81,"ol/layer/vector":84,"ol/map":89,"ol/overlay":102,"ol/proj/projection":119,"ol/source/imagestatic":184,"ol/source/vector":187,"ol/style/fill":199,"ol/style/icon":200,"ol/style/stroke":207,"ol/style/style":208,"ol/style/text":209,"ol/view":219}],3:[function(require,module,exports){
 "use strict";

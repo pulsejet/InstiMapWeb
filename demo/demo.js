@@ -18,4 +18,9 @@ fetch('locations.json')
     }, () => {
       console.log('map loaded');
     });
+
+    InstiMap.addOnUserFollowingChangeListener(val => {
+      console.log(`Following user ${val}`);
+    })
+    InstiMap.getGPS();
   });
